@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Artur\RectorBcLibrary;
+namespace Art4\RectorBcLibrary;
 
 final class Set
 {
@@ -10,7 +10,7 @@ final class Set
      * Path to this package's Rector config.
      * Use this constant in consumer projects to import the set:
      *
-     *   $rectorConfig->import(\Artur\RectorBcLibrary\Set::SET);
+     *   $rectorConfig->import(\Art4\RectorBcLibrary\Set::SET);
      */
     public const SET = __DIR__ . '/../rector.php';
 }

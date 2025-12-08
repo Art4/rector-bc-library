@@ -8,7 +8,7 @@ Installation
 Install as a development dependency in your project:
 
 ```bash
-composer require --dev artur/rector-bc-library
+composer require --dev art4/rector-bc-library
 ```
 
 Usage
@@ -25,14 +25,14 @@ use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
     // Import this package's set
-    $rectorConfig->import(\Artur\RectorBcLibrary\Set::SET);
+    $rectorConfig->import(\Art4\RectorBcLibrary\Set::SET);
 };
 ```
 
 Alternative import by path (less future-proof):
 
 ```php
-$rectorConfig->import(__DIR__ . '/vendor/artur/rector-bc-library/rector.php');
+$rectorConfig->import(__DIR__ . '/vendor/art4/rector-bc-library/rector.php');
 ```
 
 Notes
