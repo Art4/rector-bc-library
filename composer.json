@@ -1,0 +1,25 @@
+{
+  "name": "artur/rector-bc-library",
+  "description": "Reusable Rector rule set for BC-related transformations",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Artur",
+      "role": "Maintainer"
+    }
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "suggest": {
+    "rector/rector": "Install Rector in your project to apply this set (require as dev dependency)"
+  },
+  "autoload": {
+    "psr-4": {
+      "Artur\\RectorBcLibrary\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
