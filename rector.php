@@ -21,4 +21,8 @@ return static function (RectorConfig $rectorConfig): void {
     // $rectorConfig->rule(\SomeVendor\SomeRector::class);
     // $rectorConfig->rules([ ... ]);
     // $rectorConfig->sets([ ... ]);
+
+    // Example: register the example rule provided in this package while
+    // developing rules in this repository.
+    $rectorConfig->rule(\Art4\RectorBcLibrary\Rector\ExampleRector::class);
 };

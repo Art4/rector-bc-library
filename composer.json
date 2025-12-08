@@ -22,4 +22,8 @@
   },
   "minimum-stability": "stable",
   "prefer-stable": true
+  ,
+  "require-dev": {
+    "rector/rector": "^1.0"
+  }
 }
