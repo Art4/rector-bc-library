@@ -8,10 +8,10 @@ use PhpParser\Node;
 use PHPStan\Analyser\Scope;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalReturnTypeRector;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
-use Rector\Rector\AbstractScopeAwareRector;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends AbstractScopeAwareRector implements MinPhpVersionInterface
+final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends AbstractRector
 {
     private OriginalReturnTypeRector $originalRector;
 
@@ -36,9 +36,9 @@ final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends A
     /**
      * @param Node $node
      */
-    public function refactorWithScope(Node $node, Scope $scope): ?Node
+    public function refactor(Node $node): ?Node
     {
-        return $this->originalRector->refactorWithScope($node, $scope);
+        return $this->originalRector->refactor($node);
     }
 
     /**

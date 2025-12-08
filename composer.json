@@ -23,9 +23,11 @@
   "config": {
     "lock": false
   },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
   "minimum-stability": "stable",
-  "prefer-stable": true
-  ,
+  "prefer-stable": true,
   "require-dev": {
     "rector/rector": "^2.0",
     "phpunit/phpunit": "^9.5"
