@@ -2,11 +2,11 @@
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
 
-class SimpleConstantReturn
+final class SimpleConstantReturn
 {
     public const NAME = 'name';
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
@@ -18,7 +18,7 @@ class SimpleConstantReturn
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
 
-class SimpleConstantReturn
+final class SimpleConstantReturn
 {
     public const NAME = 'name';
 

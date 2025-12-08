@@ -5,19 +5,22 @@ declare(strict_types=1);
 namespace Art4\RectorBcLibrary\Rector;
 
 use PhpParser\Node;
-use PHPStan\Analyser\Scope;
+use PhpParser\Node\Stmt\ClassMethod;
+use Rector\PHPStan\ScopeFetcher;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalReturnTypeRector;
-use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Rector\Rector\AbstractRector;
+use Rector\VendorLocker\NodeVendorLocker\ClassMethodReturnTypeOverrideGuard;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends AbstractRector
 {
     private OriginalReturnTypeRector $originalRector;
+    private ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalReturnTypeRector $originalRector)
+    public function __construct(OriginalReturnTypeRector $originalRector, ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
+        $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;
     }
 
     public function getRuleDefinition(): RuleDefinition
@@ -38,14 +41,40 @@ final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends A
      */
     public function refactor(Node $node): ?Node
     {
+        if ($node instanceof ClassMethod && $this->shouldSkipMethod($node)) {
+            return null;
+        }
+
+        // Delegate to the original Rector rule
         return $this->originalRector->refactor($node);
     }
 
-    /**
-     * @return int
-     */
-    public function provideMinPhpVersion(): int
+    private function shouldSkipMethod(ClassMethod $node): bool
     {
-        return $this->originalRector->provideMinPhpVersion();
+        $scope = ScopeFetcher::fetch($node);
+
+        if ($this->classMethodReturnTypeOverrideGuard->shouldSkipClassMethod($node, $scope)) {
+            return true;
+        }
+
+        if ($node->isFinal()) {
+            return false;
+        }
+
+        if ($node->isPrivate()) {
+            return false;
+        }
+
+        $scopeClassReflection = $scope->getClassReflection();
+
+        if ($scopeClassReflection === null) {
+            return false;
+        }
+
+        if ($scopeClassReflection->isFinal()) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
 
-class MultipleIntConstantReturn
+final class MultipleIntConstantReturn
 {
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
@@ -22,7 +22,7 @@ class MultipleIntConstantReturn
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
 
-class MultipleIntConstantReturn
+final class MultipleIntConstantReturn
 {
     public const STATUS_ACTIVE = 1;
     public const STATUS_INACTIVE = 0;
