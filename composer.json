@@ -20,6 +20,9 @@
       "Art4\\RectorBcLibrary\\": "src/"
     }
   },
+  "config": {
+    "lock": false
+  },
   "minimum-stability": "stable",
   "prefer-stable": true
   ,
