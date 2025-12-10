@@ -7,18 +7,18 @@ namespace Art4\RectorBcLibrary\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\PHPStan\ScopeFetcher;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalReturnTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector as OriginalBoolReturnTypeRector;
 use Rector\Rector\AbstractRector;
 use Rector\VendorLocker\NodeVendorLocker\ClassMethodReturnTypeOverrideGuard;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends AbstractRector implements MinPhpVersionInterface
+final class BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector extends AbstractRector implements MinPhpVersionInterface
 {
-    private OriginalReturnTypeRector $originalRector;
+    private OriginalBoolReturnTypeRector $originalRector;
     private ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalReturnTypeRector $originalRector, ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
+    public function __construct(OriginalBoolReturnTypeRector $originalRector, ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
         $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;
