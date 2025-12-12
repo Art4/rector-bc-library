@@ -1,0 +1,47 @@
+stages:
+  - test
+
+variables:
+  COMPOSER_ALLOW_SUPERUSER: '1'
+  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer/cache"
+  COMPOSER_HOME: "$CI_PROJECT_DIR/.composer"
+
+# A default template for PHP-based test jobs
+.default-php-job: &default-php-job
+  stage: test
+  image: php:${PHP_VERSION}-cli
+  parallel:
+    matrix:
+      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends git unzip ca-certificates
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - composer --version
+    - composer install --prefer-dist --no-interaction --no-progress || composer install --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}-${PHP_VERSION}-${CI_JOB_NAME}"
+    paths:
+      - vendor/
+      - .composer/cache/
+  allow_failure: false
+  tags: []
+
+# PHPStan job (static analysis)
+phpstan-tests:
+  <<: *default-php-job
+  script:
+    - composer run phpstan --ansi
+
+# PHPUnit job (unit tests)
+phpunit-tests:
+  <<: *default-php-job
+  script:
+    - mkdir -p build/test-reports
+    - composer test -- --colors=always --log-junit build/test-reports/junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: build/test-reports/junit.xml
+    expire_in: 1 day
