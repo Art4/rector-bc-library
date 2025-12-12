@@ -2,7 +2,6 @@ includes:
   - vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-  phpVersion: 704
   level: 10
   treatPhpDocTypesAsCertain: false
   paths:
