@@ -24,12 +24,15 @@
     "lock": false
   },
   "scripts": {
-    "test": "vendor/bin/phpunit"
+    "test": "vendor/bin/phpunit",
+    "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon"
   },
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require-dev": {
     "rector/rector": "^2.0",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5 || ^12.5",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-phpunit": "^2.0"
   }
 }

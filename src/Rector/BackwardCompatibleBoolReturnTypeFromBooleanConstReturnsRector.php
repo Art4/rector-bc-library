@@ -6,6 +6,7 @@ namespace Art4\RectorBcLibrary\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Function_;
 use Rector\PHPStan\ScopeFetcher;
 use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector as OriginalBoolReturnTypeRector;
 use Rector\Rector\AbstractRector;
@@ -38,7 +39,7 @@ final class BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector extend
     }
 
     /**
-     * @param Node $node
+     * @param ClassMethod|Function_ $node
      */
     public function refactor(Node $node): ?Node
     {

@@ -38,7 +38,7 @@ final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends A
     }
 
     /**
-     * @param Node $node
+     * @param ClassMethod $node
      */
     public function refactor(Node $node): ?Node
     {
