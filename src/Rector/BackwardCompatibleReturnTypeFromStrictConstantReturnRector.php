@@ -9,16 +9,16 @@ use PhpParser\Node\Stmt\ClassMethod;
 use Rector\PHPStan\ScopeFetcher;
 use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalReturnTypeRector;
 use Rector\Rector\AbstractRector;
-use Rector\VendorLocker\NodeVendorLocker\ClassMethodReturnTypeOverrideGuard;
+use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends AbstractRector implements MinPhpVersionInterface
 {
     private OriginalReturnTypeRector $originalRector;
-    private ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
+    private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalReturnTypeRector $originalRector, ClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
+    public function __construct(OriginalReturnTypeRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
         $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;
@@ -54,29 +54,7 @@ final class BackwardCompatibleReturnTypeFromStrictConstantReturnRector extends A
     {
         $scope = ScopeFetcher::fetch($node);
 
-        if ($this->classMethodReturnTypeOverrideGuard->shouldSkipClassMethod($node, $scope)) {
-            return true;
-        }
-
-        if ($node->isFinal()) {
-            return false;
-        }
-
-        if ($node->isPrivate()) {
-            return false;
-        }
-
-        $scopeClassReflection = $scope->getClassReflection();
-
-        if ($scopeClassReflection === null) {
-            return false;
-        }
-
-        if ($scopeClassReflection->isFinal()) {
-            return false;
-        }
-
-        return true;
+        return $this->classMethodReturnTypeOverrideGuard->shouldSkipClassMethod($node, $scope);
     }
 
     /**
