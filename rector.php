@@ -22,12 +22,16 @@ return static function (RectorConfig $rectorConfig): void {
     // $rectorConfig->rules([ ... ]);
     // $rectorConfig->sets([ ... ]);
 
-    // Register our backward-compatible wrapper for the ReturnTypeFromStrictConstantReturnRector
-    // and skip the original Rector rule so only this package's wrapper runs.
+    // Register our backward-compatible wrappers for the original Rector rules
+    // and skip the original Rector rules so only this package's wrappers run.
+    $rectorConfig->rule(\Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector::class);
+    $rectorConfig->rule(\Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector::class);
     $rectorConfig->rule(\Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector::class);
 
     // Make the original Rector rule skip to avoid duplicate/conflicting behaviour
     $rectorConfig->skip([
+        \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector::class,
     ]);
 };
