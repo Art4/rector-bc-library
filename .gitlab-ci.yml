@@ -31,6 +31,9 @@ variables:
 # PHPStan job (static analysis)
 phpstan-tests:
   <<: *default-php-job
+  parallel:
+    matrix:
+      - PHP_VERSION: ["7.4"]
   script:
     - composer run phpstan --ansi
 
