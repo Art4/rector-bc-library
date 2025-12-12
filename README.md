@@ -40,3 +40,10 @@ Notes
 
 - This package does not require `rector/rector` itself. Install Rector in the projects that consume this package.
 - Add your specific Rector rules and sets inside `rector.php` in this package and publish via Composer.
+
+License
+-------
+
+This project is licensed under the GNU General Public License v3 or later (`GPL-3.0-or-later`). See the `LICENSE` file for the full text.
+
+When using this package, make sure that your project's licensing is compatible with the GNU GPL v3 or later.
