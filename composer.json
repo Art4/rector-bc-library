@@ -1,16 +1,32 @@
 {
   "name": "art4/rector-bc-library",
   "description": "Reusable Rector rule set for BC-related transformations",
+  "version": "0.1.0-dev",
   "type": "library",
+  "keywords": ["rector", "ruleset", "library", "BC", "backward compatibility"],
+  "readme": "README.md",
   "license": "GPL-3.0-or-later",
   "authors": [
     {
-      "name": "Artur",
+      "name": "Artur Weigandt",
+      "email": "artur@wlabs.de",
+      "homepage": "https://wlabs.de",
       "role": "Maintainer"
     }
   ],
+  "support": {
+    "issues": "https://gitlab.com/Art4/rector-bc-library"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
   "require": {
-    "php": "^7.4 || ^8.0"
+    "php": "^7.4 || ^8.0",
+    "rector/rector": "^2.2"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-phpunit": "^2.0",
+    "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5 || ^12.5"
   },
   "suggest": {
     "rector/rector": "Install Rector in your project to apply this set (require as dev dependency)"
@@ -21,18 +37,11 @@
     }
   },
   "config": {
-    "lock": false
+    "lock": false,
+    "sort-packages": true
   },
   "scripts": {
     "test": "vendor/bin/phpunit",
     "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon"
-  },
-  "minimum-stability": "stable",
-  "prefer-stable": true,
-  "require-dev": {
-    "rector/rector": "^2.0",
-    "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5 || ^12.5",
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-phpunit": "^2.0"
   }
 }
