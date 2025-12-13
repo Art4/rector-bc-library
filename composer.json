@@ -28,9 +28,6 @@
     "phpstan/phpstan-phpunit": "^2.0",
     "phpunit/phpunit": "^9.5 || ^10.5 || ^11.5 || ^12.5"
   },
-  "suggest": {
-    "rector/rector": "Install Rector in your project to apply this set (require as dev dependency)"
-  },
   "autoload": {
     "psr-4": {
       "Art4\\RectorBcLibrary\\": "src/"
