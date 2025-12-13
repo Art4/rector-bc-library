@@ -19,7 +19,10 @@ final class BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRectorTest e
         $this->doTestFile($filePath);
     }
 
-    public static function provideCases(): iterable
+    /**
+     * @return Iterator<int, string>
+     */
+    public static function provideCases(): Iterator
     {
         return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
