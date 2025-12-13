@@ -11,15 +11,15 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 final class BackwardCompatibleReturnTypeFromStrictConstantReturnRectorTest extends AbstractRectorTestCase
 {
     /**
-     * @dataProvider provideData()
+     * @dataProvider provideCases()
      */
-    #[DataProvider('provideData')]
+    #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
         $this->doTestFile($filePath);
     }
 
-    public static function provideData(): Iterator
+    public static function provideCases(): iterable
     {
         return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
