@@ -7,7 +7,6 @@ namespace Art4\RectorBcLibrary\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
-use Rector\PHPStan\ScopeFetcher;
 use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector as OriginalBoolReturnTypeRector;
 use Rector\Rector\AbstractRector;
 use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
@@ -43,19 +42,12 @@ final class BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector exten
      */
     public function refactor(Node $node): ?Node
     {
-        if ($node instanceof ClassMethod && $this->shouldSkipMethod($node)) {
+        if ($node instanceof ClassMethod && $this->classMethodReturnTypeOverrideGuard->shouldSkipClassMethod($node)) {
             return null;
         }
 
         // Delegate to the original Rector rule
         return $this->originalRector->refactor($node);
-    }
-
-    private function shouldSkipMethod(ClassMethod $node): bool
-    {
-        $scope = ScopeFetcher::fetch($node);
-
-        return $this->classMethodReturnTypeOverrideGuard->shouldSkipClassMethod($node, $scope);
     }
 
     /**
