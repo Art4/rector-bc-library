@@ -2,7 +2,7 @@
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
 
-final class SimpleBoolConstantReturn
+class SimpleBoolConstantReturn
 {
     final public function isActive()
     {
@@ -16,7 +16,7 @@ final class SimpleBoolConstantReturn
 
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
 
-final class SimpleBoolConstantReturn
+class SimpleBoolConstantReturn
 {
     final public function isActive(): bool
     {

@@ -4,7 +4,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFrom
 
 final class MultipleStrictBooleanReturns
 {
-    final public function check($a, $b)
+    public function check($a, $b)
     {
         if ($a > $b) {
             return $a > $b;
@@ -21,7 +21,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFrom
 
 final class MultipleStrictBooleanReturns
 {
-    final public function check($a, $b): bool
+    public function check($a, $b): bool
     {
         if ($a > $b) {
             return $a > $b;

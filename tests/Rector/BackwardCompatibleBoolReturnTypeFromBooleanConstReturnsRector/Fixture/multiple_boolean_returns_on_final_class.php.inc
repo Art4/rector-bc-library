@@ -4,7 +4,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFrom
 
 final class MultipleBooleanReturns
 {
-    final public function checkStatus()
+    public function checkStatus()
     {
         if ($this->enabled) {
             return true;
@@ -21,7 +21,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFrom
 
 final class MultipleBooleanReturns
 {
-    final public function checkStatus(): bool
+    public function checkStatus(): bool
     {
         if ($this->enabled) {
             return true;
