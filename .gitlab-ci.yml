@@ -56,6 +56,15 @@ phpunit-coverage:
     matrix:
       - PHP_VERSION: ["8.2"]
   script:
+    # Try to install & enable Xdebug so PHPUnit can collect coverage. This is
+    # best-effort (some runner images won't have build tools or pecl available),
+    # but when it works it enables coverage collection.
+    - apt-get update -qq || true
+    - apt-get install -y --no-install-recommends autoconf gcc make libc-dev pkg-config || true
+    - pecl install xdebug || true
+    - docker-php-ext-enable xdebug || true
+    - php -v
+    - php -m | grep -i xdebug || true
     - export XDEBUG_MODE=coverage
     - mkdir -p build/coverage
     - composer run coverage -- --colors=always
