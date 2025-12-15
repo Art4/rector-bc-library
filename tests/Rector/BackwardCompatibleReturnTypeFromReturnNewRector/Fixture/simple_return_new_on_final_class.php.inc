@@ -1,6 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibilityReturnTypeFromReturnNewRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnNewRector\Fixture;
 
 final class SimpleReturnNew
 {
@@ -14,7 +14,7 @@ final class SimpleReturnNew
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibilityReturnTypeFromReturnNewRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnNewRector\Fixture;
 
 final class SimpleReturnNew
 {

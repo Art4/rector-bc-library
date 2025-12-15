@@ -13,7 +13,7 @@ use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGu
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class BackwardCompatibilityReturnTypeFromReturnNewRector extends AbstractRector implements MinPhpVersionInterface
+final class BackwardCompatibleReturnTypeFromReturnNewRector extends AbstractRector implements MinPhpVersionInterface
 {
     private OriginalReturnTypeFromReturnNewRector $originalRector;
     private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;

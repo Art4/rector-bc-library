@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibilityReturnTypeFromReturnNewRector;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnNewRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class BackwardCompatibilityReturnTypeFromReturnNewRectorTest extends AbstractRectorTestCase
+final class BackwardCompatibleReturnTypeFromReturnNewRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideCases

@@ -1,6 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibilityReturnTypeFromReturnNewRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnNewRector\Fixture;
 
 final class SkipAlreadyTypedReturn
 {
@@ -14,7 +14,7 @@ final class SkipAlreadyTypedReturn
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibilityReturnTypeFromReturnNewRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnNewRector\Fixture;
 
 final class SkipAlreadyTypedReturn
 {
