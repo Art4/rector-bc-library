@@ -67,7 +67,7 @@ phpunit-coverage:
     - php -m | grep -i xdebug || true
     - export XDEBUG_MODE=coverage
     - mkdir -p build/coverage
-    - composer run coverage -- --colors=always
+    - ./vendor/bin/phpunit  --configuration=./phpunit.xml.dist --coverage-text --coverage-clover=build/coverage/clover.xml
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     when: always
