@@ -9,7 +9,7 @@ use Rector\Config\RectorConfig;
  *
  * Consumers can import it from their `rector.php` via:
  *
- *   $rectorConfig->import(\Art4\RectorBcLibrary\Set::SET);
+ *   $rectorConfig->import(\Art4\RectorBcLibrary\Set::ALL);
  *
  * The closure will be executed by Rector in the consuming project (so Rector
  * must be installed there). Keep this file minimal and avoid referencing

@@ -10,7 +10,7 @@ final class Set
      * Path to this package's Rector config.
      * Use this constant in consumer projects to import the set:
      *
-     *   $rectorConfig->import(\Art4\RectorBcLibrary\Set::SET);
+     *   RectorConfig::configure()->withSets([\Art4\RectorBcLibrary\Set::ALL]);
      */
-    public const SET = __DIR__ . '/../rector.php';
+    public const ALL = __DIR__ . '/../rector.php';
 }

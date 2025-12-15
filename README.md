@@ -21,10 +21,12 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 
-return static function (RectorConfig $rectorConfig): void {
-    // Import this package's set
-    $rectorConfig->import(\Art4\RectorBcLibrary\Set::SET);
-};
+return RectorConfig::configure()
+    ->withSets([
+        // Import this package's set
+        \Art4\RectorBcLibrary\Set::ALL,
+    ])
+;
 ```
 
 ### Notes
