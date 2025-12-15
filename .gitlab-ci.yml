@@ -48,3 +48,22 @@ phpunit-tests:
     reports:
       junit: build/test-reports/junit.xml
     expire_in: 1 day
+
+# PHPUnit coverage job (single PHP version, generates HTML + clover report)
+phpunit-coverage:
+  <<: *default-php-job
+  parallel:
+    matrix:
+      - PHP_VERSION: ["8.2"]
+  script:
+    - export XDEBUG_MODE=coverage
+    - mkdir -p build/coverage
+    - composer run coverage -- --colors=always
+  coverage: '/^\s*Lines:\s*\d+.\d+\%/'
+  artifacts:
+    when: always
+    paths:
+      - build/coverage
+    reports:
+      coverage_report:
+        path: build/coverage/clover.xml
