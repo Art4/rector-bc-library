@@ -27,6 +27,7 @@
   <source>
     <include>
       <directory suffix=".php">src</directory>
+      <file>rector.php</file>
     </include>
   </source>
 

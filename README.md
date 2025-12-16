@@ -10,6 +10,11 @@ Install as a development dependency in your project:
 composer require --dev art4/rector-bc-library
 ```
 
+### Notes
+
+- This package is designed to be used together with Rector. Please install `rector/rector` as a development dependency in projects that use this library (for example: `composer require --dev rector/rector`).
+- Add any custom rules or sets in `rector.php` as needed.
+
 ## Usage
 
 After installing, import the provided set into your project's `rector.php` configuration file:
@@ -17,22 +22,37 @@ After installing, import the provided set into your project's `rector.php` confi
 ```php
 <?php
 
-declare(strict_types=1);
-
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
+    ->withPreparedSets(
+        // NOTE: Deactivate the default prepared typeDeclaration set with `false`
+        typeDeclaraion: false
+    )
+    // Instead import this package's set as replacement
     ->withSets([
-        // Import this package's set
-        \Art4\RectorBcLibrary\Set::ALL,
+        \Art4\RectorBcLibrary\Set::TYPE_DECLARATION,
     ])
 ;
 ```
 
-### Notes
+### Level-based update
 
-- This package is designed to be used together with Rector. Please install `rector/rector` as a development dependency in projects that use this library (for example: `composer require --dev rector/rector`).
-- Add any custom rules or sets in `rector.php` as needed.
+If you want follow the (highly-recommended) [one level at a time](https://getrector.com/documentation/levels#content-one-level-at-a-time) approach, do not use the `->withTypeCoverageLevel()` method, but use this configuration instead:
+
+```php
+<?php
+
+use Rector\Config\RectorConfig;
+
+return RectorConfig::configure()
+    // NOTE: Do not use the withTypeCoverageLevel() method
+    //->withTypeCoverageLevel(25)
+    >withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(25))
+;
+```
+
+Once you reached the maximum level you will get notified and can switch to the prepared TYPE_DECLARATION set.
 
 ## Motivation
 
