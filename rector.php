@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\Configuration\Option;
+use Rector\Configuration\Parameter\SimpleParameterProvider;
 
 /**
  * This file exposes the Rector configuration for this package.
@@ -17,13 +19,6 @@ use Rector\Config\RectorConfig;
  */
 
 return static function (RectorConfig $rectorConfig): void {
-    // register specific rules or sets here, for example:
-    // $rectorConfig->rule(\SomeVendor\SomeRector::class);
-    // $rectorConfig->rules([ ... ]);
-    // $rectorConfig->sets([ ... ]);
-
-    // Register our backward-compatible wrappers for the original Rector rules
-    // and skip the original Rector rules so only this package's wrappers run.
     $ruleMap = [
         \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector::class,
@@ -35,15 +30,22 @@ return static function (RectorConfig $rectorConfig): void {
         \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
     ];
 
+    $registeredRectorRules = SimpleParameterProvider::provideArrayParameter(Option::REGISTERED_RECTOR_RULES);
+
     foreach ($ruleMap as $original => $wrapper) {
         if (! class_exists($original)) {
             continue;
         }
 
+        if (! in_array($original, $registeredRectorRules, true)) {
+            // Original rule is not registered, so skip wrapping it.
+            continue;
+        }
+
+        // Register our backward-compatible wrappers for the original Rector rules…
         $rectorConfig->rule($wrapper);
 
-        // Skip the original rule immediately when it exists so we don't try
-        // to skip classes that are not present later on.
+        // …and skip the original Rector rules so only this package's wrappers run.
         $rectorConfig->skip([$original]);
     }
 };
