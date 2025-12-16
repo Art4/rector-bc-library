@@ -17,6 +17,9 @@ final class Set
      */
     public const TYPE_DECLARATION = __DIR__ . '/../rector.php';
 
+    /**
+     * @return array<class-string<\Rector\Contract\Rector\RectorInterface>>
+     */
     public static function getTypeDeclarationRules(): array
     {
         $ruleMap = [
@@ -53,6 +56,8 @@ final class Set
      *   RectorConfig::configure()
      *     ->withRules([\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(0)])
      *   ;
+     *
+     * @return array<class-string<\Rector\Contract\Rector\RectorInterface>>
      */
     public static function withTypeCoverageLevel(int $level): array
     {
