@@ -4,20 +4,21 @@ Backward-compatible Rector rules for library maintainers.
 
 ## Installation
 
-Install as a development dependency in your project:
+Install as a development dependency:
 
 ```bash
 composer require --dev art4/rector-bc-library
 ```
 
-### Notes
+This package is intended to be used alongside Rector. If you don't already have Rector in the project, add it as a dev dependency too:
 
-- This package is designed to be used together with Rector. Please install `rector/rector` as a development dependency in projects that use this library (for example: `composer require --dev rector/rector`).
-- Add any custom rules or sets in `rector.php` as needed.
+```bash
+composer require --dev rector/rector
+```
 
 ## Usage
 
-After installing, import the provided set into your project's `rector.php` configuration file:
+The easiest way to use this package is to import the prepared set into your project's `rector.php`:
 
 ```php
 <?php
@@ -36,9 +37,9 @@ return RectorConfig::configure()
 ;
 ```
 
-### Level-based update
+### Gradual (level-based) adoption
 
-If you want follow the (highly-recommended) [one level at a time](https://getrector.com/documentation/levels#content-one-level-at-a-time) approach, do not use the `->withTypeCoverageLevel()` method, but use this configuration instead:
+If you'd like to increase type coverage gradually [one level at a time](https://getrector.com/documentation/levels#content-one-level-at-a-time) (recommended), you can use the provided helper to apply a subset of rules for a given level. Do not use the `->withTypeCoverageLevel()` method. For example:
 
 ```php
 <?php
@@ -52,49 +53,46 @@ return RectorConfig::configure()
 ;
 ```
 
-Once you reached the maximum level you will get notified and can switch to the prepared TYPE_DECLARATION set.
+Start with a low level and raise it iteratively as you gain confidence and run your tests.
 
 ## Motivation
 
-This library targets maintainers of PHP libraries that are consumed by other projects. When running Rector "out of the box", some type-focused rules will add return and parameter type declarations automatically. While these transformations improve type-safety, they can introduce breaking changes for downstream projects that extend or override your library classes and methods.
+When Rector adds or narrows type declarations automatically, it usually improves type safety — but it can also introduce breaking changes for downstream projects that extend or override your classes or methods.
 
-Specifically, adding or narrowing a return type or parameter type on a method that may be overridden can make child classes incompatible with the parent, causing runtime errors or subtle behavioral regressions for consumers.
+This package wraps selected Rector rules and applies them more cautiously to reduce the risk of accidental API breakage for library consumers.
 
-To help reduce this risk, the package wraps selected Rector rules and applies them more cautiously — for example, restricting automated additions to final classes or private/final methods, or skipping changes when guards indicate it may be unsafe. The goal is to preserve public API compatibility while still benefiting from automated modernizations.
+## Who should use this
 
-### Intended audience
+- Library maintainers whose packages are consumed or extended by other projects ✅
+- Projects where public API compatibility matters
 
-This package is intended primarily for library maintainers whose packages are consumed by other projects (downstream consumers). Its goal is to avoid introducing breaking API changes when running automated Rector rules that add or narrow type declarations.
+If you are working on an application (not a library) or you control both upstream and downstream code, the standard Rector rules are often sufficient.
 
-If your project is an application or a library that is not used or extended by downstream projects, you likely don't need this package — running Rector "out of the box" (without the backward-compat wrappers) is usually fine for internal codebases where public API compatibility is not a concern.
+## How it works
 
-### How it works
+- Each wrapper inspects the code (for example: final/private status, vendor-lock signals, and other heuristics) before applying a change.
+- If the wrapper detects a potential risk to downstream compatibility, it skips the change; otherwise it delegates to the original Rector rule.
+- Use the prepared set by importing `\Art4\RectorBcLibrary\Set::TYPE_DECLARATION` (see Usage).
 
-- Each wrapper first checks compatibility via a guard that inspects the class/method (final/private status, vendor-locking, scope, and other signals).
-- If the guard detects a potential risk to downstream compatibility, the wrapper skips the change; otherwise it delegates to the original Rector rule and the change is applied.
-- Use the set by importing it in your project's `rector.php` (see the Usage section above).
+## Benefits ✅
 
-### Benefits
-
-- Reduce the chance of unexpected breaking changes when upgrading libraries ✅
-- Keep the benefits of automated type improvements while protecting public API stability ✅
-- Low friction: continue using Rector with more conservative, library-friendly behavior ✅
+- Reduce the chance of unexpected breaking changes when modernizing code
+- Keep most of Rector's automated improvements while protecting public APIs
+- Low-friction: works with your current Rector setup
 
 ## License
 
-This project is licensed under the GNU General Public License v3 or later (`GPL-3.0-or-later`). See the `LICENSE` file for the full text.
+This project is licensed under the GNU General Public License v3 or later (`GPL-3.0-or-later`). See the `LICENSE` file for details.
 
-When using this package, make sure that your project's licensing is compatible with the GNU GPL v3 or later.
+Be sure your project's license is compatible with the GNU GPL v3+ before using this package.
 
 ## Contributing
 
-If you discover a breaking change caused by an original Rector rule (for example, a rule adding a type that breaks a downstream consumer), we'd love your help — please open an issue so we can investigate.
+Thanks for considering contributing! The fastest way to help is:
 
-How to contribute:
+1. Open an issue with a minimal reproducible example and the Rector version you used.
+2. If possible, add a failing test or fixture that demonstrates the problem.
+3. Run tests and static analysis locally: `composer test` and `composer run phpstan`.
+4. Open a pull request with a clear description of the fix and why it's safe for library maintainers.
 
-- Open an issue with a minimal reproducible example (before/after fixture or short code sample) and mention the Rector version you used.
-- If possible, include a failing test or fixture that demonstrates the issue; PRs that include a test and a fix are especially helpful.
-- Run the test suite and PHPStan locally before submitting a PR: `composer test` and `composer run phpstan`.
-- Create a pull request with a clear description of the problem, your proposed fix, and why it is safe for library maintainers.
-
-Thanks for helping make automated refactorings safer for library maintainers and their downstream users — your contributions are much appreciated! 🎉
+Contributions that include a test and a short explanation are especially appreciated — thanks! 🎉
