@@ -35,7 +35,7 @@ phpstan-tests:
     matrix:
       - PHP_VERSION: ["7.4"]
   script:
-    - composer run phpstan --ansi --memory-limit=512M
+    - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 
 # PHPUnit job (unit tests)
 phpunit-tests:
