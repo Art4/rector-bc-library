@@ -41,7 +41,7 @@ final class SetTest extends TestCase
                 20 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromSymfonySerializerRector::class,
                 21 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
                 22 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedPropertyRector::class,
-                23 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class,
+                23 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNullableTypeRector::class,
                 24 => \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
                 25 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class,
                 26 => \Rector\TypeDeclaration\Rector\FunctionLike\AddParamTypeSplFixedArrayRector::class,
