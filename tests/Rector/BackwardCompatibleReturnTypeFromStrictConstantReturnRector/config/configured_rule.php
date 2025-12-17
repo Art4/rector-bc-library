@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector;
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector as BackwardCompatibleRector;
 use Rector\Config\RectorConfig;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalReturnTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalRector;
 
 return RectorConfig::configure()
     ->withRules([
-        BackwardCompatibleReturnTypeFromStrictConstantReturnRector::class,
+        BackwardCompatibleRector::class,
     ])
     ->withSkip([
-        OriginalReturnTypeRector::class,
+        OriginalRector::class,
     ]);

@@ -45,7 +45,7 @@ final class SetTest extends TestCase
         Time to switch to the more efficient set:
 
         ->withSets([
-            \Art4\RectorBcLibrary\Set::TYPE_DECLARATION
+            \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION
         ])
         TEXT);
 

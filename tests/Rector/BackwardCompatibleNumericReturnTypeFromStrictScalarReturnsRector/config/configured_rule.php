@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector as OriginalAddVoidReturnTypeRector;
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector as BackwardCompatibleRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector as OriginalRector;
 
 return RectorConfig::configure()
     ->withRules([
-        BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector::class,
+        BackwardCompatibleRector::class,
     ])
     ->withSkip([
-        OriginalAddVoidReturnTypeRector::class,
+        OriginalRector::class,
     ]);

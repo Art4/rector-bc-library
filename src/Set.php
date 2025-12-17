@@ -12,7 +12,7 @@ final class Set
      * Use this constant in consumer projects to import the set:
      *
      *   RectorConfig::configure()
-     *     ->withSets([\Art4\RectorBcLibrary\Set::TYPE_DECLARATION])
+     *     ->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])
      *   ;
      */
     public const BC_TYPE_DECLARATION = __DIR__ . '/../config/set/bc-type-declaration.php';
@@ -82,7 +82,7 @@ final class Set
                 Time to switch to the more efficient set:
 
                 ->withSets([
-                    \%1$s::TYPE_DECLARATION
+                    \%1$s::BC_TYPE_DECLARATION
                 ])
                 TEXT,
                 __CLASS__,

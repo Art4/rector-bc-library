@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector as OriginalAddVoidReturnTypeRector;
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector as BackwardCompatibleRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector as OriginalRector;
 
 return RectorConfig::configure()
     ->withRules([
-        BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
+        BackwardCompatibleRector::class,
     ])
     ->withSkip([
-        OriginalAddVoidReturnTypeRector::class,
+        OriginalRector::class,
     ]);

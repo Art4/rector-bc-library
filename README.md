@@ -72,7 +72,7 @@ If you are working on an application (not a library) or you control both upstrea
 
 - Each wrapper inspects the code (for example: final/private status, vendor-lock signals, and other heuristics) before applying a change.
 - If the wrapper detects a potential risk to downstream compatibility, it skips the change; otherwise it delegates to the original Rector rule.
-- Use the prepared set by importing `\Art4\RectorBcLibrary\Set::TYPE_DECLARATION` (see Usage).
+- Use the prepared set by importing `\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION` (see Usage).
 
 ## Benefits ✅
 

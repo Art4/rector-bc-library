@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector;
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector as BackwardCompatibleRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector as OriginalRector;
 
 return RectorConfig::configure()
     ->withRules([
-        BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector::class,
+        BackwardCompatibleRector::class,
     ])
     ->withSkip([
-        BoolReturnTypeFromBooleanStrictReturnsRector::class,
+        OriginalRector::class,
     ]);
