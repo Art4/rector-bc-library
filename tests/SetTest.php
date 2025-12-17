@@ -12,12 +12,76 @@ use PHPUnit\Framework\TestCase;
 final class SetTest extends TestCase
 {
     /**
-     * Adjust the expected count if Rector rules are added or removed.
+     * Adjust the expected resulte if Rector rules are changed.
      */
-    public function testGetTypeDeclarationRulesReturnsCorrectNumberOfRules(): void
+    public function testGetTypeDeclarationRulesReturnsCorrectListOfRules(): void
     {
-        self::assertCount(
-            63,
+        self::assertSame(
+            [
+                0 => \Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector::class,
+                1 => \Rector\TypeDeclaration\Rector\Function_\AddFunctionVoidReturnTypeWhereNoReturnRector::class,
+                2 => \Rector\TypeDeclaration\Rector\Class_\AddTestsVoidReturnTypeWhereNoReturnRector::class,
+                3 => \Rector\CodeQuality\Rector\Class_\ReturnIteratorInDataProviderRector::class,
+                4 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromMockObjectRector::class,
+                5 => \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromCreateMockAssignRector::class,
+                6 => \Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector::class,
+                7 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector::class,
+                8 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictNewArrayRector::class,
+                9 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector::class,
+                10 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictScalarReturnsRector::class,
+                11 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector::class,
+                12 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector::class,
+                13 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
+                14 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictReturnsRector::class,
+                15 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTernaryRector::class,
+                16 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnDirectArrayRector::class,
+                17 => \Rector\Symfony\CodeQuality\Rector\ClassMethod\ResponseReturnTypeControllerActionRector::class,
+                18 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnNewRector::class,
+                19 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnCastRector::class,
+                20 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromSymfonySerializerRector::class,
+                21 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
+                22 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class,
+                23 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class,
+                24 => \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
+                25 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class,
+                26 => \Rector\TypeDeclaration\Rector\FunctionLike\AddParamTypeSplFixedArrayRector::class,
+                27 => \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class,
+                28 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
+                29 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictSetUpRector::class,
+                30 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class,
+                31 => \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class,
+                32 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector::class,
+                33 => \Rector\TypeDeclaration\Rector\Class_\ChildDoctrineRepositoryClassTypeRector::class,
+                34 => \Rector\TypeDeclaration\Rector\ClassMethod\KnownMagicClassMethodTypeRector::class,
+                35 => \Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector::class,
+                36 => \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByParentCallTypeRector::class,
+                37 => \Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector::class,
+                38 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class,
+                39 => \Rector\TypeDeclaration\Rector\Closure\AddClosureNeverReturnTypeRector::class,
+                40 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayMapRector::class,
+                41 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayReduceRector::class,
+                42 => \Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector::class,
+                43 => \Rector\TypeDeclaration\Rector\FuncCall\AddArrowFunctionParamArrayWhereDimFetchRector::class,
+                44 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictParamRector::class,
+                45 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class,
+                46 => \Rector\TypeDeclaration\Rector\Class_\MergeDateTimePropertyTypeDeclarationRector::class,
+                47 => \Rector\TypeDeclaration\Rector\Class_\PropertyTypeFromStrictSetterGetterRector::class,
+                48 => \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class,
+                49 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector::class,
+                50 => \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationBasedOnParentClassMethodRector::class,
+                51 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector::class,
+                52 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class,
+                53 => \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class,
+                54 => \Rector\TypeDeclaration\Rector\Class_\ObjectTypedPropertyFromJMSSerializerAttributeTypeRector::class,
+                55 => \Rector\TypeDeclaration\Rector\Class_\ScalarTypedPropertyFromJMSSerializerAttributeTypeRector::class,
+                56 => \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class,
+                57 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class,
+                58 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class,
+                59 => \Rector\TypeDeclaration\Rector\FuncCall\AddArrayFunctionClosureParamTypeRector::class,
+                60 => \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromDocblockSetUpDefinedRector::class,
+                61 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromIterableMethodCallRector::class,
+                62 => \Rector\TypeDeclaration\Rector\Class_\TypedStaticPropertyInBehatContextRector::class,
+            ],
             Set::getTypeDeclarationRules()
         );
     }
