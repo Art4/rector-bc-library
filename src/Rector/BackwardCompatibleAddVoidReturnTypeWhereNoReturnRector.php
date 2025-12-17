@@ -6,7 +6,7 @@ namespace Art4\RectorBcLibrary\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector as OriginalAddVoidReturnTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector as OriginalRector;
 use Rector\Rector\AbstractRector;
 use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
@@ -14,10 +14,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector extends AbstractRector implements MinPhpVersionInterface
 {
-    private OriginalAddVoidReturnTypeRector $originalRector;
+    private OriginalRector $originalRector;
     private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalAddVoidReturnTypeRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
+    public function __construct(OriginalRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
         $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;

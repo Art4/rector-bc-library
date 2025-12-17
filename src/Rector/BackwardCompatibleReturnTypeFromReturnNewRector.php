@@ -7,7 +7,7 @@ namespace Art4\RectorBcLibrary\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnNewRector as OriginalReturnTypeFromReturnNewRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnNewRector as OriginalRector;
 use Rector\Rector\AbstractRector;
 use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
@@ -15,10 +15,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleReturnTypeFromReturnNewRector extends AbstractRector implements MinPhpVersionInterface
 {
-    private OriginalReturnTypeFromReturnNewRector $originalRector;
+    private OriginalRector $originalRector;
     private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalReturnTypeFromReturnNewRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
+    public function __construct(OriginalRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
         $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;

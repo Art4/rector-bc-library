@@ -7,7 +7,7 @@ namespace Art4\RectorBcLibrary\Rector;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
-use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector as OriginalBoolReturnTypeRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector as OriginalRector;
 use Rector\Rector\AbstractRector;
 use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
@@ -15,10 +15,10 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector extends AbstractRector implements MinPhpVersionInterface
 {
-    private OriginalBoolReturnTypeRector $originalRector;
+    private OriginalRector $originalRector;
     private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard;
 
-    public function __construct(OriginalBoolReturnTypeRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
+    public function __construct(OriginalRector $originalRector, BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard)
     {
         $this->originalRector = $originalRector;
         $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;
