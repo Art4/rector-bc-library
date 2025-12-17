@@ -47,7 +47,7 @@
       "@phpstan",
       "@cs:check"
     ],
-    "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon",
+    "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M",
     "phpunit": "vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always"
   }
 }
