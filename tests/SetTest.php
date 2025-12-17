@@ -16,7 +16,7 @@ final class SetTest extends TestCase
      */
     public function testGetTypeDeclarationRulesReturnsCorrectNumberOfRules(): void
     {
-        $this->assertCount(
+        self::assertCount(
             63,
             Set::getTypeDeclarationRules()
         );
@@ -27,7 +27,7 @@ final class SetTest extends TestCase
      */
     public function testWithTypeCoverageLevelReturnsCorrectNumberOfRules(): void
     {
-        $this->assertCount(
+        self::assertCount(
             63,
             Set::withTypeCoverageLevel(63)
         );
@@ -40,14 +40,14 @@ final class SetTest extends TestCase
     {
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage(<<<TEXT
-        The "->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel())" level contains only 63 rules, but you set level to 75. You are using the full set now!
+            The "->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel())" level contains only 63 rules, but you set level to 75. You are using the full set now!
 
-        Time to switch to the more efficient set:
+            Time to switch to the more efficient set:
 
-        ->withSets([
-            \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION
-        ])
-        TEXT);
+            ->withSets([
+                \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION
+            ])
+            TEXT);
 
         Set::withTypeCoverageLevel(75);
     }

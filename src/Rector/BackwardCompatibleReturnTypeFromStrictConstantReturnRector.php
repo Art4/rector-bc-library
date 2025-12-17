@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Art4\RectorBcLibrary\Rector;
 
+use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
-use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalRector;
 use Rector\Rector\AbstractRector;
-use Art4\RectorBcLibrary\Guard\BackwardCompatibleClassMethodReturnTypeOverrideGuard;
+use Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector as OriginalRector;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 

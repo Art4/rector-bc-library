@@ -13,6 +13,7 @@ return (new Config())
         '@auto' => true,
         '@auto:risky' => true,
         '@PhpCsFixer:risky' => true,
+        'ordered_imports' => true,
         'php_unit_data_provider_return_type' => false,
     ])
     // 💡 by default, Fixer looks for `*.php` files excluding `./vendor/` - here, you can groom this config

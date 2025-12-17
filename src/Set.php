@@ -38,7 +38,7 @@ final class Set
         $rules = [];
 
         foreach (\Rector\Config\Level\TypeDeclarationLevel::RULES as $rule) {
-            if (array_key_exists($rule, $ruleMap)) {
+            if (\array_key_exists($rule, $ruleMap)) {
                 // Replace rule with our backward-compatible wrapper
                 $rule = $ruleMap[$rule];
             }
@@ -71,20 +71,20 @@ final class Set
 
         $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
 
-        $levelRulesCount = count($levelRules);
+        $levelRulesCount = \count($levelRules);
         $maxLevelGap = 10;
 
         if ($levelRulesCount + $maxLevelGap < $level) {
             throw new \DomainException(\sprintf(
                 <<<'TEXT'
-                The "->withRules(\%1$s::%2$s())" level contains only %3$d rules, but you set level to %4$s. You are using the full set now!
+                    The "->withRules(\%1$s::%2$s())" level contains only %3$d rules, but you set level to %4$s. You are using the full set now!
 
-                Time to switch to the more efficient set:
+                    Time to switch to the more efficient set:
 
-                ->withSets([
-                    \%1$s::BC_TYPE_DECLARATION
-                ])
-                TEXT,
+                    ->withSets([
+                        \%1$s::BC_TYPE_DECLARATION
+                    ])
+                    TEXT,
                 __CLASS__,
                 __FUNCTION__,
                 $levelRulesCount,
