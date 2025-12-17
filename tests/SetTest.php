@@ -40,7 +40,7 @@ final class SetTest extends TestCase
                 19 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnCastRector::class,
                 20 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromSymfonySerializerRector::class,
                 21 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
-                22 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class,
+                22 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedPropertyRector::class,
                 23 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class,
                 24 => \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
                 25 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class,
