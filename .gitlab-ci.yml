@@ -42,7 +42,7 @@ phpunit-tests:
   <<: *default-php-job
   script:
     - mkdir -p build/test-reports
-    - composer test -- --colors=always --log-junit build/test-reports/junit.xml
+    - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always --log-junit build/test-reports/junit.xml
   artifacts:
     when: always
     reports:
@@ -67,7 +67,7 @@ phpunit-coverage:
     - php -m | grep -i xdebug || true
     - export XDEBUG_MODE=coverage
     - mkdir -p build/coverage
-    - ./vendor/bin/phpunit  --configuration=./phpunit.xml.dist --coverage-text --coverage-clover=build/coverage/clover.xml
+    - ./vendor/bin/phpunit --configuration=./phpunit.xml.dist --coverage-text --coverage-clover=build/coverage/clover.xml
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     when: always

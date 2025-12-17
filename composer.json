@@ -42,7 +42,12 @@
     "coverage": "export XDEBUG_MODE=coverage && vendor/bin/phpunit --coverage-html=build/coverage --coverage-clover=build/coverage/clover.xml",
     "cs": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php",
     "cs:check": "@cs --diff --dry-run",
-    "test": "vendor/bin/phpunit",
-    "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon"
+    "test": [
+      "@phpunit",
+      "@phpstan",
+      "@cs:check"
+    ],
+    "phpstan": "vendor/bin/phpstan analyse --configuration=.phpstan.neon",
+    "phpunit": "vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always"
   }
 }
