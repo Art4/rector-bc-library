@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Art4\RectorBcLibrary\Guard;
 
 use PhpParser\Node\Stmt\ClassMethod;
-use PHPStan\Analyser\Scope;
+use PHPStan\Reflection\ClassReflection;
 use Rector\PHPStan\ScopeFetcher;
 use Rector\VendorLocker\NodeVendorLocker\ClassMethodReturnTypeOverrideGuard as OriginalGuard;
 
@@ -39,11 +39,7 @@ final class BackwardCompatibleClassMethodReturnTypeOverrideGuard
 
         $scopeClassReflection = $scope->getClassReflection();
 
-        if ($scopeClassReflection === null) {
-            return false;
-        }
-
-        if ($scopeClassReflection->isFinal()) {
+        if ($scopeClassReflection instanceof ClassReflection && $scopeClassReflection->isFinal()) {
             return false;
         }
 
