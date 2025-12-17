@@ -11,7 +11,7 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 final class BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRectorTest extends AbstractRectorTestCase
 {
     /**
-     * @dataProvider provideCases()
+     * @dataProvider provideCases
      */
     #[DataProvider('provideCases')]
     public function test(string $filePath): void

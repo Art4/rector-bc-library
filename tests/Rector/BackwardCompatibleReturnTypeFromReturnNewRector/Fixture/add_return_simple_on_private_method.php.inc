@@ -2,7 +2,7 @@
 
 class SomeClass
 {
-    final public function create()
+    private function create()
     {
         return new \stdClass();
     }
@@ -12,7 +12,7 @@ class SomeClass
 
 class SomeClass
 {
-    final public function create(): \stdClass
+    private function create(): \stdClass
     {
         return new \stdClass();
     }
