@@ -1,8 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector\Fixture;
-
-class SkipNonFinalClass
+class SomeClass
 {
     public function getValues()
     {
@@ -10,20 +8,3 @@ class SkipNonFinalClass
         return;
     }
 }
-
-?>
------
-<?php
-
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector\Fixture;
-
-class SkipNonFinalClass
-{
-    public function getValues()
-    {
-        $value = 1000;
-        return;
-    }
-}
-
-?>

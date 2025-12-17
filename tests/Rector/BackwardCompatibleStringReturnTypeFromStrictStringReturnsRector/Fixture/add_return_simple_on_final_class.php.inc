@@ -1,8 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector\Fixture;
-
-final class SimpleStringReturn
+final class SomeClass
 {
     public function foo($value)
     {
@@ -13,14 +11,10 @@ final class SimpleStringReturn
         return strtoupper($value);
     }
 }
-
-?>
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector\Fixture;
-
-final class SimpleStringReturn
+final class SomeClass
 {
     public function foo($value): string
     {
@@ -31,5 +25,3 @@ final class SimpleStringReturn
         return strtoupper($value);
     }
 }
-
-?>

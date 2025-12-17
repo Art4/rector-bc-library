@@ -1,8 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
-
-class NonFinalClass
+class SomeClass
 {
     public const NAME = 'name';
 
@@ -11,5 +9,3 @@ class NonFinalClass
         return self::NAME;
     }
 }
-
-?>

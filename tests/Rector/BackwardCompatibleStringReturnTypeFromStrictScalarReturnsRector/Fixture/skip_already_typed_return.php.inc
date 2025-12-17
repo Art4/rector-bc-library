@@ -1,8 +1,8 @@
 <?php
 
-class SomeClass
+final class SomeClass
 {
-    public function foo()
+    public function foo(): mixed
     {
         if (true) {
             return 'yes';

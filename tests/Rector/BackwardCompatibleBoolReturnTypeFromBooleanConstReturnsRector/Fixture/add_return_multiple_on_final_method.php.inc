@@ -1,8 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
-
-class MultipleBooleanReturns
+class SomeClass
 {
     final public function checkStatus()
     {
@@ -12,14 +10,10 @@ class MultipleBooleanReturns
         return false;
     }
 }
-
-?>
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
-
-class MultipleBooleanReturns
+class SomeClass
 {
     final public function checkStatus(): bool
     {
@@ -29,5 +23,3 @@ class MultipleBooleanReturns
         return false;
     }
 }
-
-?>
