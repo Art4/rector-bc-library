@@ -1,0 +1,14 @@
+<?php
+
+final class SomeClass
+{
+    public function action($param): mixed
+    {
+        try {
+            return (array) $param;
+        } catch (Exception $exception) {
+            // some logging
+            throw $exception;
+        }
+    }
+}
