@@ -15,7 +15,7 @@ final class Set
      *     ->withSets([\Art4\RectorBcLibrary\Set::TYPE_DECLARATION])
      *   ;
      */
-    public const TYPE_DECLARATION = __DIR__ . '/../rector.php';
+    public const BC_TYPE_DECLARATION = __DIR__ . '/../config/set/bc-type-declaration.php';
 
     /**
      * @return array<class-string<\Rector\Contract\Rector\RectorInterface>>

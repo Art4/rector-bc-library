@@ -32,7 +32,7 @@ return RectorConfig::configure()
     )
     // Instead import this package's set as replacement
     ->withSets([
-        \Art4\RectorBcLibrary\Set::TYPE_DECLARATION,
+        \Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION,
     ])
 ;
 ```
