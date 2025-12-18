@@ -13,6 +13,7 @@ return (new Config())
         '@auto' => true,
         '@auto:risky' => true,
         '@PhpCsFixer:risky' => true,
+        'no_unused_imports' => true,
         'ordered_imports' => true,
         'php_unit_data_provider_return_type' => false,
     ])

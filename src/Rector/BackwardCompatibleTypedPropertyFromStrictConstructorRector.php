@@ -6,10 +6,7 @@ namespace Art4\RectorBcLibrary\Rector;
 
 use Art4\RectorBcLibrary\Guard\BackwardCompatiblePropertyTypeOverrideGuard;
 use PhpParser\Node;
-use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Property;
-use PHPStan\Type\Type;
 use Rector\Rector\AbstractRector;
 use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector as OriginalRector;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
