@@ -41,20 +41,14 @@ final class BackwardCompatibleTypedPropertyFromStrictConstructorRector extends A
      */
     public function refactor(Node $node): ?Node
     {
-        if (! $node instanceof Class_) {
-            return null;
-        }
-
-        foreach ($node->getProperties() as $property) {
-            if (! $this->propertyTypeOverrideGuard->isLegal($property, $node)) {
-                $this->propertyTypeOverrideGuard->addOverrideProtection($property);
-            }
+        if ($node instanceof Class_) {
+            $this->propertyTypeOverrideGuard->protectPropertiesIfNeeded($node);
         }
 
         $return = $this->originalRector->refactor($node);
 
-        foreach ($node->getProperties() as $property) {
-            $this->propertyTypeOverrideGuard->removePropertyProtection($property);
+        if ($node instanceof Class_) {
+            $this->propertyTypeOverrideGuard->unprotectProperties($node);
         }
 
         return $return;

@@ -12,24 +12,30 @@ final class BackwardCompatiblePropertyTypeOverrideGuard
 {
     private const TEMP_TYPE_NAME = '__SKIP_ADDING_PROPERTY_TYPE__';
 
-    public function isLegal(Property $property, Class_ $class): bool
+    public function protectPropertiesIfNeeded(Class_ $class): void
+    {
+        foreach ($class->getProperties() as $property) {
+            if ($this->skipProperty($property, $class)) {
+                $property->type = new Identifier(self::TEMP_TYPE_NAME);
+            }
+        }
+    }
+
+    public function unprotectProperties(Class_ $class): void
+    {
+        foreach ($class->getProperties() as $property) {
+            if ($property->type instanceof Identifier && $property->type->name === self::TEMP_TYPE_NAME) {
+                $property->type = null;
+            }
+        }
+    }
+
+    private function skipProperty(Property $property, Class_ $class): bool
     {
         if ($property->isProtected() && ! $class->isFinal()) {
-            return false;
+            return true;
         }
 
-        return true;
-    }
-
-    public function addOverrideProtection(Property $property): void
-    {
-        $property->type = new Identifier(self::TEMP_TYPE_NAME);
-    }
-
-    public function removePropertyProtection(Property $property): void
-    {
-        if ($property->type instanceof Identifier && $property->type->name === self::TEMP_TYPE_NAME) {
-            $property->type = null;
-        }
+        return false;
     }
 }
