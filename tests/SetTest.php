@@ -43,7 +43,7 @@ final class SetTest extends TestCase
                 22 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedPropertyRector::class,
                 23 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNullableTypeRector::class,
                 24 => \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
-                25 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class,
+                25 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleTypedPropertyFromStrictConstructorRector::class,
                 26 => \Rector\TypeDeclaration\Rector\FunctionLike\AddParamTypeSplFixedArrayRector::class,
                 27 => \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class,
                 28 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
