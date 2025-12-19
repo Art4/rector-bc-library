@@ -2,6 +2,10 @@
 
 Backward-compatible Rector rules for library maintainers.
 
+## Status
+
+- Rector 2.2: ![https://progress-bar.xyz/51/](/tests/setTest.php) 32 of 63 rules are checked and replaced.
+
 ## Installation
 
 Install as a development dependency:
