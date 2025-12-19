@@ -10,9 +10,6 @@ variables:
 .default-php-job: &default-php-job
   stage: test
   image: php:${PHP_VERSION}-cli
-  parallel:
-    matrix:
-      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
   before_script:
     - apt-get update -qq
     - apt-get install -y --no-install-recommends git unzip ca-certificates
@@ -40,6 +37,9 @@ phpstan-tests:
 # PHPUnit job (unit tests)
 phpunit-tests:
   <<: *default-php-job
+  parallel:
+    matrix:
+      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
   script:
     - mkdir -p build/test-reports
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always --log-junit build/test-reports/junit.xml
