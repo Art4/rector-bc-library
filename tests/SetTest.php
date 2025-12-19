@@ -48,7 +48,7 @@ final class SetTest extends TestCase
                 27 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeDeclarationFromYieldsRector::class,
                 28 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
                 29 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictSetUpRector::class,
-                30 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class,
+                30 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictNativeCallRector::class,
                 31 => \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class,
                 32 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector::class,
                 33 => \Rector\TypeDeclaration\Rector\Class_\ChildDoctrineRepositoryClassTypeRector::class,
