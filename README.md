@@ -74,6 +74,51 @@ If you are working on an application (not a library) or you control both upstrea
 - If the wrapper detects a potential risk to downstream compatibility, it skips the change; otherwise it delegates to the original Rector rule.
 - Use the prepared set by importing `\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION` (see Usage).
 
+### Allowed changes in classes
+
+Based on the [Symfony Backward Compatibility Promise](https://symfony.com/doc/current/contributing/code/bc.html) the Rectors only allows this changes in classes:
+
+#### Properties
+
+| Type of Change allowed?               | final class          | not-final          |
+| ------------------------------------- | -------------------- | ------------------ |
+| Add type to a public property         | No, only as phpdoc   | No, only as phpdoc |
+| Add type to a protected property      | Yes                  | No                 |
+| Add type to a private property        | Yes                  | Yes                |
+
+#### Public Methods
+
+| Type of Change allowed?         | final class | final method | not-final           |
+| ------------------------------- | ----------- | ------------ | ------------------- |
+| Add type hint to an argument    | Yes         | Yes          | No                  |
+| Remove type hint of an argument | Yes         | Yes          | No                  |
+| Change argument type            | Yes         | Yes          | No                  |
+| Add return type                 | Yes         | Yes          | No                  |
+| Remove return type              | Yes         | Yes          | No, only for `void` |
+| Change return type              | Yes         | Yes          | No                  |
+
+#### Protected Methods
+
+| Type of Change allowed?         | final class | final method | not-final           |
+| ------------------------------- | ----------- | ------------ | ------------------- |
+| Add type hint to an argument    | Yes         | Yes          | No                  |
+| Remove type hint of an argument | Yes         | Yes          | No                  |
+| Change argument type            | Yes         | Yes          | No                  |
+| Add return type                 | Yes         | Yes          | No                  |
+| Remove return type              | Yes         | Yes          | No, only for `void` |
+| Change return type              | Yes         | Yes          | No                  |
+
+#### Private Methods
+
+| Type of Change allowed?         | final class | final method | not-final |
+| ------------------------------- | ----------- | ------------ | --------- |
+| Add type hint to an argument    | Yes         | Yes          | Yes       |
+| Remove type hint of an argument | Yes         | Yes          | Yes       |
+| Change argument type            | Yes         | Yes          | Yes       |
+| Add return type                 | Yes         | Yes          | Yes       |
+| Remove return type              | Yes         | Yes          | Yes       |
+| Change return type              | Yes         | Yes          | Yes       |
+
 ## Benefits ✅
 
 - Reduce the chance of unexpected breaking changes when modernizing code
