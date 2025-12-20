@@ -56,7 +56,7 @@ final class SetTest extends TestCase
                 35 => \Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector::class,
                 36 => \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByParentCallTypeRector::class,
                 37 => \Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector::class,
-                38 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class,
+                38 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnUnionTypeRector::class,
                 39 => \Rector\TypeDeclaration\Rector\Closure\AddClosureNeverReturnTypeRector::class,
                 40 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayMapRector::class,
                 41 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayReduceRector::class,
