@@ -24,6 +24,7 @@ final class Set
     {
         $ruleMap = [
             \Rector\TypeDeclaration\Rector\Class_\ReturnTypeFromStrictTernaryRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTernaryRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamTypeFromPropertyTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeFromTryCatchTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector::class,

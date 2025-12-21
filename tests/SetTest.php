@@ -63,7 +63,7 @@ final class SetTest extends TestCase
                 42 => \Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector::class,
                 43 => \Rector\TypeDeclaration\Rector\FuncCall\AddArrowFunctionParamArrayWhereDimFetchRector::class,
                 44 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictParamRector::class,
-                45 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class,
+                45 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamTypeFromPropertyTypeRector::class,
                 46 => \Rector\TypeDeclaration\Rector\Class_\MergeDateTimePropertyTypeDeclarationRector::class,
                 47 => \Rector\TypeDeclaration\Rector\Class_\PropertyTypeFromStrictSetterGetterRector::class,
                 48 => \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class,
