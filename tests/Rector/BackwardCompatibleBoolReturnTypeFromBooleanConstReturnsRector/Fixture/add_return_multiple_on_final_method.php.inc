@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
+
 class SomeClass
 {
     final public function checkStatus()
@@ -12,6 +14,8 @@ class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector\Fixture;
 
 class SomeClass
 {

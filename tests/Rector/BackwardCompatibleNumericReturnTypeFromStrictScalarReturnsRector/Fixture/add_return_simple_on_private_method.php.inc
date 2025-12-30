@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector\Fixture;
+
 class SomeClass
 {
     private function getNumber()
@@ -14,6 +16,8 @@ class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector\Fixture;
 
 class SomeClass
 {

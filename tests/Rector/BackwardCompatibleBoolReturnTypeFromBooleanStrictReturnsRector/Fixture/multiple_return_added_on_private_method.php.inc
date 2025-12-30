@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector\Fixture;
+
 class SomeClass
 {
     private function check($a, $b)
@@ -12,6 +14,8 @@ class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector\Fixture;
 
 class SomeClass
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnCastRector\Fixture;
+
 final class SomeClass
 {
     public function action($param)
@@ -14,6 +16,8 @@ final class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnCastRector\Fixture;
 
 final class SomeClass
 {

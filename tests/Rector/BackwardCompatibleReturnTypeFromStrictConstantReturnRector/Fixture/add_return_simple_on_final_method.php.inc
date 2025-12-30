@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
+
 class SomeClass
 {
     public const NAME = 'name';
@@ -11,6 +13,8 @@ class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector\Fixture;
 
 class SomeClass
 {

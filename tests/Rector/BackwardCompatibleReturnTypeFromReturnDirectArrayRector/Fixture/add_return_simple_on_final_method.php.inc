@@ -1,5 +1,7 @@
 <?php
 
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnDirectArrayRector\Fixture;
+
 class SomeClass
 {
     final public function getArray()
@@ -9,6 +11,8 @@ class SomeClass
 }
 -----
 <?php
+
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleReturnTypeFromReturnDirectArrayRector\Fixture;
 
 class SomeClass
 {
