@@ -4,7 +4,7 @@ Backward-compatible Rector rules for library maintainers.
 
 | Rector Version | Status                                                        | Details                                 |
 | -------------- | ------------------------------------------------------------- | --------------------------------------- |
-| Rector 2.2-2.3 | [![Status](https://progress-bar.xyz/84/)](/tests/SetTest.php) | 53 of 63 rules are checked and replaced |
+| Rector 2.2-2.3 | [![Status](https://progress-bar.xyz/86/)](/tests/SetTest.php) | 54 of 63 rules are checked and replaced |
 
 ## Installation
 

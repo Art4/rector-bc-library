@@ -71,7 +71,7 @@ final class SetTest extends TestCase
                 50 => \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationBasedOnParentClassMethodRector::class,
                 51 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictFluentReturnRector::class,
                 52 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNeverTypeRector::class,
-                53 => \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class,
+                53 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictStringParamConcatRector::class,
                 54 => \Rector\TypeDeclaration\Rector\Class_\ObjectTypedPropertyFromJMSSerializerAttributeTypeRector::class,
                 55 => \Rector\TypeDeclaration\Rector\Class_\ScalarTypedPropertyFromJMSSerializerAttributeTypeRector::class,
                 56 => \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class,
