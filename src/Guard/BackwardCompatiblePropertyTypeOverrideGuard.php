@@ -15,7 +15,7 @@ final class BackwardCompatiblePropertyTypeOverrideGuard
     public function protectPropertiesIfNeeded(Class_ $class): void
     {
         foreach ($class->getProperties() as $property) {
-            if ($this->skipProperty($property, $class)) {
+            if ($this->skipProperty($property, $class) && $property->type === null) {
                 $property->type = new Identifier(self::TEMP_TYPE_NAME);
             }
         }

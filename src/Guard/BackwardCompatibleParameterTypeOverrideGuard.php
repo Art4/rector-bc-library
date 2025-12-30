@@ -19,18 +19,18 @@ final class BackwardCompatibleParameterTypeOverrideGuard
             return;
         }
 
-        foreach ($method->getParams() as $property) {
-            if ($property->type === null) {
-                $property->type = new Identifier(self::TEMP_TYPE_NAME);
+        foreach ($method->getParams() as $param) {
+            if ($param->type === null) {
+                $param->type = new Identifier(self::TEMP_TYPE_NAME);
             }
         }
     }
 
     public function unprotectParameters(ClassMethod $method): void
     {
-        foreach ($method->getParams() as $property) {
-            if ($property->type instanceof Identifier && $property->type->name === self::TEMP_TYPE_NAME) {
-                $property->type = null;
+        foreach ($method->getParams() as $param) {
+            if ($param->type instanceof Identifier && $param->type->name === self::TEMP_TYPE_NAME) {
+                $param->type = null;
             }
         }
     }
