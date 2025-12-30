@@ -66,7 +66,7 @@ final class SetTest extends TestCase
                 45 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamTypeFromPropertyTypeRector::class,
                 46 => \Rector\TypeDeclaration\Rector\Class_\MergeDateTimePropertyTypeDeclarationRector::class,
                 47 => \Rector\TypeDeclaration\Rector\Class_\PropertyTypeFromStrictSetterGetterRector::class,
-                48 => \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class,
+                48 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector::class,
                 49 => \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector::class,
                 50 => \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationBasedOnParentClassMethodRector::class,
                 51 => \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector::class,

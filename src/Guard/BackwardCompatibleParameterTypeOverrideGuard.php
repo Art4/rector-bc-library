@@ -15,12 +15,12 @@ final class BackwardCompatibleParameterTypeOverrideGuard
 
     public function protectParametersIfNeeded(ClassMethod $method): void
     {
-        $scope = ScopeFetcher::fetch($method);
-
-        $class = $scope->getClassReflection();
+        if (! $this->skipParameters($method)) {
+            return;
+        }
 
         foreach ($method->getParams() as $property) {
-            if ($this->skipParameter($method, $class)) {
+            if ($property->type === null) {
                 $property->type = new Identifier(self::TEMP_TYPE_NAME);
             }
         }
@@ -35,13 +35,15 @@ final class BackwardCompatibleParameterTypeOverrideGuard
         }
     }
 
-    private function skipParameter(ClassMethod $method, ?ClassReflection $class): bool
+    private function skipParameters(ClassMethod $method): bool
     {
-        if ($class instanceof ClassReflection && $class->isFinal()) {
+        if ($method->isFinal() || $method->isPrivate()) {
             return false;
         }
 
-        if ($method->isFinal() || $method->isPrivate()) {
+        $class = (ScopeFetcher::fetch($method))->getClassReflection();
+
+        if ($class instanceof ClassReflection && $class->isFinal()) {
             return false;
         }
 
