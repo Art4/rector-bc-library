@@ -24,8 +24,7 @@ final class BackwardCompatibleParamTypeByMethodCallTypeRectorTest extends Abstra
      */
     public static function provideCases(): Iterator
     {
-        //return self::yieldFilesFromDirectory(__DIR__ . '/Fixture', 'skip_type_for_protected_property_on_non_final_class.php.inc');
-        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture', 'add_parameter_type_on_final_class.php.inc');
+        return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 
     public function provideConfigFilePath(): string
