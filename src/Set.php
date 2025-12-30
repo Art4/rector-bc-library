@@ -43,6 +43,7 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictParamRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictParamRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedCallRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedPropertyRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNeverTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnUnionTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictScalarReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
