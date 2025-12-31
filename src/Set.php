@@ -47,6 +47,7 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnUnionTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictScalarReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictArrayParamDimFetchRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictStringParamConcatRector::class,
             \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeDeclarationFromYieldsRector::class,
             \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleTypedPropertyFromStrictConstructorRector::class,
