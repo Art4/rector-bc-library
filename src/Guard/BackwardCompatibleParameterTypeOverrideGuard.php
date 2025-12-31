@@ -15,7 +15,7 @@ final class BackwardCompatibleParameterTypeOverrideGuard
 
     public function protectParametersIfNeeded(ClassMethod $method): void
     {
-        if (! $this->skipParameters($method)) {
+        if (! $this->parametersMustBeProtected($method)) {
             return;
         }
 
@@ -35,7 +35,7 @@ final class BackwardCompatibleParameterTypeOverrideGuard
         }
     }
 
-    private function skipParameters(ClassMethod $method): bool
+    private function parametersMustBeProtected(ClassMethod $method): bool
     {
         if ($method->isFinal() || $method->isPrivate()) {
             return false;

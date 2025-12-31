@@ -75,7 +75,7 @@ final class SetTest extends TestCase
                 54 => \Rector\TypeDeclaration\Rector\Class_\ObjectTypedPropertyFromJMSSerializerAttributeTypeRector::class,
                 55 => \Rector\TypeDeclaration\Rector\Class_\ScalarTypedPropertyFromJMSSerializerAttributeTypeRector::class,
                 56 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictArrayParamDimFetchRector::class,
-                57 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class,
+                57 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamFromDimFetchKeyUseRector::class,
                 58 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class,
                 59 => \Rector\TypeDeclaration\Rector\FuncCall\AddArrayFunctionClosureParamTypeRector::class,
                 60 => \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromDocblockSetUpDefinedRector::class,
@@ -102,8 +102,8 @@ final class SetTest extends TestCase
      */
     public function testWithTypeCoverageLevelWithTooHighLevelThrowsException(): void
     {
-        $this->expectException(DomainException::class);
-        $this->expectExceptionMessage(<<<TEXT
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage(<<<TEXT
             The "->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel())" level contains only 63 rules, but you set level to 75. You are using the full set now!
 
             Time to switch to the more efficient set:
@@ -121,8 +121,8 @@ final class SetTest extends TestCase
      */
     public function testWithTypeCoverageLevelWithNegativeLevelThrowsException(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected a non-negative integer. Got: -1');
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('Expected a non-negative integer. Got: -1');
 
         Set::withTypeCoverageLevel(-1);
     }
