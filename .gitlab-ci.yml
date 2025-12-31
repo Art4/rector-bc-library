@@ -32,7 +32,7 @@ phpstan-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4"]
-      - RECTOR_VERSION: ["^2.2"]
+        RECTOR_VERSION: ["^2.2"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 
@@ -42,7 +42,7 @@ phpunit-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
-      - RECTOR_VERSION: ["^2.2"]
+        RECTOR_VERSION: ["^2.2"]
   script:
     - mkdir -p build/test-reports
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always --log-junit build/test-reports/junit.xml
@@ -58,7 +58,7 @@ rector-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4"]
-      - RECTOR_VERSION: ["2.2.*", "2.3.*", "dev-main"]
+        RECTOR_VERSION: ["2.2.*", "2.3.*", "dev-main"]
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always
 
@@ -68,7 +68,7 @@ phpunit-coverage:
   parallel:
     matrix:
       - PHP_VERSION: ["8.2"]
-      - RECTOR_VERSION: ["^2.2"]
+        RECTOR_VERSION: ["^2.2"]
   script:
     # Try to install & enable Xdebug so PHPUnit can collect coverage. This is
     # best-effort (some runner images won't have build tools or pecl available),
