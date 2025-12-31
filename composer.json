@@ -1,7 +1,7 @@
 {
   "name": "art4/rector-bc-library",
   "description": "Reusable Rector rule set for BC-related transformations",
-  "version": "1.0.0-beta.1-dev",
+  "version": "1.0.0",
   "type": "library",
   "keywords": ["rector", "ruleset", "library", "BC", "backward compatibility"],
   "readme": "README.md",
