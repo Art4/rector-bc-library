@@ -76,7 +76,7 @@ final class SetTest extends TestCase
                 55 => \Rector\TypeDeclaration\Rector\Class_\ScalarTypedPropertyFromJMSSerializerAttributeTypeRector::class,
                 56 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictArrayParamDimFetchRector::class,
                 57 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamFromDimFetchKeyUseRector::class,
-                58 => \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class,
+                58 => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamStringTypeFromSprintfUseRector::class,
                 59 => \Rector\TypeDeclaration\Rector\FuncCall\AddArrayFunctionClosureParamTypeRector::class,
                 60 => \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromDocblockSetUpDefinedRector::class,
                 61 => \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromIterableMethodCallRector::class,

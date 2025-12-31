@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleTypedPropertyFromStrictConstructorRector;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleAddParamStringTypeFromSprintfUseRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class BackwardCompatibleTypedPropertyFromStrictConstructorRectorTest extends AbstractRectorTestCase
+final class BackwardCompatibleAddParamStringTypeFromSprintfUseRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideCases
