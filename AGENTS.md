@@ -268,7 +268,7 @@ For `add_*` fixtures, the after section shows the expected modified code.
 | Job              | PHP Versions     | Rector Versions | What it runs          |
 |------------------|------------------|-----------------|-----------------------|
 | phpstan-tests    | 7.4              | ^2.3            | PHPStan               |
-| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3            | PHPUnit + JUnit       |
+| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3            | PHPUnit               |
 | rector-tests     | 7.4              | 2.3.*, dev-main | PHPUnit (Rector compat) |
 | phpunit-coverage | 8.2              | ^2.3            | PHPUnit + Xdebug      |
 
