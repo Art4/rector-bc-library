@@ -8,10 +8,10 @@ use Art4\RectorBcLibrary\Guard\BackwardCompatibleParameterTypeOverrideGuard;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\ClassMethod;
 use Rector\Rector\AbstractRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector as OriginalRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\ObjectParamTypeByMethodCallTypeRector as OriginalRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class BackwardCompatibleStrictStringParamConcatRector extends AbstractRector
+final class BackwardCompatibleObjectParamTypeByMethodCallTypeRector extends AbstractRector
 {
     private OriginalRector $originalRector;
     private BackwardCompatibleParameterTypeOverrideGuard $parameterTypeOverrideGuard;

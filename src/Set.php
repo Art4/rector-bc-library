@@ -34,6 +34,9 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ObjectParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleObjectParamTypeByMethodCallTypeRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector::class,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleArrayParamTypeByMethodCallTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNullableTypeRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnCastRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnCastRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnDirectArrayRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnDirectArrayRector::class,
@@ -50,7 +53,6 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictScalarReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
             \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictArrayParamDimFetchRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictStringParamConcatRector::class,
             \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeDeclarationFromYieldsRector::class,
             \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleTypedPropertyFromStrictConstructorRector::class,
         ];

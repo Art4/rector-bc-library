@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleStrictStringParamConcatRector;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleArrayParamTypeByMethodCallTypeRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class BackwardCompatibleStrictStringParamConcatRectorTest extends AbstractRectorTestCase
+final class BackwardCompatibleArrayParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestCase
 {
     /**
      * @dataProvider provideCases
