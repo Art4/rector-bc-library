@@ -4,8 +4,7 @@ Backward-compatible Rector rules for library maintainers.
 
 | Rector Version | Status                                                         | Details                                             |
 | -------------- | -------------------------------------------------------------- | --------------------------------------------------- |
-| 2.2            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 63 of 63 rules are checked and replaced (if needed) |
-| 2.3            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 63 of 63 rules are checked and replaced (if needed) |
+| 2.3            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 73 of 73 rules are checked and replaced (if needed) |
 
 ## Installation
 
@@ -75,8 +74,9 @@ If you are working on an application (not a library) or you control both upstrea
 
 ## How it works
 
-- Each wrapper inspects the code (for example: final/private status, vendor-lock signals, and other heuristics) before applying a change.
-- If the wrapper detects a potential risk to downstream compatibility, it skips the change; otherwise it delegates to the original Rector rule.
+- A single `BackwardCompatibleRector` replaces 30 individual wrapper classes. It is configured via a static rule-to-guard mapping before Rector runs.
+- Each rule is assigned a guard strategy that inspects the code (final/private status, vendor-lock signals, and other heuristics) before applying a change.
+- If the guard detects a potential risk to downstream compatibility, the change is skipped; otherwise it delegates to the original Rector rule.
 - Use the prepared set by importing `\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION` (see Usage).
 
 ### Allowed changes in classes
