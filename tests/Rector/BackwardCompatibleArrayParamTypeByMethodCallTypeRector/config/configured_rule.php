@@ -6,10 +6,15 @@ use Art4\RectorBcLibrary\Rector\BackwardCompatibleArrayParamTypeByMethodCallType
 use Rector\Config\RectorConfig;
 use Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector as OriginalRector;
 
-return RectorConfig::configure()
+$rectorConfig = RectorConfig::configure()
     ->withRules([
         BackwardCompatibleRector::class,
-    ])
-    ->withSkip([
+    ]);
+
+if (class_exists(OriginalRector::class)) {
+    $rectorConfig = $rectorConfig->withSkip([
         OriginalRector::class,
     ]);
+}
+
+return $rectorConfig;

@@ -10,6 +10,15 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 final class BackwardCompatibleArrayParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class)) {
+            self::markTestSkipped('ArrayParamTypeByMethodCallTypeRector is not available in this Rector version');
+        }
+
+        parent::setUp();
+    }
+
     /**
      * @dataProvider provideCases
      */

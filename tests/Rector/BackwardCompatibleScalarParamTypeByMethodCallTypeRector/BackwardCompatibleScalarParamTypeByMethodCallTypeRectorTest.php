@@ -10,6 +10,15 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 final class BackwardCompatibleScalarParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class)) {
+            self::markTestSkipped('ScalarParamTypeByMethodCallTypeRector is not available in this Rector version');
+        }
+
+        parent::setUp();
+    }
+
     /**
      * @dataProvider provideCases
      */
