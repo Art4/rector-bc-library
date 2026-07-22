@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Breaking:** Minimum Rector version bumped from `^2.2` to `^2.3` (Rector 2.2 has a fatal DI container bug)
+- Minimum Rector version bumped from `^2.2` to `^2.3` (Rector 2.2 has a fatal DI container bug and was never usable with this library)
 - Make `SetTest` version-agnostic (dynamic count + class existence checks instead of hardcoded rule snapshot)
 - Restore `BackwardCompatibleStrictStringParamConcatRector` wrapper for Rector 2.3 compatibility
 - Update CI to drop 2.2.* test matrix
