@@ -5,7 +5,7 @@
 **art4/rector-bc-library** — a PHP library that wraps 30 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapper consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class.
 
 - **PHP:** `^7.4 || ^8.0`
-- **Runtime dependency:** `rector/rector ^2.2`
+- **Runtime dependency:** `rector/rector ^2.3`
 - **Dev tools:** PHPUnit, PHPStan (level 10), PHP-CS-Fixer
 
 ---
@@ -267,10 +267,10 @@ For `add_*` fixtures, the after section shows the expected modified code.
 
 | Job              | PHP Versions     | Rector Versions | What it runs          |
 |------------------|------------------|-----------------|-----------------------|
-| phpstan-tests    | 7.4              | ^2.2            | PHPStan               |
-| phpunit-tests    | 7.4, 8.0–8.5     | ^2.2            | PHPUnit + JUnit       |
-| rector-tests     | 7.4              | 2.2.*, 2.3.*, dev-main | PHPUnit (Rector compat) |
-| phpunit-coverage | 8.2              | ^2.2            | PHPUnit + Xdebug      |
+| phpstan-tests    | 7.4              | ^2.3            | PHPStan               |
+| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3            | PHPUnit + JUnit       |
+| rector-tests     | 7.4              | 2.3.*, dev-main | PHPUnit (Rector compat) |
+| phpunit-coverage | 8.2              | ^2.3            | PHPUnit + Xdebug      |
 
 ---
 
