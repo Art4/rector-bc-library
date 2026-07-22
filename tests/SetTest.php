@@ -19,9 +19,11 @@ final class SetTest extends TestCase
     public function testGetTypeDeclarationRulesReturnsOnlyPassThroughRules(): void
     {
         $rules = Set::getTypeDeclarationRules();
-        $expectedCount = \count(TypeDeclarationLevel::RULES) - self::WRAPPED_RULE_COUNT;
+        $passThroughCount = \count($rules);
+        $guardCount = \count(Set::getRuleGuardMap());
+        $totalRules = \count(TypeDeclarationLevel::RULES);
 
-        self::assertCount($expectedCount, $rules);
+        self::assertSame($totalRules - $guardCount, $passThroughCount);
 
         foreach ($rules as $rule) {
             self::assertTrue(
@@ -31,11 +33,28 @@ final class SetTest extends TestCase
         }
     }
 
+    public function testAllTypeDeclarationRulesAreCovered(): void
+    {
+        $guardMap = Set::getRuleGuardMap();
+        $passThrough = Set::getTypeDeclarationRules();
+        $allRules = TypeDeclarationLevel::RULES;
+
+        $covered = array_merge(array_keys($guardMap), $passThrough);
+
+        $missing = array_diff($allRules, $covered);
+
+        self::assertEmpty(
+            $missing,
+            \sprintf(
+                'These rules from TypeDeclarationLevel::RULES are not covered by the guard map or pass-through: %s',
+                implode(', ', $missing)
+            )
+        );
+    }
+
     public function testGetRuleGuardMapCoversAllWrappedRules(): void
     {
         $guardMap = Set::getRuleGuardMap();
-
-        self::assertCount(self::WRAPPED_RULE_COUNT, $guardMap);
 
         foreach ($guardMap as $originalRectorClass => $guard) {
             self::assertTrue(is_a($originalRectorClass, RectorInterface::class, true));
