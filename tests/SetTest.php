@@ -14,8 +14,6 @@ use Rector\Contract\Rector\RectorInterface;
 
 final class SetTest extends TestCase
 {
-    private const WRAPPED_RULE_COUNT = 29;
-
     public function testGetTypeDeclarationRulesReturnsOnlyPassThroughRules(): void
     {
         $rules = Set::getTypeDeclarationRules();
