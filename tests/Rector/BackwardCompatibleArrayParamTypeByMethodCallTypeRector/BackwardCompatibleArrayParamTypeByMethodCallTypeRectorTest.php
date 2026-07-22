@@ -2,20 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleStrictStringParamConcatRector;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleArrayParamTypeByMethodCallTypeRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Rector\Config\Level\TypeDeclarationLevel;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
-final class BackwardCompatibleStrictStringParamConcatRectorTest extends AbstractRectorTestCase
+final class BackwardCompatibleArrayParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestCase
 {
     protected function setUp(): void
     {
-        // @phpstan-ignore function.impossibleType
-        if (!\in_array(\Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class, TypeDeclarationLevel::RULES, true)) {
-            self::markTestSkipped('StrictStringParamConcatRector is not available in this Rector version');
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class)) {
+            self::markTestSkipped('ArrayParamTypeByMethodCallTypeRector is not available in this Rector version');
         }
 
         parent::setUp();

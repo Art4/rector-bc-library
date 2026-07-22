@@ -1,6 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector\Fixture;
 
 class SomeTypedService
 {
@@ -23,7 +23,7 @@ final class UseDependency
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector\Fixture;
 
 class SomeTypedService
 {

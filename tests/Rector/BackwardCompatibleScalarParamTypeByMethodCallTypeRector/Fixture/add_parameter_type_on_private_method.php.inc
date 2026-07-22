@@ -1,6 +1,6 @@
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector\Fixture;
 
 interface SomeTypedService
 {
@@ -22,7 +22,7 @@ class UseDependency
 -----
 <?php
 
-namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector\Fixture;
+namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector\Fixture;
 
 interface SomeTypedService
 {
