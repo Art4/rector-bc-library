@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**art4/rector-bc-library** — a PHP library that wraps 30 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapper consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class.
+**art4/rector-bc-library** — a PHP library that wraps 29 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class.
 
 - **PHP:** `^7.4 || ^8.0`
 - **Runtime dependency:** `rector/rector ^2.3`
@@ -18,26 +18,44 @@ src/
 │   ├── BackwardCompatibleClassMethodReturnTypeOverrideGuard.php
 │   ├── BackwardCompatibleParameterTypeOverrideGuard.php
 │   └── BackwardCompatiblePropertyTypeOverrideGuard.php
-├── Rector/                       # 30 wrapper Rector classes (BackwardCompatible*.php)
+├── Rector/
+│   └── BackwardCompatibleRector.php  # Single configurable wrapper (replaces 30 classes)
 ├── Set.php                       # Public API: rule mapping, level helper, set constant
 config/set/
 └── bc-type-declaration.php       # Rector set config (consumers import this)
 tests/
-├── SetTest.php                   # Snapshots the exact 63-rule list, tests level logic
-└── Rector/                       # 30 test directories (one per wrapper rule)
-    └── BackwardCompatible<X>/
-        ├── <X>Test.php           # PHPUnit test extending AbstractRectorTestCase
+├── SetTest.php                   # Verifies pass-through rule list, guard map, level logic
+└── Rector/                       # 3 consolidated test directories
+    ├── BackwardCompatibleRectorReturnType/
+    ├── BackwardCompatibleRectorParamType/
+    └── BackwardCompatibleRectorPropertyType/
+        ├── <GuardStrategy>Test.php
         ├── config/configured_rule.php
-        └── Fixture/*.php.inc     # before/after code pairs
+        └── Fixture/*.php.inc
 ```
 
 ---
 
-## Core Architecture: Guard + Decorator
+## Core Architecture: Single BackwardCompatibleRector + Static Config
 
-Every wrapper Rector follows one of **two strategies**:
+Instead of 30 separate wrapper classes (old design), a single `BackwardCompatibleRector` is configured via static methods before Rector runs:
 
-### Strategy A: Early Return (Return-Type Guards)
+```php
+BackwardCompatibleRector::setContainer($rectorConfig);
+BackwardCompatibleRector::addRuleConfiguration(
+    AddVoidReturnTypeWhereNoReturnRector::class,
+    BackwardCompatibleRector::GUARD_RETURN_TYPE
+);
+$rectorConfig->rule(BackwardCompatibleRector::class);
+```
+
+The config in `config/set/bc-type-declaration.php` iterates `Set::getRuleGuardMap()` to register all 29 rule→guard mappings at once.
+
+At runtime, `BackwardCompatibleRector::refactor()` iterates all configured rules, delegates matching nodes to the correct guard strategy, and returns the first non-null result.
+
+### Two Guard Strategies
+
+#### Strategy A: Early Return (GUARD_RETURN_TYPE)
 
 Used for return-type changes. The guard checks **before** the original Rector runs.
 
@@ -51,7 +69,7 @@ refactor(node):
 - Wraps Rector's built-in `ClassMethodReturnTypeOverrideGuard`, adds Symfony BC checks
 - Skips if: method is NOT final, NOT private, AND class is NOT final
 
-### Strategy B: Protect + Restore (Parameter/Property Guards)
+#### Strategy B: Protect + Restore (GUARD_PARAM_TYPE / GUARD_PROPERTY_TYPE)
 
 Used for parameter-type and property-type changes. The guard temporarily **protects** untyped members by setting a sentinel type, runs the original Rector (which skips members it thinks are already typed), then **restores** the original state.
 
@@ -66,6 +84,8 @@ refactor(node):
 **Guards:**
 - `BackwardCompatibleParameterTypeOverrideGuard` — sentinel: `__SKIP_ADDING_PARAMETER_TYPE__`
 - `BackwardCompatiblePropertyTypeOverrideGuard` — sentinel: `__SKIP_ADDING_PROPERTY_TYPE__`
+
+GUARD_PARAM_TYPE_ON_CLASS wraps the protect/restore around `Class_` nodes and iterates the class methods.
 
 ### Warning: Sentinel Pattern
 
@@ -100,98 +120,80 @@ All changes are always allowed.
 
 ---
 
-## How to Add a New Wrapper Rector Rule
+## How to Wrap a New Original Rector
 
 ### 1. Determine which Guard to use
 
 | If the rule changes...            | Use Guard                                      | Strategy      |
 |----------------------------------|------------------------------------------------|---------------|
-| Return type of a class method    | `BackwardCompatibleClassMethodReturnTypeOverrideGuard` | Early return  |
-| Parameter type of a method       | `BackwardCompatibleParameterTypeOverrideGuard`  | Protect/restore |
-| Property type                    | `BackwardCompatiblePropertyTypeOverrideGuard`   | Protect/restore |
+| Return type of a class method    | `GUARD_RETURN_TYPE`                            | Early return  |
+| Parameter type of a method       | `GUARD_PARAM_TYPE`                             | Protect/restore |
+| Parameter type (on Class_ node)  | `GUARD_PARAM_TYPE_ON_CLASS`                    | Protect/restore |
+| Property type                    | `GUARD_PROPERTY_TYPE`                          | Protect/restore |
 
-### 2. Create the wrapper class
-
-Place it in `src/Rector/BackwardCompatible<Name>.php`. Pattern:
-
-```php
-final class BackwardCompatible<Name> extends AbstractRector implements MinPhpVersionInterface
-{
-    private OriginalRector $originalRector;
-    private BackwardCompatible<X>Guard $guard;
-
-    public function __construct(OriginalRector $originalRector, <GuardClass> $guard)
-    {
-        $this->originalRector = $originalRector;
-        $this->guard = $guard;
-    }
-
-    // Delegate these to the original Rector:
-    public function getRuleDefinition(): RuleDefinition { ... }
-    public function getNodeTypes(): array { ... }
-    public function provideMinPhpVersion(): int { ... }
-
-    public function refactor(Node $node): ?Node
-    {
-        // For Strategy A (early return):
-        if ($node instanceof ClassMethod && $this->guard->shouldSkipClassMethod($node)) {
-            return null;
-        }
-
-        // For Strategy B (protect/restore):
-        if ($node instanceof ClassMethod) {
-            $this->guard->protectParametersIfNeeded($node);
-        }
-        $return = $this->originalRector->refactor($node);
-        if ($node instanceof ClassMethod) {
-            $this->guard->unprotectParameters($node);
-        }
-        return $return;
-    }
-}
-```
-
-If the original Rector does NOT implement `MinPhpVersionInterface`, omit that interface and the `provideMinPhpVersion()` method.
-
-**Canonical examples:**
-- Strategy A: `src/Rector/BackwardCompatibleReturnNeverTypeRector.php`
-- Strategy B (param): `src/Rector/BackwardCompatibleAddParamTypeFromPropertyTypeRector.php`
-- Strategy B (property): `src/Rector/BackwardCompatibleTypedPropertyFromStrictConstructorRector.php`
-
-### 3. Register the rule in `src/Set.php`
-
-Add a mapping entry to the `$ruleMap` array:
+### 2. Add entry to `Set::getRuleGuardMap()` in `src/Set.php`
 
 ```php
 \Rector\TypeDeclaration\Rector\<Group>\<OriginalRector>::class
-    => \Art4\RectorBcLibrary\Rector\BackwardCompatible<OriginalRector>::class,
+    => BackwardCompatibleRector::GUARD_<STRATEGY>,
 ```
 
-The `Set::getTypeDeclarationRules()` method iterates over Rector's `TypeDeclarationLevel::RULES` constant and substitutes wrapped rules via this map.
+The set config (`config/set/bc-type-declaration.php`) consumes this map automatically — no config change needed.
 
-### 4. Update `tests/SetTest.php`
+### 3. If the original rule is in `TypeDeclarationLevel::RULES`
 
-The test `testGetTypeDeclarationRulesReturnsCorrectListOfRules()` snapshots the exact rule list. Update it to match the new output.
+Update `WRAPPED_RULE_COUNT` in `tests/SetTest.php`. The pass-through count adjusts dynamically.
+
+### 4. Add fixture tests
+
+Create a guard-strategy test directory or add fixtures to an existing one:
+
+```
+tests/Rector/BackwardCompatibleRector<GuardStrategy>/
+├── BackwardCompatibleRector<GuardStrategy>Test.php
+├── config/configured_rule.php
+└── Fixture/
+    ├── add_<case>.php.inc
+    └── skip_<case>.php.inc
+```
+
+### Config for a test
+
+```php
+// config/configured_rule.php
+BackwardCompatibleRector::clearRuleConfigurations();
+BackwardCompatibleRector::clearContainer();
+
+return static function (RectorConfig $rectorConfig): void {
+    BackwardCompatibleRector::setContainer($rectorConfig);
+    BackwardCompatibleRector::addRuleConfiguration(
+        OriginalRector::class,
+        BackwardCompatibleRector::GUARD_<STRATEGY>
+    );
+    $rectorConfig->rule(BackwardCompatibleRector::class);
+    $rectorConfig->skip([OriginalRector::class]);
+};
+```
 
 ---
 
 ## Test Conventions
 
-### Directory structure per rule
+### Directory structure per guard strategy
 
 ```
-tests/Rector/BackwardCompatible<Name>/
-├── BackwardCompatible<Name>Test.php
-├── config/configured_rule.php     # enables the wrapper, skips the original
+tests/Rector/BackwardCompatibleRector<GuardStrategy>/
+├── BackwardCompatibleRector<GuardStrategy>Test.php
+├── config/configured_rule.php
 └── Fixture/
-    ├── add_<case>.php.inc         # Expected: rule modifies the code
-    └── skip_<case>.php.inc        # Expected: guard blocks the change
+    ├── add_<case>.php.inc
+    └── skip_<case>.php.inc
 ```
 
 ### Test class pattern
 
 ```php
-final class BackwardCompatible<Name>Test extends AbstractRectorTestCase
+final class BackwardCompatibleRector<Strategy>Test extends AbstractRectorTestCase
 {
     /** @dataProvider provideCases */
     #[DataProvider('provideCases')]
@@ -210,15 +212,6 @@ final class BackwardCompatible<Name>Test extends AbstractRectorTestCase
         return __DIR__ . '/config/configured_rule.php';
     }
 }
-```
-
-### Config pattern
-
-```php
-// config/configured_rule.php
-return RectorConfig::configure()
-    ->withRules([BackwardCompatibleRector::class])
-    ->withSkip([OriginalRector::class]);
 ```
 
 ### Fixture naming conventions
@@ -241,7 +234,6 @@ class SomeClass
 -----
 <?php
 // After: unchanged (guard skipped it) — for skip_ fixtures, after = before
-// (skip fixtures often omit the after section entirely)
 ```
 
 For `add_*` fixtures, the after section shows the expected modified code.
@@ -285,21 +277,22 @@ Configured in `.php-cs-fixer.dist.php`:
 
 ## Key Details for Agents
 
-- **`Set.php` is the public API.** It exports `BC_TYPE_DECLARATION` constant, `getTypeDeclarationRules()`, and `withTypeCoverageLevel()`.
-- **Rule mapping is explicit.** The `$ruleMap` in `Set::getTypeDeclarationRules()` maps 30 original rules to wrappers. 33 rules pass through unchanged.
-- **Prefer adding/adjusting guards over changing wrapper logic.** The guards encapsulate the actual BC heuristics.
+- **`Set.php` is the public API.** It exports `BC_TYPE_DECLARATION` constant, `getTypeDeclarationRules()`, `getRuleGuardMap()`, and `withTypeCoverageLevel()`.
+- **Rule mapping is in `Set::getRuleGuardMap()`.** 29 original rules are mapped to 4 guard strategies. 44 rules pass through unchanged.
+- **Single rector class.** `BackwardCompatibleRector` uses a static container + static rule configs. Add new rules to the guard map, not as new classes.
+- **Prefer adding/adjusting guards over changing rector logic.** The guards encapsulate the actual BC heuristics.
 - **Always check `isFinal()` / `isPrivate()` / `isFinal() on class`** — these are the core BC checks.
-- **PHP 7.4 compatible.** Avoid PHP 8.0+ syntax (named arguments, match, readonly properties, etc.).
+- **PHP 7.4 compatible.** Avoid PHP 8.0+ syntax (named arguments, match, readonly properties, constructor property promotion, etc.).
 - **All classes are `final`.**
-- **Constructor injection** via Rector's DI container.
+- **Static container pattern.** `setContainer()` and `addRuleConfiguration()` must be called before the rector runs. Clear state between tests with `clearContainer()` and `clearRuleConfigurations()`.
 
 ---
 
 ## Quick Contribution Checklist
 
-1. Run `composer test` and `composer cs` locally.
-2. Add/adjust wrapper in `src/Rector/`.
-3. Update `$ruleMap` in `src/Set.php`.
-4. Add fixture tests in `tests/Rector/` (at least one `add_*` and one `skip_*`).
-5. Update `tests/SetTest.php` snapshot if the rule list changes.
-6. Update `README.md` only if usage or supported levels change.
+1. Run `composer test` and `composer cs` locally (use `docker run --rm -v "$(pwd):/app" -w /app php:8.3-cli php vendor/bin/phpunit` if host PHP lacks extensions).
+2. Add entry to `Set::getRuleGuardMap()` in `src/Set.php`.
+3. Update `WRAPPED_RULE_COUNT` in `tests/SetTest.php` if the set size changed.
+4. Add fixture tests in the appropriate `tests/Rector/BackwardCompatibleRector*` directory.
+5. Update `README.md` only if usage or supported levels change.
+6. Update `CHANGELOG.md` with notable additions/changes.
