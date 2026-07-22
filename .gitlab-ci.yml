@@ -58,7 +58,7 @@ rector-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4"]
-        RECTOR_VERSION: ["2.3.*", "dev-main"]
+        RECTOR_VERSION: ["2.3.*", "2.4.*", "2.5.*", "dev-main"]
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always
 

@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restore `BackwardCompatibleStrictStringParamConcatRector` wrapper for Rector 2.3 compatibility
 - Update CI to drop 2.2.* test matrix
 
+### Added
+
+- Add explicit CI testing for Rector 2.4 and 2.5
+
 ### Removed
 
 - Remove `StrictStringParamConcatRector` from guard map (no longer in `TypeDeclarationLevel::RULES`)

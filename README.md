@@ -5,6 +5,8 @@ Backward-compatible Rector rules for library maintainers.
 | Rector Version | Status                                                         | Details                                             |
 | -------------- | -------------------------------------------------------------- | --------------------------------------------------- |
 | 2.3            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 73 of 73 rules are checked and replaced (if needed) |
+| 2.4            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 73 of 73 rules are checked and replaced (if needed) |
+| 2.5            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 73 of 73 rules are checked and replaced (if needed) |
 
 ## Installation
 
