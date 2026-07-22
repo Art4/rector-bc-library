@@ -13,4 +13,4 @@ Nothing yet.
 
 ### Added
 
-- Add backward compytible replacment for type declaration set of Rector 2.2 and 2.3.
+- Add backward compatible replacment for type declaration set of Rector 2.2 and 2.3.
