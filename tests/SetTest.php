@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Art4\RectorBcLibrary\Tests;
 
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleRector;
 use Art4\RectorBcLibrary\Set;
 use DomainException;
 use InvalidArgumentException;
@@ -13,17 +14,37 @@ use Rector\Contract\Rector\RectorInterface;
 
 final class SetTest extends TestCase
 {
-    public function testGetTypeDeclarationRulesReturnsCorrectListOfRules(): void
+    private const WRAPPED_RULE_COUNT = 29;
+
+    public function testGetTypeDeclarationRulesReturnsOnlyPassThroughRules(): void
     {
         $rules = Set::getTypeDeclarationRules();
+        $expectedCount = \count(TypeDeclarationLevel::RULES) - self::WRAPPED_RULE_COUNT;
 
-        self::assertCount(\count(TypeDeclarationLevel::RULES), $rules);
+        self::assertCount($expectedCount, $rules);
 
         foreach ($rules as $rule) {
             self::assertTrue(
                 is_a($rule, RectorInterface::class, true),
                 \sprintf('Rule %s does not implement RectorInterface', $rule)
             );
+        }
+    }
+
+    public function testGetRuleGuardMapCoversAllWrappedRules(): void
+    {
+        $guardMap = Set::getRuleGuardMap();
+
+        self::assertCount(self::WRAPPED_RULE_COUNT, $guardMap);
+
+        foreach ($guardMap as $originalRectorClass => $guard) {
+            self::assertTrue(is_a($originalRectorClass, RectorInterface::class, true));
+            self::assertContains($guard, [
+                BackwardCompatibleRector::GUARD_RETURN_TYPE,
+                BackwardCompatibleRector::GUARD_PARAM_TYPE,
+                BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS,
+                BackwardCompatibleRector::GUARD_PROPERTY_TYPE,
+            ]);
         }
     }
 
