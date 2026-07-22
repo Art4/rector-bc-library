@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Art4\RectorBcLibrary;
 
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleRector;
+
 final class Set
 {
     /**
@@ -18,58 +20,67 @@ final class Set
     public const BC_TYPE_DECLARATION = __DIR__ . '/../config/set/bc-type-declaration.php';
 
     /**
+     * Returns the list of original type-declaration rules that pass through
+     * without any backward-compatibility wrapping.
+     *
+     * To get the full set of backward-compatible rules, import the set config:
+     *
+     *   RectorConfig::configure()
+     *     ->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])
+     *   ;
+     *
      * @return array<class-string<\Rector\Contract\Rector\RectorInterface>>
      */
     public static function getTypeDeclarationRules(): array
     {
-        $ruleMap = [
-            \Rector\TypeDeclaration\Rector\Class_\ReturnTypeFromStrictTernaryRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTernaryRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamFromDimFetchKeyUseRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamStringTypeFromSprintfUseRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddParamTypeFromPropertyTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeFromTryCatchTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddVoidReturnTypeWhereNoReturnRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanConstReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleBoolReturnTypeFromBooleanStrictReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleNumericReturnTypeFromStrictScalarReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleParamTypeByMethodCallTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ObjectParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleObjectParamTypeByMethodCallTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleScalarParamTypeByMethodCallTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleArrayParamTypeByMethodCallTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNullableTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnCastRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnCastRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnDirectArrayRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnDirectArrayRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnNewRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromReturnNewRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictConstantReturnRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictFluentReturnRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictNativeCallRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNewArrayRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictNewArrayRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictParamRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictParamRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedCallRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnTypeFromStrictTypedPropertyRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnNeverTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleReturnUnionTypeRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictScalarReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStringReturnTypeFromStrictStringReturnsRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictArrayParamDimFetchRector::class,
-            \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleStrictStringParamConcatRector::class,
-            \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleAddReturnTypeDeclarationFromYieldsRector::class,
-            \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => \Art4\RectorBcLibrary\Rector\BackwardCompatibleTypedPropertyFromStrictConstructorRector::class,
-        ];
-
+        $ruleGuardMap = self::getRuleGuardMap();
         $rules = [];
 
         foreach (\Rector\Config\Level\TypeDeclarationLevel::RULES as $rule) {
-            if (\array_key_exists($rule, $ruleMap)) {
-                // Replace rule with our backward-compatible wrapper
-                $rule = $ruleMap[$rule];
+            if (! \array_key_exists($rule, $ruleGuardMap)) {
+                $rules[] = $rule;
             }
-
-            $rules[] = $rule;
         }
 
         return $rules;
+    }
+
+    /**
+     * @return array<class-string<\Rector\Contract\Rector\RectorInterface>, string>
+     */
+    public static function getRuleGuardMap(): array
+    {
+        return [
+            \Rector\TypeDeclaration\Rector\Class_\ReturnTypeFromStrictTernaryRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => BackwardCompatibleRector::GUARD_PROPERTY_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNullableTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnCastRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnDirectArrayRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromReturnNewRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictConstantReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictFluentReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNewArrayRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictParamRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedCallRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictTypedPropertyRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ReturnUnionTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
+            \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+        ];
     }
 
     /**

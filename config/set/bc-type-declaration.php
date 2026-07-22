@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Art4\RectorBcLibrary\Rector\BackwardCompatibleRector;
+use Art4\RectorBcLibrary\Set;
 use Rector\Config\RectorConfig;
 
 /**
@@ -17,5 +19,12 @@ use Rector\Config\RectorConfig;
  */
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->rules(\Art4\RectorBcLibrary\Set::getTypeDeclarationRules());
+    BackwardCompatibleRector::setContainer($rectorConfig);
+
+    foreach (Set::getRuleGuardMap() as $originalRectorClass => $guard) {
+        BackwardCompatibleRector::addRuleConfiguration($originalRectorClass, $guard);
+    }
+
+    $rectorConfig->rule(BackwardCompatibleRector::class);
+    $rectorConfig->rules(Set::getTypeDeclarationRules());
 };
