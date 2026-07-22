@@ -31,11 +31,22 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
 
     private static ?RectorConfig $container = null;
 
+    /** @var BackwardCompatibleClassMethodReturnTypeOverrideGuard */
+    private $classMethodReturnTypeOverrideGuard;
+    /** @var BackwardCompatibleParameterTypeOverrideGuard */
+    private $parameterTypeOverrideGuard;
+    /** @var BackwardCompatiblePropertyTypeOverrideGuard */
+    private $propertyTypeOverrideGuard;
+
     public function __construct(
-        private BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard,
-        private BackwardCompatibleParameterTypeOverrideGuard $parameterTypeOverrideGuard,
-        private BackwardCompatiblePropertyTypeOverrideGuard $propertyTypeOverrideGuard,
-    ) {}
+        BackwardCompatibleClassMethodReturnTypeOverrideGuard $classMethodReturnTypeOverrideGuard,
+        BackwardCompatibleParameterTypeOverrideGuard $parameterTypeOverrideGuard,
+        BackwardCompatiblePropertyTypeOverrideGuard $propertyTypeOverrideGuard
+    ) {
+        $this->classMethodReturnTypeOverrideGuard = $classMethodReturnTypeOverrideGuard;
+        $this->parameterTypeOverrideGuard = $parameterTypeOverrideGuard;
+        $this->propertyTypeOverrideGuard = $propertyTypeOverrideGuard;
+    }
 
     /**
      * @param class-string<RectorInterface> $originalRectorClass
