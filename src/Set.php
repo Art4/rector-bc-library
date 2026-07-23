@@ -152,7 +152,11 @@ final class Set
             );
         }
 
-        $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
+        try {
+            $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
+        } catch (\InvalidArgumentException $exception) {
+            throw new \DomainException($exception->getMessage(), 0, $exception);
+        }
 
         $levelRulesCount = \count($levelRules);
         $maxLevelGap = 10;
