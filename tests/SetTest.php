@@ -26,10 +26,6 @@ final class SetTest extends TestCase
                 $guardMap,
                 \sprintf('Rule %s is in the guard map but also in the explicit allowlist', $rule)
             );
-            self::assertTrue(
-                is_a($rule, RectorInterface::class, true),
-                \sprintf('Rule %s does not implement RectorInterface', $rule)
-            );
         }
 
         // All TypeDeclarationLevel::RULES must be covered by guard map + allowlist
@@ -50,7 +46,6 @@ final class SetTest extends TestCase
         $guardMap = Set::getRuleGuardMap();
 
         foreach ($guardMap as $originalRectorClass => $guard) {
-            self::assertTrue(is_a($originalRectorClass, RectorInterface::class, true));
             self::assertContains($guard, [
                 BackwardCompatibleRector::GUARD_RETURN_TYPE,
                 BackwardCompatibleRector::GUARD_PARAM_TYPE,

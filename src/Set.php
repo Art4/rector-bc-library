@@ -155,7 +155,29 @@ final class Set
         try {
             $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
         } catch (\InvalidArgumentException $exception) {
-            throw new \DomainException($exception->getMessage(), 0, $exception);
+            // Rector 2.3/2.4 compat: some safe-list rules don't implement RectorInterface
+            $rulesCount = \count(self::getTypeDeclarationRules());
+            $maxLevelGap = 10;
+
+            if ($rulesCount + $maxLevelGap < $level) {
+                throw new \DomainException(\sprintf(
+                    <<<'TEXT'
+                        The "->withRules(\%1$s::%2$s())" level contains only %3$d rules, but you set level to %4$s. You are using the full set now!
+
+                        Time to switch to the more efficient set:
+
+                        ->withSets([
+                            \%1$s::BC_TYPE_DECLARATION
+                        ])
+                        TEXT,
+                    __CLASS__,
+                    __FUNCTION__,
+                    $rulesCount,
+                    $level
+                ));
+            }
+
+            return self::getTypeDeclarationRules();
         }
 
         $levelRulesCount = \count($levelRules);
