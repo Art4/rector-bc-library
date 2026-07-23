@@ -16,8 +16,6 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    if (class_exists('AddParamFromDimFetchKeyUseRector')) {
-        $rectorConfig->rule(AddParamFromDimFetchKeyUseRector::class);
-        $rectorConfig->skip([AddParamFromDimFetchKeyUseRector::class]);
-    }
+    $rectorConfig->rule(AddParamFromDimFetchKeyUseRector::class);
+    $rectorConfig->skip([AddParamFromDimFetchKeyUseRector::class]);
 };

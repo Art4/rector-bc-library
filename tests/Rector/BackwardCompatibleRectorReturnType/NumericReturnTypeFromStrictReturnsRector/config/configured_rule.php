@@ -15,8 +15,6 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_RETURN_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    if (class_exists('Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector')) {
-        $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class);
-        $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class]);
-    }
+    $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class);
+    $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class]);
 };

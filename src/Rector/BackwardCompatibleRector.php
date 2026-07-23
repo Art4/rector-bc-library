@@ -133,6 +133,10 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
             return null;
         }
 
+        if (! class_exists($class)) {
+            return null;
+        }
+
         /** @var RectorInterface $instance */
         $instance = self::$container->make($class);
 
