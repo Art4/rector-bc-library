@@ -16,6 +16,8 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_PARAM_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    $rectorConfig->rule(AddParamTypeFromPropertyTypeRector::class);
-    $rectorConfig->skip([AddParamTypeFromPropertyTypeRector::class]);
+    if (class_exists('AddParamTypeFromPropertyTypeRector::class')) {
+        $rectorConfig->rule(AddParamTypeFromPropertyTypeRector::class);
+        $rectorConfig->skip([AddParamTypeFromPropertyTypeRector::class]);
+    }
 };

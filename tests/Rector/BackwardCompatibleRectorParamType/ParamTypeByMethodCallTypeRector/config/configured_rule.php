@@ -15,6 +15,8 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_PARAM_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class);
-    $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class]);
+    if (class_exists('Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class')) {
+        $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class);
+        $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class]);
+    }
 };

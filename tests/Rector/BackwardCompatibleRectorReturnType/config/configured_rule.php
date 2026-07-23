@@ -16,6 +16,8 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_RETURN_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    $rectorConfig->rule(AddVoidReturnTypeWhereNoReturnRector::class);
-    $rectorConfig->skip([AddVoidReturnTypeWhereNoReturnRector::class]);
+    if (class_exists('AddVoidReturnTypeWhereNoReturnRector')) {
+        $rectorConfig->rule(AddVoidReturnTypeWhereNoReturnRector::class);
+        $rectorConfig->skip([AddVoidReturnTypeWhereNoReturnRector::class]);
+    }
 };
