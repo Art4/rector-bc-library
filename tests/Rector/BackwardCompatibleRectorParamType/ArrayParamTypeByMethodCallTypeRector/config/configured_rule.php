@@ -10,11 +10,15 @@ BackwardCompatibleRector::clearContainer();
 
 return static function (RectorConfig $rectorConfig): void {
     BackwardCompatibleRector::setContainer($rectorConfig);
-    BackwardCompatibleRector::addRuleConfiguration(
-        \Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class,
-        BackwardCompatibleRector::GUARD_PARAM_TYPE
-    );
+
+    if (class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class)) {
+        BackwardCompatibleRector::addRuleConfiguration(
+            \Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class,
+            BackwardCompatibleRector::GUARD_PARAM_TYPE
+        );
+        $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class);
+        $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class]);
+    }
+
     $rectorConfig->rule(BackwardCompatibleRector::class);
-    $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class);
-    $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class]);
 };
