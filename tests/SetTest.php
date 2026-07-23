@@ -14,37 +14,32 @@ use Rector\Contract\Rector\RectorInterface;
 
 final class SetTest extends TestCase
 {
-    public function testGetTypeDeclarationRulesReturnsOnlyPassThroughRules(): void
+    public function testGetTypeDeclarationRulesReturnsExplicitAllowlist(): void
     {
         $rules = Set::getTypeDeclarationRules();
-        $passThroughCount = \count($rules);
-        $guardCount = \count(Set::getRuleGuardMap());
-        $totalRules = \count(TypeDeclarationLevel::RULES);
+        $guardMap = Set::getRuleGuardMap();
 
-        self::assertSame($totalRules - $guardCount, $passThroughCount);
-
+        // All returned rules must not be in the guard map
         foreach ($rules as $rule) {
+            self::assertArrayNotHasKey(
+                $rule,
+                $guardMap,
+                \sprintf('Rule %s is in the guard map but also in the explicit allowlist', $rule)
+            );
             self::assertTrue(
                 is_a($rule, RectorInterface::class, true),
                 \sprintf('Rule %s does not implement RectorInterface', $rule)
             );
         }
-    }
 
-    public function testAllTypeDeclarationRulesAreCovered(): void
-    {
-        $guardMap = Set::getRuleGuardMap();
-        $passThrough = Set::getTypeDeclarationRules();
-        $allRules = TypeDeclarationLevel::RULES;
-
-        $covered = array_merge(array_keys($guardMap), $passThrough);
-
-        $missing = array_diff($allRules, $covered);
+        // All TypeDeclarationLevel::RULES must be covered by guard map + allowlist
+        $covered = array_merge(array_keys($guardMap), $rules);
+        $missing = array_diff(TypeDeclarationLevel::RULES, $covered);
 
         self::assertEmpty(
             $missing,
             \sprintf(
-                'These rules from TypeDeclarationLevel::RULES are not covered by the guard map or pass-through: %s',
+                'These rules from TypeDeclarationLevel::RULES are not covered by the guard map or explicit allowlist: %s',
                 implode(', ', $missing)
             )
         );

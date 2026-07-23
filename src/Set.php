@@ -20,8 +20,10 @@ final class Set
     public const BC_TYPE_DECLARATION = __DIR__ . '/../config/set/bc-type-declaration.php';
 
     /**
-     * Returns the list of original type-declaration rules that pass through
-     * without any backward-compatibility wrapping.
+     * Explicit allowlist of type-declaration rules that are safe to pass through
+     * without backward-compatibility wrapping. Each rule has been reviewed and
+     * confirmed to be BC-safe (function/closure scope, private-only, test-only,
+     * framework-specific, or has its own guard).
      *
      * To get the full set of backward-compatible rules, import the set config:
      *
@@ -33,17 +35,60 @@ final class Set
      */
     public static function getTypeDeclarationRules(): array
     {
-        $ruleGuardMap = self::getRuleGuardMap();
-        $rules = [];
-
-        foreach (\Rector\Config\Level\TypeDeclarationLevel::RULES as $rule) {
-            if (! \array_key_exists($rule, $ruleGuardMap)) {
-                $rules[] = $rule;
-            }
-        }
-
-        return $rules;
+        return self::REVIEWED_SAFE_RULES;
     }
+
+    /**
+     * @var array<class-string<\Rector\Contract\Rector\RectorInterface>>
+     */
+    private const REVIEWED_SAFE_RULES = [
+        // Group A: Function/Closure scope only — no class method/property risk
+        \Rector\TypeDeclaration\Rector\Closure\AddClosureVoidReturnTypeWhereNoReturnRector::class,
+        \Rector\TypeDeclaration\Rector\Function_\AddFunctionVoidReturnTypeWhereNoReturnRector::class,
+        \Rector\TypeDeclaration\Rector\ArrowFunction\AddArrowFunctionReturnTypeRector::class,
+        \Rector\TypeDeclaration\Rector\Closure\AddClosureNeverReturnTypeRector::class,
+        \Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeRector::class,
+        \Rector\TypeDeclaration\Rector\Closure\ClosureReturnTypeFromAssertInstanceOfRector::class,
+        \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayMapRector::class,
+        \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeForArrayReduceRector::class,
+        \Rector\TypeDeclaration\Rector\FuncCall\AddArrowFunctionParamArrayWhereDimFetchRector::class,
+        \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromVariableCallRector::class,
+        \Rector\TypeDeclaration\Rector\FunctionLike\AddClosureParamTypeFromIterableMethodCallRector::class,
+        \Rector\TypeDeclaration\Rector\FuncCall\AddArrayFunctionClosureParamTypeRector::class,
+        \Rector\TypeDeclaration\Rector\FuncCall\AddArrayAnyAllClosureParamTypeRector::class,
+        \Rector\TypeDeclaration\Rector\FuncCall\NarrowArrayAnyAllNullableParamTypeRector::class,
+        // Group B: Private methods only — no external contract
+        \Rector\TypeDeclaration\Rector\ClassMethod\PrivateMethodReturnTypeFromStrictNewArrayRector::class,
+        // Group C: Test/infrastructure-specific context (restricted scope)
+        \Rector\TypeDeclaration\Rector\Class_\AddTestsVoidReturnTypeWhereNoReturnRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromMockObjectRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromCreateMockAssignRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromContainerGetSetUpRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromGetRepositorySetUpRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromDocblockSetUpDefinedRector::class,
+        \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictSetUpRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\TypedStaticPropertyInBehatContextRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\ChildDoctrineRepositoryClassTypeRector::class,
+        \Rector\Symfony\CodeQuality\Rector\ClassMethod\ResponseReturnTypeControllerActionRector::class,
+        // Group D: Property type adders with their own guards (private-only or MakePropertyTypedGuard)
+        \Rector\TypeDeclaration\Rector\Class_\MergeDateTimePropertyTypeDeclarationRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\PropertyTypeFromStrictSetterGetterRector::class,
+        \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\ObjectTypedPropertyFromJMSSerializerAttributeTypeRector::class,
+        \Rector\TypeDeclaration\Rector\Class_\ScalarTypedPropertyFromJMSSerializerAttributeTypeRector::class,
+        // Group E: Param/Return type adders that are safe (private-only, has own guard, or copies parent)
+        \Rector\TypeDeclaration\Rector\ClassMethod\AddMethodCallBasedStrictParamTypeRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\KnownMagicClassMethodTypeRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\NarrowObjectReturnTypeRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationBasedOnParentClassMethodRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromSymfonySerializerRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromGetRepositoryDocblockRector::class,
+        \Rector\TypeDeclaration\Rector\FunctionLike\AddParamTypeSplFixedArrayRector::class,
+        // Group F: Not type-declaration changes
+        \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
+        \Rector\CodeQuality\Rector\Class_\ReturnIteratorInDataProviderRector::class,
+    ];
 
     /**
      * @return array<class-string<\Rector\Contract\Rector\RectorInterface>, string>
@@ -54,6 +99,7 @@ final class Set
             \Rector\TypeDeclaration\Rector\Class_\ReturnTypeFromStrictTernaryRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => BackwardCompatibleRector::GUARD_PROPERTY_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS,
+            \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByParentCallTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
