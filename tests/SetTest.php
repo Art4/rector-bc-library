@@ -10,7 +10,6 @@ use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\Level\TypeDeclarationLevel;
-use Rector\Contract\Rector\RectorInterface;
 
 final class SetTest extends TestCase
 {

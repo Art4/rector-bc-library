@@ -128,6 +128,7 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictScalarReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\StringReturnTypeFromStrictStringReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\StrictArrayParamDimFetchRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
+            \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
         ];
     }

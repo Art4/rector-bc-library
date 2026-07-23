@@ -15,5 +15,6 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_RETURN_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
+    $rectorConfig->rule(\Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class);
     $rectorConfig->skip([\Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class]);
 };
