@@ -31,7 +31,7 @@ phpstan-tests:
   <<: *default-php-job
   parallel:
     matrix:
-      - PHP_VERSION: ["7.4"]
+      - PHP_VERSION: ["8.0"]
         RECTOR_VERSION: ["^2.3"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
@@ -41,7 +41,7 @@ phpunit-tests:
   <<: *default-php-job
   parallel:
     matrix:
-      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+      - PHP_VERSION: ["8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
         RECTOR_VERSION: ["^2.3"]
   script:
     - mkdir -p build/test-reports
@@ -57,7 +57,7 @@ rector-tests:
   <<: *default-php-job
   parallel:
     matrix:
-      - PHP_VERSION: ["7.4"]
+      - PHP_VERSION: ["8.0"]
         RECTOR_VERSION: ["2.3.*", "2.4.*", "2.5.*", "dev-main"]
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always

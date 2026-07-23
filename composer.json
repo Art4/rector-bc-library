@@ -20,7 +20,7 @@
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
-    "php": "^7.4 || ^8.0",
+    "php": "^8.0",
     "rector/rector": "^2.3"
   },
   "require-dev": {

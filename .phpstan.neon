@@ -7,5 +7,7 @@ parameters:
   paths:
     - src
     - tests
+  ignoreErrors:
+    - '#Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
   excludePaths:
     - vendor

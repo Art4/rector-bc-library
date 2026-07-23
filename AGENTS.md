@@ -4,7 +4,7 @@
 
 **art4/rector-bc-library** — a PHP library that wraps 29 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class.
 
-- **PHP:** `^7.4 || ^8.0`
+- **PHP:** `^8.0`
 - **Runtime dependency:** `rector/rector ^2.3`
 - **Dev tools:** PHPUnit, PHPStan (level 10), PHP-CS-Fixer
 
@@ -282,7 +282,7 @@ Configured in `.php-cs-fixer.dist.php`:
 - **Single rector class.** `BackwardCompatibleRector` uses a static container + static rule configs. Add new rules to the guard map, not as new classes.
 - **Prefer adding/adjusting guards over changing rector logic.** The guards encapsulate the actual BC heuristics.
 - **Always check `isFinal()` / `isPrivate()` / `isFinal() on class`** — these are the core BC checks.
-- **PHP 7.4 compatible.** Avoid PHP 8.0+ syntax (named arguments, match, readonly properties, constructor property promotion, etc.).
+- **PHP 8.0+ compatible.** Uses `#[DataProvider]` attribute (with `@dataProvider` fallback for PHP 8.0 + PHPUnit 9).
 - **All classes are `final`.**
 - **Static container pattern.** `setContainer()` and `addRuleConfiguration()` must be called before the rector runs. Clear state between tests with `clearContainer()` and `clearRuleConfigurations()`.
 

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleRectorParamType\ParamTypeByMethodCallTypeRector;
 
 use Iterator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 final class ParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestCase
 {
     /** @dataProvider provideCases */
+    #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
         $this->doTestFile($filePath);
