@@ -31,7 +31,7 @@ phpstan-tests:
   <<: *default-php-job
   parallel:
     matrix:
-      - PHP_VERSION: ["8.0"]
+      - PHP_VERSION: ["7.4", "8.0"]
         RECTOR_VERSION: ["^2.3"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
@@ -57,6 +57,8 @@ rector-tests:
   <<: *default-php-job
   parallel:
     matrix:
+      - PHP_VERSION: ["7.4"]
+        RECTOR_VERSION: ["2.3.*"]
       - PHP_VERSION: ["8.0"]
         RECTOR_VERSION: ["2.3.*", "2.4.*", "2.5.*", "dev-main"]
   script:
