@@ -5,24 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.0.0...main)
+## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.1.0...main)
+
+## [1.1.0 - 2026-07-25](https://gitlab.com/Art4/rector-bc-library/-/compare/1.0.0...1.1.0)
 
 ### Added
 
 - Add AGENTS.md with comprehensive guide for AI coding assistants
 - Add wrappers for `ObjectParamTypeByMethodCallTypeRector`, `ScalarParamTypeByMethodCallTypeRector`, `ArrayParamTypeByMethodCallTypeRector` (split from `ParamTypeByMethodCallTypeRector` in Rector 2.5)
+- Add explicit CI testing for Rector 2.4 and 2.5
 
 ### Changed
 
 - **Consolidate 30 wrapper rectors into single `BackwardCompatibleRector`** — replaces all individual `BackwardCompatible*` classes with one configurable rector using static container + rule configuration map. Test directories reduced from 30 to 3 (grouped by guard strategy).
 - Minimum Rector version bumped from `^2.2` to `^2.3` (Rector 2.2 has a fatal DI container bug and was never usable with this library)
+- Limit supported Rector versions to `>=2.3, <2.6`
 - Make `SetTest` version-agnostic (dynamic count + class existence checks instead of hardcoded rule snapshot)
-- Restore `BackwardCompatibleStrictStringParamConcatRector` wrapper for Rector 2.3 compatibility
 - Update CI to drop 2.2.* test matrix
 
-### Added
+### Fixed
 
-- Add explicit CI testing for Rector 2.4 and 2.5
+- Skip deprecated rectors (implementing `DeprecatedInterface`) that throw in `refactor()` — prevents crash on `StrictStringParamConcatRector` in Rector >= 2.5
 
 ### Removed
 
