@@ -2,9 +2,10 @@
 
 Backward-compatible Rector rules for library maintainers.
 
-| Rector Version | Status                                                         | Details                                             |
-| -------------- | -------------------------------------------------------------- | --------------------------------------------------- |
-| 2.3            | [![Status](https://progress-bar.xyz/100/)](/tests/SetTest.php) | 73 of 73 rules are checked and replaced (if needed) |
+| Library Version | Rector 2.5 | Rector 2.4 | Rector 2.3 | Rector 2.2 |
+| --------------- | ---------- | ---------- | ---------- | ---------- |
+| 1.1             | ✅         | ✅         | ✅         | ❌         |
+| 1.0             | ❌         | ❌         | ✅         | ✅         |
 
 ## Installation
 

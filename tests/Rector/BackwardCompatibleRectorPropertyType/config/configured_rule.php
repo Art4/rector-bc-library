@@ -16,5 +16,6 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::GUARD_PROPERTY_TYPE
     );
     $rectorConfig->rule(BackwardCompatibleRector::class);
+    $rectorConfig->rule(TypedPropertyFromStrictConstructorRector::class);
     $rectorConfig->skip([TypedPropertyFromStrictConstructorRector::class]);
 };

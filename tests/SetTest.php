@@ -10,35 +10,41 @@ use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\Level\TypeDeclarationLevel;
-use Rector\Contract\Rector\RectorInterface;
 
 final class SetTest extends TestCase
 {
-    private const WRAPPED_RULE_COUNT = 29;
-
-    public function testGetTypeDeclarationRulesReturnsOnlyPassThroughRules(): void
+    public function testGetTypeDeclarationRulesReturnsExplicitAllowlist(): void
     {
         $rules = Set::getTypeDeclarationRules();
-        $expectedCount = \count(TypeDeclarationLevel::RULES) - self::WRAPPED_RULE_COUNT;
+        $guardMap = Set::getRuleGuardMap();
 
-        self::assertCount($expectedCount, $rules);
-
+        // All returned rules must not be in the guard map
         foreach ($rules as $rule) {
-            self::assertTrue(
-                is_a($rule, RectorInterface::class, true),
-                \sprintf('Rule %s does not implement RectorInterface', $rule)
+            self::assertArrayNotHasKey(
+                $rule,
+                $guardMap,
+                \sprintf('Rule %s is in the guard map but also in the explicit allowlist', $rule)
             );
         }
+
+        // All TypeDeclarationLevel::RULES must be covered by guard map + allowlist
+        $covered = array_merge(array_keys($guardMap), $rules);
+        $missing = array_diff(TypeDeclarationLevel::RULES, $covered);
+
+        self::assertEmpty(
+            $missing,
+            \sprintf(
+                'These rules from TypeDeclarationLevel::RULES are not covered by the guard map or explicit allowlist: %s',
+                implode(', ', $missing)
+            )
+        );
     }
 
     public function testGetRuleGuardMapCoversAllWrappedRules(): void
     {
         $guardMap = Set::getRuleGuardMap();
 
-        self::assertCount(self::WRAPPED_RULE_COUNT, $guardMap);
-
         foreach ($guardMap as $originalRectorClass => $guard) {
-            self::assertTrue(is_a($originalRectorClass, RectorInterface::class, true));
             self::assertContains($guard, [
                 BackwardCompatibleRector::GUARD_RETURN_TYPE,
                 BackwardCompatibleRector::GUARD_PARAM_TYPE,

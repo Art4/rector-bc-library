@@ -13,6 +13,7 @@ final class BackwardCompatibleRectorPropertyTypeTest extends AbstractRectorTestC
     /**
      * @dataProvider provideCases
      */
+    /** @dataProvider provideCases */
     #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
