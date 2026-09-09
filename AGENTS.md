@@ -313,3 +313,9 @@ Configured in `.php-cs-fixer.dist.php`:
 3. Add fixture tests in the appropriate `tests/Rector/BackwardCompatibleRector*` directory.
 4. Update `README.md` only if usage or supported levels change.
 5. Update `CHANGELOG.md` with notable additions/changes.
+
+---
+
+## Releasing
+
+Releases are developer-initiated, never agent-launched. Prepare up to the MR and stop there. See `docs/agents/releasing.md`.
