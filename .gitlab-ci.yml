@@ -40,7 +40,7 @@ phpstan-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0"]
-        RECTOR_VERSION: ["^2.3"]
+        RECTOR_VERSION: [">=2.5.8, <2.7"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 
@@ -50,7 +50,7 @@ phpunit-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
-        RECTOR_VERSION: ["^2.3"]
+        RECTOR_VERSION: [">=2.5.8, <2.7"]
   script:
     - mkdir -p build/test-reports
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always --log-junit build/test-reports/junit.xml
@@ -70,12 +70,17 @@ rector-tests:
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always
 
-# Rector <=2.4 hits a bug in Rector's own test-harness reflection code
-# (PHPStanContainerMemento assumes a private $container property on
-# PHPStan\Parser\RichParser that no longer exists) -- confirmed via a
-# stack trace entirely inside vendor/rector/rector, reproducible with
-# any phpstan/phpstan release, and fixed upstream by Rector 2.5. Kept
-# for visibility but non-blocking since we can't fix Rector's own code.
+# Rector 2.3.0-2.4.6 and 2.5.0-2.5.7 hit a bug in Rector's own parser
+# bootstrap (PHPStanContainerMemento assumes a private $container property
+# on PHPStan\Parser\RichParser that no longer exists) -- confirmed via a
+# stack trace entirely inside vendor/rector/rector, reproducible even
+# pinning PHPStan to the exact floor version those releases declare
+# support for. This crashes real `rector process` runs too, not just this
+# test suite -- verified with an actual end-to-end run, not just PHPUnit.
+# Fixed upstream at Rector 2.5.8; excluded in composer.json accordingly.
+# Kept here for visibility but non-blocking since we can't fix Rector's
+# own code. (Rector 2.3.3 is a narrow, isolated exception that works
+# despite sitting in this range -- not worth a matrix entry of its own.)
 rector-tests-legacy:
   <<: *default-php-job
   allow_failure: true
@@ -84,11 +89,46 @@ rector-tests-legacy:
       - PHP_VERSION: ["7.4"]
         RECTOR_VERSION: ["2.3.*"]
       - PHP_VERSION: ["8.0"]
-        RECTOR_VERSION: ["2.3.*", "2.4.*"]
+        RECTOR_VERSION: ["2.3.*", "2.4.*", "2.5.0"]
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always
 
-
+# Manually triggered, one-off audit: loops through every published patch
+# version matching RECTOR_VERSION_PATTERN in a single job run (not a
+# parallel:matrix -- one runner, no per-version spin-up cost) and fails on
+# the first one whose test suite doesn't pass. Run this before widening
+# composer.json's rector/rector upper bound to admit a new minor line --
+# it's the only way to honestly claim the whole line is supported, rather
+# than just the one patch a regular MR happened to pick up (which is
+# exactly how 2.3-2.5.7 ended up wrongly marked supported before).
+rector-version-audit:
+  <<: *default-php-job
+  rules:
+    - when: manual
+  variables:
+    PHP_VERSION: "8.0"
+    RECTOR_VERSION: ">=2.5.8, <2.7" # satisfies composer.json for the initial install; overridden per-version below
+    RECTOR_VERSION_PATTERN: '^2\.7\.'
+  script:
+    - |
+      VERSIONS=$(composer show -a rector/rector 2>/dev/null \
+        | awk -F': ' '/^versions/{print $2}' | tr ',' '\n' | tr -d ' ' \
+        | grep -E "${RECTOR_VERSION_PATTERN}" | sort -t. -k1,1n -k2,2n -k3,3n)
+      if [ -z "$VERSIONS" ]; then
+        echo "No published versions match pattern: ${RECTOR_VERSION_PATTERN}"
+        exit 1
+      fi
+      echo "Auditing: $VERSIONS"
+      FAILED=""
+      for V in $VERSIONS; do
+        echo "=== rector/rector:$V ==="
+        composer require "rector/rector:$V" --no-interaction --prefer-dist -q || { echo "FAIL (install) $V"; FAILED="$FAILED $V"; continue; }
+        vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always || { echo "FAIL (tests) $V"; FAILED="$FAILED $V"; }
+      done
+      if [ -n "$FAILED" ]; then
+        echo "Versions that failed:$FAILED"
+        exit 1
+      fi
 
 # PHPUnit coverage job (single PHP version, generates HTML + clover report)
 phpunit-coverage:
@@ -96,7 +136,7 @@ phpunit-coverage:
   parallel:
     matrix:
       - PHP_VERSION: ["8.2"]
-        RECTOR_VERSION: ["^2.3"]
+        RECTOR_VERSION: [">=2.5.8, <2.7"]
   script:
     # Try to install & enable Xdebug so PHPUnit can collect coverage. This is
     # best-effort (some runner images won't have build tools or pecl available),
