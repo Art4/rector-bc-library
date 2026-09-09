@@ -2,10 +2,10 @@
 
 ## Project Overview
 
-**art4/rector-bc-library** — a PHP library that wraps 29 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class.
+**art4/rector-bc-library** — a PHP library that wraps 34 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class. Another 40 type-declaration rules are reviewed as already BC-safe and pass through unwrapped (see `Set::getTypeDeclarationRules()`).
 
-- **PHP:** `^8.0`
-- **Runtime dependency:** `rector/rector ^2.3`
+- **PHP:** `^7.4 || ^8.0`
+- **Runtime dependency:** `rector/rector >=2.3, <2.6`
 - **Dev tools:** PHPUnit, PHPStan (level 10), PHP-CS-Fixer
 
 ---
@@ -25,13 +25,18 @@ config/set/
 └── bc-type-declaration.php       # Rector set config (consumers import this)
 tests/
 ├── SetTest.php                   # Verifies pass-through rule list, guard map, level logic
-└── Rector/                       # 3 consolidated test directories
+└── Rector/                       # one directory per guard strategy
     ├── BackwardCompatibleRectorReturnType/
     ├── BackwardCompatibleRectorParamType/
+    ├── BackwardCompatibleRectorParamTypeOnClass/
     └── BackwardCompatibleRectorPropertyType/
-        ├── <GuardStrategy>Test.php
+        ├── <GuardStrategy>Test.php       # covers one representative original Rector
         ├── config/configured_rule.php
-        └── Fixture/*.php.inc
+        ├── Fixture/*.php.inc
+        └── <OriginalRectorClassName>/    # one such unit per additional original Rector covered
+            ├── <OriginalRectorClassName>Test.php
+            ├── config/configured_rule.php
+            └── Fixture/*.php.inc
 ```
 
 ---
@@ -49,7 +54,7 @@ BackwardCompatibleRector::addRuleConfiguration(
 $rectorConfig->rule(BackwardCompatibleRector::class);
 ```
 
-The config in `config/set/bc-type-declaration.php` iterates `Set::getRuleGuardMap()` to register all 29 rule→guard mappings at once.
+The config in `config/set/bc-type-declaration.php` iterates `Set::getRuleGuardMap()` to register all 34 rule→guard mappings at once.
 
 At runtime, `BackwardCompatibleRector::refactor()` iterates all configured rules, delegates matching nodes to the correct guard strategy, and returns the first non-null result.
 
@@ -142,15 +147,15 @@ The set config (`config/set/bc-type-declaration.php`) consumes this map automati
 
 ### 3. If the original rule is in `TypeDeclarationLevel::RULES`
 
-Update `WRAPPED_RULE_COUNT` in `tests/SetTest.php`. The pass-through count adjusts dynamically.
+Nothing else to update — `tests/SetTest.php` derives every count it checks (allowlist/guard-map coverage, level sizing) dynamically from `Set::getTypeDeclarationRules()` and `Set::getRuleGuardMap()`, so it stays green without a manual count bump.
 
 ### 4. Add fixture tests
 
-Create a guard-strategy test directory or add fixtures to an existing one:
+Add a new subdirectory named after the original Rector class under the matching guard-strategy directory:
 
 ```
-tests/Rector/BackwardCompatibleRector<GuardStrategy>/
-├── BackwardCompatibleRector<GuardStrategy>Test.php
+tests/Rector/BackwardCompatibleRector<GuardStrategy>/<OriginalRectorClassName>/
+├── <OriginalRectorClassName>Test.php
 ├── config/configured_rule.php
 └── Fixture/
     ├── add_<case>.php.inc
@@ -181,19 +186,29 @@ return static function (RectorConfig $rectorConfig): void {
 
 ### Directory structure per guard strategy
 
+Each guard-strategy directory holds one self-contained test unit at its root (Test class + `config/configured_rule.php` + `Fixture/`) covering one representative original Rector, plus one such unit per additional original Rector in a subdirectory named after that Rector's class:
+
 ```
 tests/Rector/BackwardCompatibleRector<GuardStrategy>/
-├── BackwardCompatibleRector<GuardStrategy>Test.php
+├── BackwardCompatibleRector<GuardStrategy>Test.php   # representative original Rector
 ├── config/configured_rule.php
-└── Fixture/
-    ├── add_<case>.php.inc
-    └── skip_<case>.php.inc
+├── Fixture/
+│   ├── add_<case>.php.inc
+│   └── skip_<case>.php.inc
+└── <OriginalRectorClassName>/                        # additional original Rector, same guard
+    ├── <OriginalRectorClassName>Test.php
+    ├── config/configured_rule.php
+    └── Fixture/
+        ├── add_<case>.php.inc
+        └── skip_<case>.php.inc
 ```
 
 ### Test class pattern
 
+The test class name always matches its directory: `BackwardCompatibleRector<Strategy>Test` at a guard-strategy root, `<OriginalRectorClassName>Test` inside a per-rule subdirectory. Both follow the same body:
+
 ```php
-final class BackwardCompatibleRector<Strategy>Test extends AbstractRectorTestCase
+final class <TestClassName> extends AbstractRectorTestCase
 {
     /** @dataProvider provideCases */
     #[DataProvider('provideCases')]
@@ -257,12 +272,13 @@ For `add_*` fixtures, the after section shows the expected modified code.
 
 ## CI Pipeline (.gitlab-ci.yml)
 
-| Job              | PHP Versions     | Rector Versions | What it runs          |
-|------------------|------------------|-----------------|-----------------------|
-| phpstan-tests    | 7.4              | ^2.3            | PHPStan               |
-| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3            | PHPUnit               |
-| rector-tests     | 7.4              | 2.3.*, dev-main | PHPUnit (Rector compat) |
-| phpunit-coverage | 8.2              | ^2.3            | PHPUnit + Xdebug      |
+| Job              | PHP Versions     | Rector Versions                  | What it runs          |
+|------------------|------------------|-----------------------------------|-----------------------|
+| phpstan-tests    | 7.4, 8.0         | ^2.3                              | PHPStan               |
+| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3                              | PHPUnit               |
+| rector-tests     | 7.4              | 2.3.*                             | PHPUnit (Rector compat) |
+| rector-tests     | 8.0              | 2.3.*, 2.4.*, 2.5.*, dev-main     | PHPUnit (Rector compat) |
+| phpunit-coverage | 8.2              | ^2.3                              | PHPUnit + Xdebug      |
 
 ---
 
@@ -278,7 +294,7 @@ Configured in `.php-cs-fixer.dist.php`:
 ## Key Details for Agents
 
 - **`Set.php` is the public API.** It exports `BC_TYPE_DECLARATION` constant, `getTypeDeclarationRules()`, `getRuleGuardMap()`, and `withTypeCoverageLevel()`.
-- **Rule mapping is in `Set::getRuleGuardMap()`.** 29 original rules are mapped to 4 guard strategies. 44 rules pass through unchanged.
+- **Rule mapping is in `Set::getRuleGuardMap()`.** 34 original rules are mapped to 4 guard strategies. 40 rules pass through unchanged via `Set::getTypeDeclarationRules()`.
 - **Single rector class.** `BackwardCompatibleRector` uses a static container + static rule configs. Add new rules to the guard map, not as new classes.
 - **Prefer adding/adjusting guards over changing rector logic.** The guards encapsulate the actual BC heuristics.
 - **Always check `isFinal()` / `isPrivate()` / `isFinal() on class`** — these are the core BC checks.
@@ -292,7 +308,6 @@ Configured in `.php-cs-fixer.dist.php`:
 
 1. Run `composer test` and `composer cs` locally (use `docker run --rm -v "$(pwd):/app" -w /app php:8.3-cli php vendor/bin/phpunit` if host PHP lacks extensions).
 2. Add entry to `Set::getRuleGuardMap()` in `src/Set.php`.
-3. Update `WRAPPED_RULE_COUNT` in `tests/SetTest.php` if the set size changed.
-4. Add fixture tests in the appropriate `tests/Rector/BackwardCompatibleRector*` directory.
-5. Update `README.md` only if usage or supported levels change.
-6. Update `CHANGELOG.md` with notable additions/changes.
+3. Add fixture tests in the appropriate `tests/Rector/BackwardCompatibleRector*` directory.
+4. Update `README.md` only if usage or supported levels change.
+5. Update `CHANGELOG.md` with notable additions/changes.
