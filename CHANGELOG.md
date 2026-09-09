@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.1.0...main)
 
+### Added
+
+- Add `BinaryOpNullableToInstanceofRector` and `WhileNullableToInstanceofRector` to the reviewed-safe allowlist (new in Rector 2.5/2.6's `TypeDeclarationLevel::RULES`; both only rewrite `&&`/`||`/`while` conditions to `instanceof` checks, no class-member signature is touched)
+- Add explicit CI testing for Rector 2.6
+
+### Changed
+
+- Limit supported Rector versions to `>=2.3, <2.7` (adds Rector 2.6 support)
+
 ## [1.1.0 - 2026-07-25](https://gitlab.com/Art4/rector-bc-library/-/compare/1.0.0...1.1.0)
 
 ### Added
