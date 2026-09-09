@@ -11,7 +11,10 @@ variables:
   stage: test
   image: php:${PHP_VERSION}-cli
   before_script:
-    - apt-get update -qq
+    # PHP 7.4/8.0 images are pinned to Debian bullseye, which is EOL: its
+    # security suite's Release file has an expired Valid-Until, so apt-get
+    # update fails without this override.
+    - apt-get update -qq -o Acquire::Check-Valid-Until=false
     - apt-get install -y --no-install-recommends git unzip ca-certificates
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php --install-dir=/usr/local/bin --filename=composer

@@ -6,7 +6,7 @@ For the full contributor guide (BC compatibility matrix rationale, how-to-wrap-a
 
 ## What this is
 
-`art4/rector-bc-library` wraps 34 of Rector's type-declaration rules so they're safe for library maintainers: instead of blindly adding/narrowing a type, each wrapped rule first consults a **Guard** that checks whether the change could break downstream code that extends or calls the modified class (final/private status, per the Symfony BC Promise). Another 40 type-declaration rules are reviewed as already BC-safe and pass through unwrapped. PHP `^7.4 || ^8.0`; runtime dep is `rector/rector >=2.3, <2.6`.
+`art4/rector-bc-library` wraps 34 of Rector's type-declaration rules so they're safe for library maintainers: instead of blindly adding/narrowing a type, each wrapped rule first consults a **Guard** that checks whether the change could break downstream code that extends or calls the modified class (final/private status, per the Symfony BC Promise). Another 42 type-declaration rules are reviewed as already BC-safe and pass through unwrapped. PHP `^7.4 || ^8.0`; runtime dep is `rector/rector >=2.3, <2.6`.
 
 ## Commands
 

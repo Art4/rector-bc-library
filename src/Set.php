@@ -88,6 +88,8 @@ final class Set
         // Group F: Not type-declaration changes
         \Rector\TypeDeclaration\Rector\Empty_\EmptyOnNullableObjectToInstanceOfRector::class,
         \Rector\CodeQuality\Rector\Class_\ReturnIteratorInDataProviderRector::class,
+        \Rector\TypeDeclaration\Rector\BooleanAnd\BinaryOpNullableToInstanceofRector::class,
+        \Rector\TypeDeclaration\Rector\While_\WhileNullableToInstanceofRector::class,
     ];
 
     /**
