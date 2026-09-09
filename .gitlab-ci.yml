@@ -25,7 +25,7 @@ variables:
     - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
     - composer --version
     - composer install --prefer-dist --no-interaction
-    - composer require rector/rector:${RECTOR_VERSION} --no-interaction --prefer-dist
+    - composer require "rector/rector:${RECTOR_VERSION}" --no-interaction --prefer-dist
   cache:
     key: "${CI_COMMIT_REF_SLUG}-${PHP_VERSION}-${CI_JOB_NAME}"
     paths:
