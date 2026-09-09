@@ -10,5 +10,6 @@ parameters:
     - tests
   ignoreErrors:
     - '#Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
+    - '#Attribute class PHPUnit\\Framework\\Attributes\\Group does not exist\.#'
   excludePaths:
     - vendor
