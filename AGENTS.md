@@ -272,13 +272,15 @@ For `add_*` fixtures, the after section shows the expected modified code.
 
 ## CI Pipeline (.gitlab-ci.yml)
 
-| Job              | PHP Versions     | Rector Versions                  | What it runs          |
-|------------------|------------------|-----------------------------------|-----------------------|
-| phpstan-tests    | 7.4, 8.0         | ^2.3                              | PHPStan               |
-| phpunit-tests    | 7.4, 8.0–8.5     | ^2.3                              | PHPUnit               |
-| rector-tests     | 7.4              | 2.3.*                             | PHPUnit (Rector compat) |
-| rector-tests     | 8.0              | 2.3.*, 2.4.*, 2.5.*, dev-main     | PHPUnit (Rector compat) |
-| phpunit-coverage | 8.2              | ^2.3                              | PHPUnit + Xdebug      |
+| Job                 | PHP Versions     | Rector Versions      | What it runs          |
+|---------------------|------------------|----------------------|-----------------------|
+| phpstan-tests       | 7.4, 8.0         | ^2.3                 | PHPStan               |
+| phpunit-tests       | 7.4, 8.0–8.5     | ^2.3                 | PHPUnit               |
+| rector-tests        | 8.0              | 2.5.*, dev-main       | PHPUnit (Rector compat) |
+| rector-tests-legacy | 7.4, 8.0         | 2.3.*, 2.4.*          | PHPUnit (Rector compat), `allow_failure: true` |
+| phpunit-coverage    | 8.2              | ^2.3                 | PHPUnit + Xdebug      |
+
+`rector-tests-legacy` is expected to fail: Rector <=2.4's own test-harness reflection code (`PHPStanContainerMemento`) assumes a private `$container` property on `PHPStan\Parser\RichParser` that no longer exists in any currently-installable PHPStan release — a bug entirely inside `vendor/rector/rector`, fixed upstream in Rector 2.5. It's kept in the pipeline for visibility but non-blocking since it can't be fixed from this repo.
 
 ---
 
