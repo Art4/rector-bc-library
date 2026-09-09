@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `BinaryOpNullableToInstanceofRector` and `WhileNullableToInstanceofRector` to the reviewed-safe allowlist (new in Rector 2.5/2.6's `TypeDeclarationLevel::RULES`; both only rewrite `&&`/`||`/`while` conditions to `instanceof` checks, no class-member signature is touched)
+- Add `BinaryOpNullableToInstanceofRector` and `WhileNullableToInstanceofRector` to the reviewed-safe allowlist (new in Rector 2.6's `TypeDeclarationLevel::RULES` — the rule classes already existed in 2.5.9's vendor tree but weren't registered in `TypeDeclarationLevel::RULES` until 2.6.0; both only rewrite `&&`/`||`/`while` conditions to `instanceof` checks, no class-member signature is touched)
 - Add explicit CI testing for Rector 2.6
 - Add manual, on-demand `rector-version-audit` CI job to exhaustively test every patch version of a given Rector minor line before widening `composer.json`'s upper bound to admit it
 
