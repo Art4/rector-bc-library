@@ -268,6 +268,14 @@ For `add_*` fixtures, the after section shows the expected modified code.
 
 **PHPStan:** Level 10, `treatPhpDocTypesAsCertain: false`, scans `src/` and `tests/`, includes phpstan-phpunit extension.
 
+Run a single test file or case directly (composer scripts don't take extra args):
+
+```bash
+vendor/bin/phpunit tests/SetTest.php
+vendor/bin/phpunit --filter testGetTypeDeclarationRulesReturnsExplicitAllowlist
+vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFromPropertyTypeRector
+```
+
 ---
 
 ## CI Pipeline (.gitlab-ci.yml)
