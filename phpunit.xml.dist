@@ -17,7 +17,14 @@
          displayDetailsOnPhpunitDeprecations="true">
   <php>
     <ini name="error_reporting" value="E_ALL" />
-    <ini name="display_errors" value="1" />
+    <!--
+      Kept off: on PHP 7.4, Rector's own PHP<8 polyfill (entropy/entropy)
+      triggers a ReflectionType::__toString() deprecation notice that PHP
+      prints directly to stdout, independent of PHPUnit's own deprecation
+      handler (still active via error_reporting above) — with this on, that
+      raw print trips beStrictAboutOutputDuringTests as "unexpected output".
+    -->
+    <ini name="display_errors" value="0" />
   </php>
   <testsuites>
     <testsuite name="default">
