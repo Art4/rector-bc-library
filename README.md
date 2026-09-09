@@ -2,10 +2,13 @@
 
 Backward-compatible Rector rules for library maintainers.
 
-| Library Version | Rector 2.5 | Rector 2.4 | Rector 2.3 | Rector 2.2 |
-| --------------- | ---------- | ---------- | ---------- | ---------- |
-| 1.1             | ✅         | ✅         | ✅         | ❌         |
-| 1.0             | ❌         | ❌         | ✅         | ✅         |
+| Library Version | Rector 2.6 | Rector 2.5 | Rector 2.4 | Rector 2.3 | Rector 2.2 |
+| --------------- | ---------- | ---------- | ---------- | ---------- | ---------- |
+| 1.2             | ✅         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
+| 1.1             | ❌         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
+| 1.0             | ❌         | ❌         | ❌         | ✅         | ✅         |
+
+[^1]: Rector 2.3.0–2.4.6 and 2.5.0–2.5.7 hit a bug in Rector's own parser bootstrap (`PHPStanContainerMemento` reflecting into a private property that no longer exists on `PHPStan\Parser\RichParser`), which crashes `rector process` outright — this is a Rector-internal bug, not something this library can guard against. Rector 2.3.3 happens to be an isolated exception that works despite sitting in the broken range, but it's too narrow and inconsistent (fails on some PHP versions with an unrelated error) to rely on. This corrects the previous table, which incorrectly listed 2.3 and 2.4 as supported.
 
 ## Installation
 

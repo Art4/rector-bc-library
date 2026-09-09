@@ -25,6 +25,13 @@ final class Set
      * confirmed to be BC-safe (function/closure scope, private-only, test-only,
      * framework-specific, or has its own guard).
      *
+     * Filtered to rules that exist in the installed Rector version: unlike
+     * getRuleGuardMap() (resolved defensively via class_exists() in
+     * BackwardCompatibleRector::resolveOriginalRector()), this list is passed
+     * straight to RectorConfig::rules() by config/set/bc-type-declaration.php,
+     * which throws on an unknown class. A rule reviewed here may not exist yet
+     * on an older Rector release the consumer has installed.
+     *
      * To get the full set of backward-compatible rules, import the set config:
      *
      *   RectorConfig::configure()
@@ -35,7 +42,7 @@ final class Set
      */
     public static function getTypeDeclarationRules(): array
     {
-        return self::REVIEWED_SAFE_RULES;
+        return array_values(array_filter(self::REVIEWED_SAFE_RULES, '\class_exists'));
     }
 
     /**
