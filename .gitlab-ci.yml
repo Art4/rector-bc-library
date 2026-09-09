@@ -149,7 +149,11 @@ phpunit-coverage:
     - php -m | grep -i xdebug || true
     - export XDEBUG_MODE=coverage
     - mkdir -p build/coverage
-    - ./vendor/bin/phpunit --configuration=./phpunit.xml.dist --coverage-text --coverage-clover=build/coverage/clover.xml
+    # -d memory_limit=1G: Xdebug's coverage instrumentation is memory-hungry,
+    # and BcTypeDeclarationSetConfigTest builds a full RectorConfig container
+    # registering every rule -- confirmed to exceed a constrained memory_limit
+    # (256M) under coverage while the rest of the suite doesn't.
+    - php -d memory_limit=1G ./vendor/bin/phpunit --configuration=./phpunit.xml.dist --coverage-text --coverage-clover=build/coverage/clover.xml
   coverage: '/^\s*Lines:\s*\d+.\d+\%/'
   artifacts:
     when: always
