@@ -6,6 +6,7 @@ namespace Art4\RectorBcLibrary\Tests;
 
 use Art4\RectorBcLibrary\Rector\BackwardCompatibleRector;
 use Art4\RectorBcLibrary\Set;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\RectorConfig;
 
@@ -19,7 +20,18 @@ use Rector\Config\RectorConfig;
  * exist yet in the installed Rector version -- exactly the bug that let an
  * unguarded Set::getTypeDeclarationRules() entry crash real `rector process`
  * runs on older Rector releases without ever failing our own test suite.
+ *
+ * Excluded from the coverage job (--exclude-group memory-intensive): building
+ * a full RectorConfig and registering every rule is memory-heavy enough under
+ * Xdebug's coverage instrumentation to get OOM-killed on the CI runner (no
+ * PHP-level error, just exit 255) -- confirmed unrelated to this test's own
+ * correctness, and unaffected by raising memory_limit, which doesn't help
+ * against a container's hard memory ceiling. Still runs fully (without
+ * coverage) in phpunit-tests/rector-tests.
+ *
+ * @group memory-intensive
  */
+#[Group('memory-intensive')]
 final class BcTypeDeclarationSetConfigTest extends TestCase
 {
     protected function tearDown(): void
