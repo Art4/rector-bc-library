@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.2.0...main)
 
+### Added
+
+- Add wrapper for `BoolReturnTypeFromBooleanConstAndStrictReturnsRector` (new in Rector 2.7's `TypeDeclarationLevel::RULES`) with the return-type guard — unwrapped, it adds `: bool` to public methods of non-final classes
+- Add explicit CI testing for Rector 2.7
+
+### Changed
+
+- Limit supported Rector versions to `>=2.5.8, <2.8` (was `>=2.5.8, <2.7`) — adds Rector 2.7 support
+
 ## [1.2.0 - 2026-09-09](https://gitlab.com/Art4/rector-bc-library/-/compare/1.1.0...1.2.0)
 
 ### Fixed

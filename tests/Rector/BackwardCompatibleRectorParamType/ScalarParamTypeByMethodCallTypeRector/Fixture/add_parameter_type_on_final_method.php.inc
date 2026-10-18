@@ -4,7 +4,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleRectorParamType\Sc
 
 class SomeTypedService
 {
-    public function run(string $name): void
+    public function run(int $number): void
     {}
 }
 
@@ -27,7 +27,7 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleRectorParamType\Sc
 
 class SomeTypedService
 {
-    public function run(string $name): void
+    public function run(int $number): void
     {}
 }
 
@@ -38,7 +38,7 @@ class UseDependency
     ) {
     }
 
-    final public function go(string $value)
+    final public function go(int $value)
     {
         $this->someTypedService->run($value);
     }
