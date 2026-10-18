@@ -23,6 +23,7 @@ variables:
     - apt-get install -y --no-install-recommends git unzip ca-certificates
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - php -r "unlink('composer-setup.php');"
     - composer --version
     - composer install --prefer-dist --no-interaction
     - composer require "rector/rector:${RECTOR_VERSION}" --no-interaction --prefer-dist
