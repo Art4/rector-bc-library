@@ -292,6 +292,16 @@ vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFr
 
 ---
 
+## Supported Rector Versions
+
+Every `rector/rector` version that `composer.json` admits must have been tested at least once — patch releases included. Never claim support for a version nobody ran the suite against: that is how 2.3–2.5.7 ended up wrongly marked supported before 1.2.0.
+
+- **Widening the upper bound** to admit a new minor line: run the suite against every published patch of that line (manual `rector-version-audit` job, or locally via Docker) before merging. A green `rector-tests: [x.y.*]` job only proves the latest patch.
+- **Patches released into an already-admitted line** are covered by the constraint automatically, but untested. Before each release, test every patch published since the last full check.
+- Record which versions were tested (MR description or CHANGELOG), so the next check knows where to pick up.
+
+---
+
 ## Code Style
 
 Configured in `.php-cs-fixer.dist.php`:
