@@ -138,8 +138,8 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
         }
 
         // Skip deprecated rectors that throw ShouldNotHappenException in refactor()
-        if (\interface_exists(\Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class)
-            && \is_a($class, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
+        if (interface_exists(\Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class)
+            && is_a($class, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
         ) {
             return null;
         }

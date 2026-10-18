@@ -23,6 +23,7 @@ variables:
     - apt-get install -y --no-install-recommends git unzip ca-certificates
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - php -r "unlink('composer-setup.php');"
     - composer --version
     - composer install --prefer-dist --no-interaction
     - composer require "rector/rector:${RECTOR_VERSION}" --no-interaction --prefer-dist
@@ -35,14 +36,26 @@ variables:
   tags: []
 
 # PHPStan job (static analysis)
+# Runs against the newest admitted Rector and the lowest supported one: a rule
+# referenced via ::class that the oldest Rector doesn't ship yet would only
+# show up there. Keep "2.5.8" in sync with composer.json's lower bound.
 phpstan-tests:
   <<: *default-php-job
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0"]
-        RECTOR_VERSION: [">=2.5.8, <2.8"]
+        RECTOR_VERSION: ["2.5.8", ">=2.5.8, <2.8"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
+
+# Code style check (composer cs:check)
+cs-check:
+  <<: *default-php-job
+  variables:
+    PHP_VERSION: "8.3"
+    RECTOR_VERSION: ">=2.5.8, <2.8"
+  script:
+    - vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --dry-run
 
 # PHPUnit job (unit tests)
 phpunit-tests:

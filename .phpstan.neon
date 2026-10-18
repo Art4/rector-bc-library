@@ -11,9 +11,10 @@ parameters:
   ignoreErrors:
     - '#Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
     - '#Attribute class PHPUnit\\Framework\\Attributes\\Group does not exist\.#'
-    # Version-dependent skip in tests: is_a() is statically true or false depending on the installed Rector version
+    # Version-dependent checks in tests (rule exists / is deprecated): is_a() is
+    # statically true or false depending on the installed Rector version
     -
-      message: '#Call to function is_a\(\) with .+DeprecatedInterface.+ will always evaluate to (true|false)\.#'
+      message: '#Call to function is_a\(\) with .+(DeprecatedInterface|RectorInterface).+ will always evaluate to (true|false)\.#'
       path: tests/*
   excludePaths:
     - vendor
