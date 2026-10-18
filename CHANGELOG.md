@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `Set::getTypeDeclarationRules()` (and thus the `BC_TYPE_DECLARATION` set) no longer registers rules that are deprecated in the installed Rector version. Prepares for the upcoming Rector 2.8: its development branch deprecates `EmptyOnNullableObjectToInstanceOfRector` and `WhileNullableToInstanceofRector` and would otherwise print a deprecation warning on every `rector process` run. No effect on Rector 2.5.8–2.7.
 - Limit supported Rector versions to `>=2.5.8, <2.8` (was `>=2.5.8, <2.7`) — adds Rector 2.7 support
 
 ## [1.2.0 - 2026-09-09](https://gitlab.com/Art4/rector-bc-library/-/compare/1.1.0...1.2.0)

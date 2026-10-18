@@ -14,6 +14,12 @@ final class ArrayParamTypeByMethodCallTypeRectorTest extends AbstractRectorTestC
     #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class)
+            || is_a(\Rector\TypeDeclaration\Rector\ClassMethod\ArrayParamTypeByMethodCallTypeRector::class, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
+        ) {
+            self::markTestSkipped('Rule is missing or deprecated in the installed Rector version');
+        }
+
         $this->doTestFile($filePath);
     }
 
