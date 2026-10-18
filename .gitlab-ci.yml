@@ -35,12 +35,15 @@ variables:
   tags: []
 
 # PHPStan job (static analysis)
+# Runs against the newest admitted Rector and the lowest supported one: a rule
+# referenced via ::class that the oldest Rector doesn't ship yet would only
+# show up there. Keep "2.5.8" in sync with composer.json's lower bound.
 phpstan-tests:
   <<: *default-php-job
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0"]
-        RECTOR_VERSION: [">=2.5.8, <2.8"]
+        RECTOR_VERSION: ["2.5.8", ">=2.5.8, <2.8"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 

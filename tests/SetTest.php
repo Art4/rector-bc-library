@@ -76,6 +76,14 @@ final class SetTest extends TestCase
         );
     }
 
+    public function testWithTypeCoverageLevelReturnsOnlyRulesUpToLevel(): void
+    {
+        $rules = Set::getTypeDeclarationRules();
+
+        self::assertSame([$rules[0]], Set::withTypeCoverageLevel(0));
+        self::assertSame(\array_slice($rules, 0, 3), Set::withTypeCoverageLevel(2));
+    }
+
     public function testWithTypeCoverageLevelWithTooHighLevelThrowsException(): void
     {
         $rules = Set::getTypeDeclarationRules();

@@ -120,7 +120,11 @@ final class Set
      */
     public static function getRuleGuardMap(): array
     {
-        return [
+        // Rules that don't exist in every supported Rector version are written as
+        // string literals instead of ::class, so static analysis against an older
+        // Rector doesn't report them as unknown classes.
+        /** @var array<class-string<\Rector\Contract\Rector\RectorInterface>, string> $map */
+        $map = [
             \Rector\TypeDeclaration\Rector\Class_\ReturnTypeFromStrictTernaryRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\Property\TypedPropertyFromStrictConstructorRector::class => BackwardCompatibleRector::GUARD_PROPERTY_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamFromDimFetchKeyUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE_ON_CLASS,
@@ -131,7 +135,7 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
-            \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstAndStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            'Rector\\TypeDeclaration\\Rector\\ClassMethod\\BoolReturnTypeFromBooleanConstAndStrictReturnsRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector >= 2.7
             \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\NumericReturnTypeFromStrictScalarReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
@@ -157,6 +161,8 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\StrictStringParamConcatRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\FunctionLike\AddReturnTypeDeclarationFromYieldsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
         ];
+
+        return $map;
     }
 
     /**
@@ -179,33 +185,7 @@ final class Set
             );
         }
 
-        try {
-            $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
-        } catch (\InvalidArgumentException $exception) {
-            // Rector 2.3/2.4 compat: some safe-list rules don't implement RectorInterface
-            $rulesCount = \count(self::getTypeDeclarationRules());
-            $maxLevelGap = 10;
-
-            if ($rulesCount + $maxLevelGap < $level) {
-                throw new \DomainException(\sprintf(
-                    <<<'TEXT'
-                        The "->withRules(\%1$s::%2$s())" level contains only %3$d rules, but you set level to %4$s. You are using the full set now!
-
-                        Time to switch to the more efficient set:
-
-                        ->withSets([
-                            \%1$s::BC_TYPE_DECLARATION
-                        ])
-                        TEXT,
-                    __CLASS__,
-                    __FUNCTION__,
-                    $rulesCount,
-                    $level
-                ));
-            }
-
-            return self::getTypeDeclarationRules();
-        }
+        $levelRules = \Rector\Configuration\Levels\LevelRulesResolver::resolve($level, self::getTypeDeclarationRules(), __METHOD__);
 
         $levelRulesCount = \count($levelRules);
         $maxLevelGap = 10;

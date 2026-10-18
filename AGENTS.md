@@ -233,6 +233,8 @@ final class <TestClassName> extends AbstractRectorTestCase
 
 If the original Rector does not exist in every supported Rector version, or is deprecated in some (`DeprecatedInterface` — `BackwardCompatibleRector` then skips it, so `add_*` fixtures would fail), skip in `test()` with `self::markTestSkipped()` and guard the rule registration in `config/configured_rule.php` with `class_exists()`. Never return an empty iterator from the data provider instead: PHPUnit 12 treats an empty data set as an error.
 
+Reference such a rule as a string literal, not via `::class`: in `Set::getRuleGuardMap()` (the map carries a `@var array<class-string<RectorInterface>, string>`) and in the test config (narrowed with `is_a($rule, RectorInterface::class, true)`). PHPStan reports `::class` of a class missing from the installed Rector as an error, and CI runs PHPStan against the lowest supported Rector too. See `BoolReturnTypeFromBooleanConstAndStrictReturnsRector` (Rector >= 2.7) for an example.
+
 ### Fixture naming conventions
 
 - `add_*.php.inc` — files where the wrapper SHOULD apply the change
@@ -286,7 +288,7 @@ vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFr
 
 | Job                 | PHP Versions     | Rector Versions               | What it runs          |
 |---------------------|------------------|-------------------------------|-----------------------|
-| phpstan-tests       | 7.4, 8.0         | >=2.5.8, <2.8                 | PHPStan               |
+| phpstan-tests       | 7.4, 8.0         | 2.5.8, >=2.5.8, <2.8          | PHPStan               |
 | phpunit-tests       | 7.4, 8.0–8.5     | >=2.5.8, <2.8                 | PHPUnit               |
 | rector-tests        | 8.0              | 2.5.*, 2.6.*, 2.7.*, dev-main | PHPUnit (Rector compat) |
 | rector-tests-legacy | 7.4, 8.0         | 2.3.*, 2.4.*, 2.5.0           | PHPUnit (Rector compat), `allow_failure: true` |

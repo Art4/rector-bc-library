@@ -11,11 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add wrapper for `BoolReturnTypeFromBooleanConstAndStrictReturnsRector` (new in Rector 2.7's `TypeDeclarationLevel::RULES`) with the return-type guard — unwrapped, it adds `: bool` to public methods of non-final classes
 - Add explicit CI testing for Rector 2.7
+- Add CI static analysis against the lowest supported Rector version (2.5.8), so references to rules missing from older Rector releases (as happened with the Rector 2.7-only rule) are caught
 
 ### Changed
 
 - `Set::getTypeDeclarationRules()` (and thus the `BC_TYPE_DECLARATION` set) no longer registers rules that are deprecated in the installed Rector version. Prepares for the upcoming Rector 2.8: its development branch deprecates `EmptyOnNullableObjectToInstanceOfRector` and `WhileNullableToInstanceofRector` and would otherwise print a deprecation warning on every `rector process` run. No effect on Rector 2.5.8–2.7.
 - Limit supported Rector versions to `>=2.5.8, <2.8` (was `>=2.5.8, <2.7`) — adds Rector 2.7 support
+
+### Removed
+
+- Remove the unreachable Rector 2.3/2.4 fallback from `Set::withTypeCoverageLevel()`. It could only trigger on Rector versions that are no longer supported, and it ignored the requested level and returned every rule.
 
 ## [1.2.0 - 2026-09-09](https://gitlab.com/Art4/rector-bc-library/-/compare/1.1.0...1.2.0)
 
