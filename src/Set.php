@@ -32,6 +32,10 @@ final class Set
      * which throws on an unknown class. A rule reviewed here may not exist yet
      * on an older Rector release the consumer has installed.
      *
+     * Rules deprecated in the installed Rector version (DeprecatedInterface) are
+     * filtered out too: Rector warns on every run for each registered deprecated
+     * rule, and a deprecated rule no longer changes any code anyway.
+     *
      * To get the full set of backward-compatible rules, import the set config:
      *
      *   RectorConfig::configure()
@@ -42,7 +46,19 @@ final class Set
      */
     public static function getTypeDeclarationRules(): array
     {
-        return array_values(array_filter(self::REVIEWED_SAFE_RULES, '\class_exists'));
+        return array_values(array_filter(
+            self::REVIEWED_SAFE_RULES,
+            static fn(string $rule): bool => class_exists($rule) && ! self::isDeprecated($rule)
+        ));
+    }
+
+    /**
+     * Separate method so static analysis doesn't resolve the result for the
+     * Rector version it happens to run against.
+     */
+    private static function isDeprecated(string $rule): bool
+    {
+        return is_a($rule, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true);
     }
 
     /**

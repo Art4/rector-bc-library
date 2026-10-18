@@ -14,15 +14,17 @@ final class ScalarParamTypeByMethodCallTypeRectorTest extends AbstractRectorTest
     #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class)
+            || is_a(\Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
+        ) {
+            self::markTestSkipped('Rule is missing or deprecated in the installed Rector version');
+        }
+
         $this->doTestFile($filePath);
     }
 
     public static function provideCases(): Iterator
     {
-        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\ScalarParamTypeByMethodCallTypeRector::class)) {
-            return new \ArrayIterator([]);
-        }
-
         return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');
     }
 

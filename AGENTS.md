@@ -229,6 +229,10 @@ final class <TestClassName> extends AbstractRectorTestCase
 }
 ```
 
+### Rules missing or deprecated in some Rector versions
+
+If the original Rector does not exist in every supported Rector version, or is deprecated in some (`DeprecatedInterface` — `BackwardCompatibleRector` then skips it, so `add_*` fixtures would fail), skip in `test()` with `self::markTestSkipped()` and guard the rule registration in `config/configured_rule.php` with `class_exists()`. Never return an empty iterator from the data provider instead: PHPUnit 12 treats an empty data set as an error.
+
 ### Fixture naming conventions
 
 - `add_*.php.inc` — files where the wrapper SHOULD apply the change

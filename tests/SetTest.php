@@ -10,6 +10,7 @@ use DomainException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\Level\TypeDeclarationLevel;
+use Rector\Configuration\Deprecation\Contract\DeprecatedInterface;
 
 final class SetTest extends TestCase
 {
@@ -38,6 +39,16 @@ final class SetTest extends TestCase
                 implode(', ', $missing)
             )
         );
+    }
+
+    public function testGetTypeDeclarationRulesExcludesDeprecatedRules(): void
+    {
+        foreach (Set::getTypeDeclarationRules() as $rule) {
+            self::assertFalse(
+                is_a($rule, DeprecatedInterface::class, true),
+                \sprintf('Rule %s is deprecated in the installed Rector version and must not be registered', $rule)
+            );
+        }
     }
 
     public function testGetRuleGuardMapCoversAllWrappedRules(): void
