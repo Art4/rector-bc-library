@@ -15,8 +15,9 @@ Read the `[Unreleased]` section and classify it: any breaking change → major, 
 _Done_: the developer confirms the version (or corrects it).
 
 **2. Supported-range integrity gate** [blocking]
-If `[Unreleased]` claims a supported-range change (e.g. a widened or narrowed `rector/rector` constraint, an EOL PHP drop), verify `composer.json`'s constraints and the matrix in `.gitlab-ci.yml` actually match that claim. A mismatch is a hard stop: resolve it before proceeding. The manual `rector-version-audit` job and `rector-tests-legacy` (allowed to fail, by design) are not part of the declared supported range and need no action here.
-_Done_: no claim with a mismatch; or the mismatch is resolved.
+If `[Unreleased]` claims a supported-range change (e.g. a widened or narrowed `rector/rector` constraint, an EOL PHP drop), verify `composer.json`'s constraints and the matrix in `.gitlab-ci.yml` actually match that claim. A mismatch is a hard stop: resolve it before proceeding. `rector-tests-legacy` (allowed to fail, by design) is not part of the declared supported range and needs no action here.
+Independently of `[Unreleased]`, check that every `rector/rector` version admitted by `composer.json` has been tested at least once — including patches published since the last release (see "Supported Rector Versions" in `AGENTS.md`). An untested admitted version is a hard stop: test it (manual `rector-version-audit` job, or locally via Docker) before proceeding.
+_Done_: no claim with a mismatch, and every admitted Rector version has been tested; or both are resolved.
 
 **3. Prepare the release branch**
 From up-to-date `main`, create the branch `release-<X.Y>` (minor only, matching this repo's existing branches — not `release-<X.Y.Z>`) and rewrite `CHANGELOG.md`:
@@ -71,6 +72,6 @@ _Done_: the new version is live on Packagist.
 ## Reference
 
 - **Version classification** — breaking change in `[Unreleased]` → major; new behavior → minor; fixes only → patch. The type is read from the changelog, never the developer's mood.
-- **Supported-range gate interpretation** — a release publicly restates the supported range (`composer.json` + README's compatibility table + `.gitlab-ci.yml`'s matrix), so all three must agree with what `[Unreleased]` claims.
+- **Supported-range gate interpretation** — a release publicly restates the supported range (`composer.json` + README's compatibility table + `.gitlab-ci.yml`'s matrix), so all three must agree with what `[Unreleased]` claims — and every version inside that range must have been tested at least once.
 - **Keep a Changelog** — the changelog must follow the repo's existing conventions: section headers with `compare/<from>...<to>` links, ISO dates, and category grouping (Added / Changed / Deprecated / Removed / Fixed / Security).
 - **Irreversible = the developer's hands** — merging the MR, pushing the tag, and any GitLab Release edits are developer-only. An agent prepares up to the MR and stops.
