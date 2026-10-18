@@ -47,6 +47,15 @@ phpstan-tests:
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 
+# Code style check (composer cs:check)
+cs-check:
+  <<: *default-php-job
+  variables:
+    PHP_VERSION: "8.3"
+    RECTOR_VERSION: ">=2.5.8, <2.8"
+  script:
+    - vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --dry-run
+
 # PHPUnit job (unit tests)
 phpunit-tests:
   <<: *default-php-job

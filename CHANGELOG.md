@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add wrapper for `BoolReturnTypeFromBooleanConstAndStrictReturnsRector` (new in Rector 2.7's `TypeDeclarationLevel::RULES`) with the return-type guard — unwrapped, it adds `: bool` to public methods of non-final classes
 - Add explicit CI testing for Rector 2.7
+- Add a CI code style check (`cs:check`)
 - Add CI static analysis against the lowest supported Rector version (2.5.8), so references to rules missing from older Rector releases (as happened with the Rector 2.7-only rule) are caught
 
 ### Changed

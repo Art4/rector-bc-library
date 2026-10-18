@@ -289,6 +289,7 @@ vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFr
 | Job                 | PHP Versions     | Rector Versions               | What it runs          |
 |---------------------|------------------|-------------------------------|-----------------------|
 | phpstan-tests       | 7.4, 8.0         | 2.5.8, >=2.5.8, <2.8          | PHPStan               |
+| cs-check            | 8.3              | >=2.5.8, <2.8                 | PHP-CS-Fixer (dry-run) |
 | phpunit-tests       | 7.4, 8.0–8.5     | >=2.5.8, <2.8                 | PHPUnit               |
 | rector-tests        | 8.0              | 2.5.*, 2.6.*, 2.7.*, dev-main | PHPUnit (Rector compat) |
 | rector-tests-legacy | 7.4, 8.0         | 2.3.*, 2.4.*, 2.5.0           | PHPUnit (Rector compat), `allow_failure: true` |
