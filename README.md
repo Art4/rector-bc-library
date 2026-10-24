@@ -36,8 +36,8 @@ use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
     ->withPreparedSets(
-        // NOTE: Deactivate the default prepared typeDeclaration set with `false`
-        typeDeclaraion: false
+        // NOTE: Do not enable the prepared typeDeclarations set (keep it `false`)
+        typeDeclarations: false
     )
     // Instead import this package's set as replacement
     ->withSets([
@@ -58,7 +58,7 @@ use Rector\Config\RectorConfig;
 return RectorConfig::configure()
     // NOTE: Do not use the withTypeCoverageLevel() method
     //->withTypeCoverageLevel(25)
-    >withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(25))
+    ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(25))
 ;
 ```
 

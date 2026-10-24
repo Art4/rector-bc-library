@@ -172,7 +172,7 @@ final class Set
      * Use this method in consumer projects instead of RectorConfig::configure()->withTypeCoverageLevel():
      *
      *   RectorConfig::configure()
-     *     ->withRules([\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(0)])
+     *     ->withRules(\Art4\RectorBcLibrary\Set::withTypeCoverageLevel(0))
      *   ;
      *
      * @return array<class-string<\Rector\Contract\Rector\RectorInterface>>
