@@ -46,10 +46,14 @@ final class Set
      */
     public static function getTypeDeclarationRules(): array
     {
-        return array_values(array_filter(
+        // class_exists() proves the entries are rule classes, but static analysis can't see through the string literals
+        /** @var array<class-string<\Rector\Contract\Rector\RectorInterface>> $rules */
+        $rules = array_values(array_filter(
             self::REVIEWED_SAFE_RULES,
             static fn(string $rule): bool => class_exists($rule) && ! self::isDeprecated($rule)
         ));
+
+        return $rules;
     }
 
     /**
@@ -62,7 +66,11 @@ final class Set
     }
 
     /**
-     * @var array<class-string<\Rector\Contract\Rector\RectorInterface>>
+     * Rules that don't exist in every supported Rector version are written as
+     * string literals instead of ::class, so static analysis against an older
+     * Rector doesn't report them as unknown classes.
+     *
+     * @var array<string>
      */
     private const REVIEWED_SAFE_RULES = [
         // Group A: Function/Closure scope only — no class method/property risk
