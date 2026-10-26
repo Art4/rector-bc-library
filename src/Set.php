@@ -84,7 +84,8 @@ final class Set
         \Rector\TypeDeclaration\Rector\ClassMethod\PrivateMethodReturnTypeFromStrictNewArrayRector::class,
         // Group C: Test/infrastructure-specific context (restricted scope)
         \Rector\TypeDeclaration\Rector\Class_\AddTestsVoidReturnTypeWhereNoReturnRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromMockObjectRector::class,
+        'Rector\\TypeDeclaration\\Rector\\ClassMethod\\ReturnTypeFromMockObjectRector', // Rector < 2.8
+        'Rector\\TypeDeclaration\\Rector\\Class_\\ReturnTypeFromMockObjectRector', // Rector >= 2.8
         \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromCreateMockAssignRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
         \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromContainerGetSetUpRector::class,
