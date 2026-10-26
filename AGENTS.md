@@ -5,7 +5,7 @@
 **art4/rector-bc-library** — a PHP library that wraps 35 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class. Another 42 type-declaration rules are reviewed as already BC-safe and pass through unwrapped (see `Set::getTypeDeclarationRules()`).
 
 - **PHP:** `^7.4 || ^8.0`
-- **Runtime dependency:** `rector/rector >=2.5.8, <2.8`
+- **Runtime dependency:** `rector/rector >=2.5.8, <2.9`
 - **Dev tools:** PHPUnit, PHPStan (level 10), PHP-CS-Fixer
 
 ---
@@ -73,6 +73,8 @@ refactor(node):
 **Guard:** `BackwardCompatibleClassMethodReturnTypeOverrideGuard`
 - Wraps Rector's built-in `ClassMethodReturnTypeOverrideGuard`, adds Symfony BC checks
 - Skips if: method is NOT final, NOT private, AND class is NOT final
+
+**Class-level return rules (Rector >= 2.8):** some return-type rules visit the whole `ClassLike` instead of single `ClassMethod` nodes (`AddVoidReturnTypeWhereNoReturnRector`). For such nodes the guard cannot just return early, so `BackwardCompatibleRector` protects the skipped methods with a sentinel return type (`__SKIP_ADDING_RETURN_TYPE__`) before running the original rule and restores them afterwards (Strategy B pattern). Only `Class_` nodes are visited: the wrapper does not register `Trait_` / `Enum_`.
 
 #### Strategy B: Protect + Restore (GUARD_PARAM_TYPE / GUARD_PROPERTY_TYPE)
 
@@ -235,6 +237,8 @@ If the original Rector does not exist in every supported Rector version, or is d
 
 Reference such a rule as a string literal, not via `::class`: in `Set::getRuleGuardMap()` (the map carries a `@var array<class-string<RectorInterface>, string>`) and in the test config (narrowed with `is_a($rule, RectorInterface::class, true)`). PHPStan reports `::class` of a class missing from the installed Rector as an error, and CI runs PHPStan against the lowest supported Rector too. See `BoolReturnTypeFromBooleanConstAndStrictReturnsRector` (Rector >= 2.7) for an example.
 
+A rule that was **moved to another namespace** (`AddVoidReturnTypeWhereNoReturnRector` and `ReturnTypeFromMockObjectRector` in Rector 2.8) is registered under both names; only the one that exists in the installed Rector is used. Loop over both names in the test config, see `tests/Rector/BackwardCompatibleRectorReturnType/AddVoidReturnTypeWhereNoReturnRector/config/configured_rule.php`.
+
 ### Fixture naming conventions
 
 - `add_*.php.inc` — files where the wrapper SHOULD apply the change
@@ -288,12 +292,12 @@ vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFr
 
 | Job                 | PHP Versions     | Rector Versions               | What it runs          |
 |---------------------|------------------|-------------------------------|-----------------------|
-| phpstan-tests       | 7.4, 8.0         | 2.5.8, >=2.5.8, <2.8          | PHPStan               |
-| cs-check            | 8.3              | >=2.5.8, <2.8                 | PHP-CS-Fixer (dry-run) |
-| phpunit-tests       | 7.4, 8.0–8.5     | >=2.5.8, <2.8                 | PHPUnit               |
-| rector-tests        | 8.0              | 2.5.*, 2.6.*, 2.7.*, dev-main | PHPUnit (Rector compat) |
+| phpstan-tests       | 7.4, 8.0         | 2.5.8, >=2.5.8, <2.9          | PHPStan               |
+| cs-check            | 8.3              | >=2.5.8, <2.9                 | PHP-CS-Fixer (dry-run) |
+| phpunit-tests       | 7.4, 8.0–8.5     | >=2.5.8, <2.9                 | PHPUnit               |
+| rector-tests        | 8.0              | 2.5.*, 2.6.*, 2.7.*, 2.8.*, dev-main | PHPUnit (Rector compat) |
 | rector-tests-legacy | 7.4, 8.0         | 2.3.*, 2.4.*, 2.5.0           | PHPUnit (Rector compat), `allow_failure: true` |
-| phpunit-coverage    | 8.2              | >=2.5.8, <2.8                 | PHPUnit + Xdebug      |
+| phpunit-coverage    | 8.2              | >=2.5.8, <2.9                 | PHPUnit + Xdebug      |
 
 `rector-tests-legacy` is expected to fail: Rector <=2.4's own test-harness reflection code (`PHPStanContainerMemento`) assumes a private `$container` property on `PHPStan\Parser\RichParser` that no longer exists in any currently-installable PHPStan release — a bug entirely inside `vendor/rector/rector`, fixed upstream in Rector 2.5. It's kept in the pipeline for visibility but non-blocking since it can't be fixed from this repo.
 
