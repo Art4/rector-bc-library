@@ -4,7 +4,7 @@ Backward-compatible Rector rules for library maintainers.
 
 | Library Version | Rector 2.8 | Rector 2.7 | Rector 2.6 | Rector 2.5 | Rector 2.4 | Rector 2.3 | Rector 2.2 |
 | --------------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-| main (unreleased) | ✅     | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
+| 1.4             | ✅         | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
 | 1.3             | ❌         | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
 | 1.2             | ❌         | ❌         | ✅         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
 | 1.1             | ❌         | ❌         | ❌         | ⚠️ ≥2.5.8 only[^1] | ❌ | ❌ | ❌ |
