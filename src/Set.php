@@ -46,10 +46,14 @@ final class Set
      */
     public static function getTypeDeclarationRules(): array
     {
-        return array_values(array_filter(
+        // class_exists() proves the entries are rule classes, but static analysis can't see through the string literals
+        /** @var array<class-string<\Rector\Contract\Rector\RectorInterface>> $rules */
+        $rules = array_values(array_filter(
             self::REVIEWED_SAFE_RULES,
             static fn(string $rule): bool => class_exists($rule) && ! self::isDeprecated($rule)
         ));
+
+        return $rules;
     }
 
     /**
@@ -62,7 +66,11 @@ final class Set
     }
 
     /**
-     * @var array<class-string<\Rector\Contract\Rector\RectorInterface>>
+     * Rules that don't exist in every supported Rector version are written as
+     * string literals instead of ::class, so static analysis against an older
+     * Rector doesn't report them as unknown classes.
+     *
+     * @var array<string>
      */
     private const REVIEWED_SAFE_RULES = [
         // Group A: Function/Closure scope only — no class method/property risk
@@ -84,7 +92,8 @@ final class Set
         \Rector\TypeDeclaration\Rector\ClassMethod\PrivateMethodReturnTypeFromStrictNewArrayRector::class,
         // Group C: Test/infrastructure-specific context (restricted scope)
         \Rector\TypeDeclaration\Rector\Class_\AddTestsVoidReturnTypeWhereNoReturnRector::class,
-        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromMockObjectRector::class,
+        'Rector\\TypeDeclaration\\Rector\\ClassMethod\\ReturnTypeFromMockObjectRector', // Rector < 2.8
+        'Rector\\TypeDeclaration\\Rector\\Class_\\ReturnTypeFromMockObjectRector', // Rector >= 2.8
         \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromCreateMockAssignRector::class,
         \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeBasedOnPHPUnitDataProviderRector::class,
         \Rector\TypeDeclaration\Rector\Class_\TypedPropertyFromContainerGetSetUpRector::class,
@@ -132,7 +141,8 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            'Rector\\TypeDeclaration\\Rector\\ClassMethod\\AddVoidReturnTypeWhereNoReturnRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector < 2.8
+            'Rector\\TypeDeclaration\\Rector\\ClassLike\\AddVoidReturnTypeWhereNoReturnRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector >= 2.8
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             'Rector\\TypeDeclaration\\Rector\\ClassMethod\\BoolReturnTypeFromBooleanConstAndStrictReturnsRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector >= 2.7

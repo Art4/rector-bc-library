@@ -14,6 +14,12 @@ final class AddParamStringTypeFromSprintfUseRectorTest extends AbstractRectorTes
     #[DataProvider('provideCases')]
     public function test(string $filePath): void
     {
+        if (!class_exists(\Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class)
+            || is_a(\Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
+        ) {
+            self::markTestSkipped('Rule is missing or deprecated in the installed Rector version');
+        }
+
         $this->doTestFile($filePath);
     }
 

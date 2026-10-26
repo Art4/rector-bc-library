@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.3.0...main)
 
+### Added
+
+- Add support for Rector 2.8, in addition to the already supported versions (>= 2.5.8): `AddVoidReturnTypeWhereNoReturnRector` (moved to the `ClassLike` namespace and node type) and `ReturnTypeFromMockObjectRector` (moved to `Class_`) are registered under both their old and new class names
+- Add explicit CI testing for Rector 2.8
+
+### Fixed
+
+- **Important:** with Rector 2.8, `AddVoidReturnTypeWhereNoReturnRector` visits whole classes instead of single methods, which bypassed the return type guard and added `: void` to public methods of non-final classes. The guard now protects the methods it would skip for class-level rules, too.
+
+### Changed
+
+- Limit supported Rector versions to `>=2.5.8, <2.9` (was `>=2.5.8, <2.8`)
+- Rector 2.8 deprecates `ParamTypeByParentCallTypeRector`, `AddParamStringTypeFromSprintfUseRector`, `ParamTypeByMethodCallTypeRector`, `ObjectParamTypeByMethodCallTypeRector`, `ScalarParamTypeByMethodCallTypeRector`, `ArrayParamTypeByMethodCallTypeRector` and `StrictStringParamConcatRector`; they are skipped there, as before for other deprecated rules. No effect on Rector 2.5.8–2.7.
+- Known limitation: on Rector 2.8, `AddVoidReturnTypeWhereNoReturnRector` is not applied to traits and enums, because the wrapper only visits classes
+
 ## [1.3.0 - 2026-10-18](https://gitlab.com/Art4/rector-bc-library/-/compare/1.2.0...1.3.0)
 
 ### Added
