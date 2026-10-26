@@ -132,7 +132,8 @@ final class Set
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamStringTypeFromSprintfUseRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeFromPropertyTypeRector::class => BackwardCompatibleRector::GUARD_PARAM_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeFromTryCatchTypeRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
-            \Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
+            'Rector\\TypeDeclaration\\Rector\\ClassMethod\\AddVoidReturnTypeWhereNoReturnRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector < 2.8
+            'Rector\\TypeDeclaration\\Rector\\ClassLike\\AddVoidReturnTypeWhereNoReturnRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector >= 2.8
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanConstReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             \Rector\TypeDeclaration\Rector\ClassMethod\BoolReturnTypeFromBooleanStrictReturnsRector::class => BackwardCompatibleRector::GUARD_RETURN_TYPE,
             'Rector\\TypeDeclaration\\Rector\\ClassMethod\\BoolReturnTypeFromBooleanConstAndStrictReturnsRector' => BackwardCompatibleRector::GUARD_RETURN_TYPE, // Rector >= 2.7

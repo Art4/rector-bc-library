@@ -11,6 +11,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\ArrowFunction;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
 use Rector\Config\RectorConfig;
@@ -167,8 +168,17 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
                     return null;
                 }
 
+                // Rector >= 2.8 moved some rules from ClassMethod to class-level nodes
+                if ($node instanceof ClassLike) {
+                    $this->classMethodReturnTypeOverrideGuard->protectMethodsIfNeeded($node);
+                }
+
                 /** @var ?Node $result */
                 $result = $originalRector->refactor($node);
+
+                if ($node instanceof ClassLike) {
+                    $this->classMethodReturnTypeOverrideGuard->unprotectMethods($node);
+                }
 
                 return $result;
 

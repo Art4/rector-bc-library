@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Art4\RectorBcLibrary\Guard;
 
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Stmt\ClassLike;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Reflection\ClassReflection;
 use Rector\PHPStan\ScopeFetcher;
@@ -11,6 +13,8 @@ use Rector\VendorLocker\NodeVendorLocker\ClassMethodReturnTypeOverrideGuard as O
 
 final class BackwardCompatibleClassMethodReturnTypeOverrideGuard
 {
+    private const TEMP_TYPE_NAME = '__SKIP_ADDING_RETURN_TYPE__';
+
     private OriginalGuard $originalGuard;
 
     public function __construct(OriginalGuard $originalGuard)
@@ -44,5 +48,28 @@ final class BackwardCompatibleClassMethodReturnTypeOverrideGuard
         }
 
         return true;
+    }
+
+    /**
+     * For rules that visit the whole class (Rector >= 2.8) instead of single
+     * class methods: mark every method this guard would skip with a temporary
+     * return type, so the original rule leaves it alone.
+     */
+    public function protectMethodsIfNeeded(ClassLike $classLike): void
+    {
+        foreach ($classLike->getMethods() as $method) {
+            if ($method->returnType === null && $this->shouldSkipClassMethod($method)) {
+                $method->returnType = new Identifier(self::TEMP_TYPE_NAME);
+            }
+        }
+    }
+
+    public function unprotectMethods(ClassLike $classLike): void
+    {
+        foreach ($classLike->getMethods() as $method) {
+            if ($method->returnType instanceof Identifier && $method->returnType->name === self::TEMP_TYPE_NAME) {
+                $method->returnType = null;
+            }
+        }
     }
 }
