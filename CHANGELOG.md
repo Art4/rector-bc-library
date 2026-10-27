@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.0...main)
 
+### Fixed
+
+- **Important:** the set now skips the original rules it wraps (`$rectorConfig->skip()`). Before, another Rector set registering such a rule bypassed the guard, e.g. `->withPhpSets(php81: true)` added `: never` to public methods of traits and non-final classes via `ReturnNeverTypeRector` ([#8](https://gitlab.com/Art4/rector-bc-library/-/work_items/8))
+
 ## [1.4.0 - 2026-10-26](https://gitlab.com/Art4/rector-bc-library/-/compare/1.3.0...1.4.0)
 
 ### Added

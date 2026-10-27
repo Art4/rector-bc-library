@@ -82,6 +82,7 @@ If you are working on an application (not a library) or you control both upstrea
 - A single `BackwardCompatibleRector` replaces 30 individual wrapper classes. It is configured via a static rule-to-guard mapping before Rector runs.
 - Each rule is assigned a guard strategy that inspects the code (final/private status, vendor-lock signals, and other heuristics) before applying a change.
 - If the guard detects a potential risk to downstream compatibility, the change is skipped; otherwise it delegates to the original Rector rule.
+- The set also tells Rector to skip the original rules it wraps, so no other set (e.g. `->withPhpSets(php81: true)`, which registers `ReturnNeverTypeRector`) can run them unguarded.
 - Use the prepared set by importing `\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION` (see Usage).
 
 ### Allowed changes in classes
