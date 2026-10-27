@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.1...main)
 
+### Fixed
+
+- Restore the AST in a `finally` block when an original Rector rule throws: the temporary sentinel types of the guards could stay in the AST of the file ([#4](https://gitlab.com/Art4/rector-bc-library/-/work_items/4))
+
 ## [1.4.1 - 2026-10-27](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.0...1.4.1)
 
 ### Fixed
