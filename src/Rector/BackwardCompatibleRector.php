@@ -168,65 +168,74 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
                     return null;
                 }
 
-                // Rector >= 2.8 moved some rules from ClassMethod to class-level nodes
-                if ($node instanceof ClassLike) {
-                    $this->classMethodReturnTypeOverrideGuard->protectMethodsIfNeeded($node);
+                // The sentinel types must never survive an exception thrown by the original rule
+                try {
+                    // Rector >= 2.8 moved some rules from ClassMethod to class-level nodes
+                    if ($node instanceof ClassLike) {
+                        $this->classMethodReturnTypeOverrideGuard->protectMethodsIfNeeded($node);
+                    }
+
+                    /** @var ?Node $result */
+                    $result = $originalRector->refactor($node);
+
+                    return $result;
+                } finally {
+                    if ($node instanceof ClassLike) {
+                        $this->classMethodReturnTypeOverrideGuard->unprotectMethods($node);
+                    }
                 }
-
-                /** @var ?Node $result */
-                $result = $originalRector->refactor($node);
-
-                if ($node instanceof ClassLike) {
-                    $this->classMethodReturnTypeOverrideGuard->unprotectMethods($node);
-                }
-
-                return $result;
 
             case self::GUARD_PARAM_TYPE:
-                if ($node instanceof ClassMethod) {
-                    $this->parameterTypeOverrideGuard->protectParametersIfNeeded($node);
+                try {
+                    if ($node instanceof ClassMethod) {
+                        $this->parameterTypeOverrideGuard->protectParametersIfNeeded($node);
+                    }
+
+                    /** @var ?Node $return */
+                    $return = $originalRector->refactor($node);
+
+                    return $return;
+                } finally {
+                    if ($node instanceof ClassMethod) {
+                        $this->parameterTypeOverrideGuard->unprotectParameters($node);
+                    }
                 }
-
-                /** @var ?Node $return */
-                $return = $originalRector->refactor($node);
-
-                if ($node instanceof ClassMethod) {
-                    $this->parameterTypeOverrideGuard->unprotectParameters($node);
-                }
-
-                return $return;
 
             case self::GUARD_PARAM_TYPE_ON_CLASS:
-                if ($node instanceof Class_) {
-                    foreach ($node->getMethods() as $method) {
-                        $this->parameterTypeOverrideGuard->protectParametersIfNeeded($method);
+                try {
+                    if ($node instanceof Class_) {
+                        foreach ($node->getMethods() as $method) {
+                            $this->parameterTypeOverrideGuard->protectParametersIfNeeded($method);
+                        }
+                    }
+
+                    /** @var ?Node $return */
+                    $return = $originalRector->refactor($node);
+
+                    return $return;
+                } finally {
+                    if ($node instanceof Class_) {
+                        foreach ($node->getMethods() as $method) {
+                            $this->parameterTypeOverrideGuard->unprotectParameters($method);
+                        }
                     }
                 }
-
-                /** @var ?Node $return */
-                $return = $originalRector->refactor($node);
-
-                if ($node instanceof Class_) {
-                    foreach ($node->getMethods() as $method) {
-                        $this->parameterTypeOverrideGuard->unprotectParameters($method);
-                    }
-                }
-
-                return $return;
 
             case self::GUARD_PROPERTY_TYPE:
-                if ($node instanceof Class_) {
-                    $this->propertyTypeOverrideGuard->protectPropertiesIfNeeded($node);
+                try {
+                    if ($node instanceof Class_) {
+                        $this->propertyTypeOverrideGuard->protectPropertiesIfNeeded($node);
+                    }
+
+                    /** @var ?Node $return */
+                    $return = $originalRector->refactor($node);
+
+                    return $return;
+                } finally {
+                    if ($node instanceof Class_) {
+                        $this->propertyTypeOverrideGuard->unprotectProperties($node);
+                    }
                 }
-
-                /** @var ?Node $return */
-                $return = $originalRector->refactor($node);
-
-                if ($node instanceof Class_) {
-                    $this->propertyTypeOverrideGuard->unprotectProperties($node);
-                }
-
-                return $return;
         }
 
         /** @var ?Node $result */
