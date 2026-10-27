@@ -58,6 +58,8 @@ The config in `config/set/bc-type-declaration.php` iterates `Set::getRuleGuardMa
 
 At runtime, `BackwardCompatibleRector::refactor()` iterates all configured rules, delegates matching nodes to the correct guard strategy, and returns the first non-null result.
 
+`config/set/bc-type-declaration.php` also calls `$rectorConfig->skip()` with every original class from `Set::getRuleGuardMap()` (filtered by `class_exists()`). The wrapper runs the originals itself, bypassing the rule registry, so this only stops other sets (e.g. `withPhpSets(php81: true)` registering `ReturnNeverTypeRector`) from running them unguarded. Test: `ReturnNeverTypeRectorWithPhpSet`.
+
 ### Two Guard Strategies
 
 #### Strategy A: Early Return (GUARD_RETURN_TYPE)
