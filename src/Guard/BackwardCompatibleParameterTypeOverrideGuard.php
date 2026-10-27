@@ -37,16 +37,11 @@ final class BackwardCompatibleParameterTypeOverrideGuard
 
     private function parametersMustBeProtected(ClassMethod $method): bool
     {
-        if ($method->isFinal() || $method->isPrivate()) {
-            return false;
-        }
-
         $class = (ScopeFetcher::fetch($method))->getClassReflection();
 
-        if ($class instanceof ClassReflection && $class->isFinal()) {
-            return false;
-        }
-
-        return true;
+        return ! MethodOverrideSafety::isSafeToModify(
+            $method,
+            $class instanceof ClassReflection && $class->isFinal()
+        );
     }
 }

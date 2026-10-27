@@ -33,21 +33,12 @@ final class BackwardCompatibleClassMethodReturnTypeOverrideGuard
 
         // Keep the extra backward compatibility checks:
         // - allow add return type on final or private methods, or methods in final classes
-        if ($node->isFinal()) {
-            return false;
-        }
-
-        if ($node->isPrivate()) {
-            return false;
-        }
-
         $scopeClassReflection = $scope->getClassReflection();
 
-        if ($scopeClassReflection instanceof ClassReflection && $scopeClassReflection->isFinal()) {
-            return false;
-        }
-
-        return true;
+        return ! MethodOverrideSafety::isSafeToModify(
+            $node,
+            $scopeClassReflection instanceof ClassReflection && $scopeClassReflection->isFinal()
+        );
     }
 
     /**
