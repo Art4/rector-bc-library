@@ -25,6 +25,15 @@ return static function (RectorConfig $rectorConfig): void {
         BackwardCompatibleRector::addRuleConfiguration($originalRectorClass, $guard);
     }
 
+    // The wrapper runs the original rules itself, behind its guards. Skip them in
+    // Rector, so another set (e.g. withPhpSets(php81: true) registering
+    // ReturnNeverTypeRector) can't run the unguarded original on its own.
+    // skip() asserts the class exists, which it may not on an older Rector release.
+    $rectorConfig->skip(array_values(array_filter(
+        array_keys(Set::getRuleGuardMap()),
+        static fn(string $rule): bool => class_exists($rule)
+    )));
+
     $rectorConfig->rule(BackwardCompatibleRector::class);
     $rectorConfig->rules(Set::getTypeDeclarationRules());
 };
