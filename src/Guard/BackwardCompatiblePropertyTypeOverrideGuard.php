@@ -30,6 +30,7 @@ final class BackwardCompatiblePropertyTypeOverrideGuard
         }
     }
 
+    // Deliberately not MethodOverrideSafety: properties follow a different rule (only protected ones can be overridden)
     private function skipProperty(Property $property, Class_ $class): bool
     {
         if ($property->isProtected() && ! $class->isFinal()) {

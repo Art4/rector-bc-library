@@ -74,7 +74,7 @@ refactor(node):
 
 **Guard:** `BackwardCompatibleClassMethodReturnTypeOverrideGuard`
 - Wraps Rector's built-in `ClassMethodReturnTypeOverrideGuard`, adds Symfony BC checks
-- Skips if: method is NOT final, NOT private, AND class is NOT final
+- Skips if: method is NOT final, NOT private, AND class is NOT final (decided by `MethodOverrideSafety::isSafeToModify()`, shared with the parameter guard; the property guard uses its own rule)
 
 **Class-level return rules (Rector >= 2.8):** some return-type rules visit the whole `ClassLike` instead of single `ClassMethod` nodes (`AddVoidReturnTypeWhereNoReturnRector`). For such nodes the guard cannot just return early, so `BackwardCompatibleRector` protects the skipped methods with a sentinel return type (`__SKIP_ADDING_RETURN_TYPE__`) before running the original rule and restores them afterwards (Strategy B pattern). Only `Class_` nodes are visited: the wrapper does not register `Trait_` / `Enum_`.
 
