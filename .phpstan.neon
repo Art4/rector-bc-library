@@ -11,6 +11,7 @@ parameters:
   ignoreErrors:
     - '#Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
     - '#Attribute class PHPUnit\\Framework\\Attributes\\Group does not exist\.#'
+    - '#Attribute class PHPUnit\\Framework\\Attributes\\RunClassInSeparateProcess does not exist\.#'
     # Version-dependent checks in tests (rule exists / is deprecated): is_a() is
     # statically true or false depending on the installed Rector version
     -
