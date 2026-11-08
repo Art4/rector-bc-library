@@ -50,7 +50,9 @@ final class Set
         /** @var array<class-string<\Rector\Contract\Rector\RectorInterface>> $rules */
         $rules = array_values(array_filter(
             self::REVIEWED_SAFE_RULES,
-            static fn(string $rule): bool => class_exists($rule) && ! self::isDeprecated($rule)
+            static fn(string $rule): bool => class_exists($rule)
+                && ! self::isDeprecated($rule)
+                && self::isInTypeDeclarationLevel($rule)
         ));
 
         return $rules;
@@ -63,6 +65,16 @@ final class Set
     private static function isDeprecated(string $rule): bool
     {
         return is_a($rule, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true);
+    }
+
+    /**
+     * The set must not add more rules than the Rector set it replaces: a rule that
+     * the installed Rector version does not count to its type declaration level is left out.
+     * Separate method for the same reason as isDeprecated().
+     */
+    private static function isInTypeDeclarationLevel(string $rule): bool
+    {
+        return \in_array($rule, \Rector\Config\Level\TypeDeclarationLevel::RULES, true);
     }
 
     /**

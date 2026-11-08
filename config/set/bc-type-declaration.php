@@ -29,9 +29,12 @@ return static function (RectorConfig $rectorConfig): void {
     // Rector, so another set (e.g. withPhpSets(php81: true) registering
     // ReturnNeverTypeRector) can't run the unguarded original on its own.
     // skip() asserts the class exists, which it may not on an older Rector release.
+    // Deprecated rules are not skipped: no set registers them any more, and Rector
+    // warns "Skipped rule ... is deprecated" for each of them.
     $rectorConfig->skip(array_values(array_filter(
         array_keys(Set::getRuleGuardMap()),
         static fn(string $rule): bool => class_exists($rule)
+            && !is_a($rule, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
     )));
 
     $rectorConfig->rule(BackwardCompatibleRector::class);
