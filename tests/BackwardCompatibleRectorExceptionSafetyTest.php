@@ -18,6 +18,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Property;
 use PHPStan\Analyser\Scope;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\RectorConfig;
 use Rector\NodeTypeResolver\Node\AttributeKey;
@@ -30,7 +31,15 @@ require_once __DIR__ . '/Fixture/ThrowingRector.php';
 /**
  * The wrapper protects members with a sentinel type while the original rule
  * runs. If the original rule throws, the AST must not keep the sentinel.
+ *
+ * Runs in its own process: the test builds PhpParser nodes before the first
+ * Rector test loads Rector's bundled php-parser (preload.php). In one process
+ * with Xdebug coverage this ends in the fatal error "Cannot declare class
+ * PhpParser\Node\UseItem" (issue #11).
+ *
+ * @runTestsInSeparateProcesses
  */
+#[RunClassInSeparateProcess]
 final class BackwardCompatibleRectorExceptionSafetyTest extends TestCase
 {
     protected function tearDown(): void
