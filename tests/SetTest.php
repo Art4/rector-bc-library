@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Rector\Config\Level\TypeDeclarationLevel;
 use Rector\Configuration\Deprecation\Contract\DeprecatedInterface;
+use ReflectionClass;
 
 final class SetTest extends TestCase
 {
@@ -37,6 +38,35 @@ final class SetTest extends TestCase
             \sprintf(
                 'These rules from TypeDeclarationLevel::RULES are not covered by the guard map or explicit allowlist: %s',
                 implode(', ', $missing)
+            )
+        );
+    }
+
+    public function testSetContainsNoRulesOutsideTypeDeclarationLevel(): void
+    {
+        $ours = array_merge(array_keys(Set::getRuleGuardMap()), Set::getTypeDeclarationRules());
+        $extra = [];
+
+        foreach ($ours as $rule) {
+            // Rules missing in the installed Rector or deprecated ones are never executed
+            if (! class_exists($rule) || is_a($rule, DeprecatedInterface::class, true)) {
+                continue;
+            }
+
+            // Rules moved to another namespace (Rector >= 2.8) stay available as class alias of the new name
+            $resolvedRule = (new ReflectionClass($rule))->getName();
+
+            if (! \in_array($resolvedRule, TypeDeclarationLevel::RULES, true)) {
+                $extra[] = $rule;
+            }
+        }
+
+        self::assertSame(
+            [],
+            $extra,
+            \sprintf(
+                'These rules are not part of TypeDeclarationLevel::RULES of the installed Rector, the set must not add more than the set it replaces: %s',
+                implode(', ', $extra)
             )
         );
     }

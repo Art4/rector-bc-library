@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add a test that the set never contains a rule outside Rector's `TypeDeclarationLevel::RULES` of the installed version
 - Full PHPUnit suite passes against every published Rector patch release admitted by `>=2.5.8, <2.9` (2.5.8, 2.5.9, 2.6.0–2.6.7, 2.7.0, 2.8.0–2.8.4), run on PHP 8.3 on 2026-11-08. The next audit only needs to cover patches published after 2.8.4.
 
 ### Fixed
 
+- Do not add rules that Rector's type declaration level does not contain: with Rector 2.5.8–2.6.4 the set also ran `BinaryOpNullableToInstanceofRector` and `WhileNullableToInstanceofRector` (part of Rector's `instanceof` set there, of the type declaration level only since 2.6.5)
 - Do not skip deprecated original rules any more: Rector 2.8 printed a `Skipped rule "…" is deprecated` warning for each of the seven deprecated rules. Rector still reports the remaining skipped, never registered wrapped rules in one warning, which cannot be avoided as long as the wrapper replaces the originals
 - Restore the AST in a `finally` block when an original Rector rule throws: the temporary sentinel types of the guards could stay in the AST of the file ([#4](https://gitlab.com/Art4/rector-bc-library/-/work_items/4))
 
