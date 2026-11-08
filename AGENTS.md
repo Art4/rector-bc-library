@@ -149,9 +149,11 @@ All changes are always allowed.
 
 The set config (`config/set/bc-type-declaration.php`) consumes this map automatically — no config change needed.
 
-### 3. If the original rule is in `TypeDeclarationLevel::RULES`
+### 3. Keep the set within `TypeDeclarationLevel::RULES`
 
-Nothing else to update — `tests/SetTest.php` derives every count it checks (allowlist/guard-map coverage, level sizing) dynamically from `Set::getTypeDeclarationRules()` and `Set::getRuleGuardMap()`, so it stays green without a manual count bump.
+The set replaces Rector's type declaration level and adds nothing beyond it. `Set::getTypeDeclarationRules()` keeps an allowlist rule only if the installed Rector lists it in `TypeDeclarationLevel::RULES` (`BinaryOpNullableToInstanceofRector` and `WhileNullableToInstanceofRector` sat in Rector's `instanceof` set until 2.6.5). `SetTest::testSetContainsNoRulesOutsideTypeDeclarationLevel` fails on every supported Rector version for a non-deprecated rule of the guard map or allowlist outside that level; a moved rule (Rector 2.8) resolves through its class alias.
+
+If the original rule is in `TypeDeclarationLevel::RULES`, nothing else to update — `tests/SetTest.php` derives every count it checks (allowlist/guard-map coverage, level sizing) dynamically from `Set::getTypeDeclarationRules()` and `Set::getRuleGuardMap()`, so it stays green without a manual count bump.
 
 ### 4. Add fixture tests
 
@@ -312,6 +314,7 @@ Every `rector/rector` version that `composer.json` admits must have been tested 
 - **Widening the upper bound** to admit a new minor line: run the suite against every published patch of that line (manual `rector-version-audit` job, or locally via Docker) before merging. A green `rector-tests: [x.y.*]` job only proves the latest patch.
 - **Patches released into an already-admitted line** are covered by the constraint automatically, but untested. Before each release, test every patch published since the last full check.
 - Record which versions were tested (MR description or CHANGELOG), so the next check knows where to pick up.
+- **Consumer warnings:** run `rector process --dry-run` with a consumer config (`->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])`) against the lowest and the newest version. The only warning the set may cause is "skipped rules are never registered" (#10).
 
 ---
 
@@ -339,7 +342,7 @@ Configured in `.php-cs-fixer.dist.php`:
 
 ## Quick Contribution Checklist
 
-1. Run `composer test` and `composer cs` locally (use `docker run --rm -v "$(pwd):/app" -w /app php:8.3-cli php vendor/bin/phpunit` if host PHP lacks extensions).
+1. Run `vendor/bin/phpunit`, `vendor/bin/phpstan` and `vendor/bin/php-cs-fixer` (what `composer test` and `composer cs` call) in Docker, as your own user so `vendor/` never becomes root-owned: `docker run --rm -u $(id -u):$(id -g) -v "$(pwd):/app" -w /app php:8.3-cli php vendor/bin/phpunit`.
 2. Add entry to `Set::getRuleGuardMap()` in `src/Set.php`.
 3. Add fixture tests in the appropriate `tests/Rector/BackwardCompatibleRector*` directory.
 4. Update `README.md` only if usage or supported levels change.
