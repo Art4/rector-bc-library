@@ -1,8 +1,8 @@
 # Releasing
 
-How a new version of the library gets released. A release is **developer-initiated and never agent-launched**: the developer picks the moment; an agent may prepare work up to the developer's gate but never starts the process or executes the irreversible steps on its own.
+How a new version of the library gets released. A release is **developer-initiated**: the developer picks the moment and approves each irreversible step (merge, tag) explicitly. An agent prepares the release, and executes steps 6–9 itself once the developer has approved that step; it never starts the process or runs an irreversible step without that approval.
 
-Both a developer and an agent can follow this procedure. Each step ends with a completion criterion — the condition that tells you the step is done. Steps 6–8 are developer-only: don't act on them for the developer.
+Both a developer and an agent can follow this procedure. Each step ends with a completion criterion — the condition that tells you the step is done. Steps 6 and 7 are irreversible: run each only after the developer's explicit approval of that step (approval of one step does not cover the next).
 
 ## Entry
 
@@ -49,12 +49,16 @@ Draft an MR into `main` (title: `Release X.Y.Z`, matching the pattern of past re
 Once the developer approves and the MR is open, wait for CI.
 _Done_: every required job in the pipeline is green (`rector-tests-legacy` is allowed to fail by design and is not a blocker).
 
-**6. Merge** [developer-only]
-The developer reviews the wording and the version, then merges once CI is green. This repo merges release MRs as a merge commit (`Merge branch 'release-<X.Y>' into 'main'`), not a squash — matching `6074d10`.
-_Done_: the merge lands on `main`.
+**6. Merge** [developer approves, agent or developer merges]
+The developer reviews the wording and the version and approves the merge. This repo merges release MRs as a merge commit (`Merge branch 'release-<X.Y>' into 'main'`), not a squash — matching `6074d10`. With that approval and a green pipeline, the agent merges:
+```bash
+glab mr merge <MR-number> --yes
+```
+Afterwards check out and pull `main`, and delete the local release branch.
+_Done_: the merge lands on `main`, and local `main` equals `origin/main`.
 
-**7. Tag** [developer-only]
-On the merged `main` commit, create a lightweight tag named exactly `X.Y.Z` (no `v` prefix — matching repo history) and push it:
+**7. Tag** [developer approves, agent or developer tags]
+After the developer's explicit approval of the tag, on the merged `main` commit, create a lightweight tag named exactly `X.Y.Z` (no `v` prefix — matching repo history) and push it:
 ```bash
 git fetch origin
 git tag X.Y.Z
@@ -62,8 +66,8 @@ git push origin X.Y.Z
 ```
 _Done_: `git ls-remote --tags origin` shows `X.Y.Z` pointing at the merged commit.
 
-**8. GitLab Release** [developer-only, informational]
-GitLab auto-creates a Release object from the pushed tag; past releases (1.0.0, 1.1.0) left its description empty and relied on the tag + `CHANGELOG.md` as the source of truth. No extra action is required unless the developer wants to fill in release notes.
+**8. GitLab Release** [informational]
+GitLab auto-creates a Release object from the pushed tag; past releases (1.0.0, 1.1.0) left its description empty and relied on the tag + `CHANGELOG.md` as the source of truth. No extra action is required unless the developer asks for release notes.
 
 **9. Verify on Packagist** [informational — not blocking]
 Check that `art4/rector-bc-library` on Packagist shows `X.Y.Z`. The webhook is automatic on tag push; lag is expected.
@@ -74,4 +78,4 @@ _Done_: the new version is live on Packagist.
 - **Version classification** — breaking change in `[Unreleased]` → major; new behavior → minor; fixes only → patch. The type is read from the changelog, never the developer's mood.
 - **Supported-range gate interpretation** — a release publicly restates the supported range (`composer.json` + README's compatibility table + `.gitlab-ci.yml`'s matrix), so all three must agree with what `[Unreleased]` claims — and every version inside that range must have been tested at least once.
 - **Keep a Changelog** — the changelog must follow the repo's existing conventions: section headers with `compare/<from>...<to>` links, ISO dates, and category grouping (Added / Changed / Deprecated / Removed / Fixed / Security).
-- **Irreversible = the developer's hands** — merging the MR, pushing the tag, and any GitLab Release edits are developer-only. An agent prepares up to the MR and stops.
+- **Irreversible = approval first** — merging the MR, pushing the tag, and any GitLab Release edits happen only after the developer's explicit approval of that step; then the agent may run them.

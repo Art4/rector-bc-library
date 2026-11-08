@@ -352,4 +352,4 @@ Configured in `.php-cs-fixer.dist.php`:
 
 ## Releasing
 
-Releases are developer-initiated, never agent-launched. Prepare up to the MR and stop there. See `docs/agents/releasing.md`.
+Releases are developer-initiated: prepare up to the MR, and run merge and tag only after the developer's explicit approval of that step. See `docs/agents/releasing.md`.
