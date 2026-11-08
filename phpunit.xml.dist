@@ -25,6 +25,13 @@
       raw print trips beStrictAboutOutputDuringTests as "unexpected output".
     -->
     <ini name="display_errors" value="0" />
+    <!--
+      Log errors to stderr, so a fatal error (e.g. a class declared twice) is
+      visible in the CI log: with display_errors off the process would
+      otherwise stop silently with exit code 255.
+    -->
+    <ini name="log_errors" value="1" />
+    <ini name="error_log" value="/dev/stderr" />
   </php>
   <testsuites>
     <testsuite name="default">
