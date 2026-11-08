@@ -7,10 +7,6 @@ class SomeClass
     private function getData()
     {
         if (rand(0, 1)) {
-            return null;
-        }
-
-        if (rand(0, 1)) {
             return new \DateTime('now');
         }
 
@@ -24,12 +20,8 @@ namespace Art4\RectorBcLibrary\Tests\Rector\BackwardCompatibleRectorReturnType\R
 
 class SomeClass
 {
-    private function getData(): null|\DateTime|\stdClass
+    private function getData(): \DateTime|\stdClass
     {
-        if (rand(0, 1)) {
-            return null;
-        }
-
         if (rand(0, 1)) {
             return new \DateTime('now');
         }
