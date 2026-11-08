@@ -67,7 +67,7 @@ git push origin X.Y.Z
 _Done_: `git ls-remote --tags origin` shows `X.Y.Z` pointing at the merged commit.
 
 **8. GitLab Release** [informational]
-GitLab auto-creates a Release object from the pushed tag; past releases (1.0.0, 1.1.0) left its description empty and relied on the tag + `CHANGELOG.md` as the source of truth. No extra action is required unless the developer asks for release notes.
+Do not expect a GitLab Release object: it exists for 1.0.0–1.2.0 only, none was created for 1.3.0, 1.4.0, 1.4.1 and 1.4.2 after the tag push. The tag + `CHANGELOG.md` are the source of truth. No extra action is required; create one (`glab release create X.Y.Z`) only when the developer asks for release notes.
 
 **9. Verify on Packagist** [informational — not blocking]
 Check that `art4/rector-bc-library` on Packagist shows `X.Y.Z`. The webhook is automatic on tag push; lag is expected.
