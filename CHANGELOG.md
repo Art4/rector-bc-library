@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.1...main)
+## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.2...main)
+
+## [1.4.2 - 2026-11-08](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.1...1.4.2)
 
 ### Added
 
