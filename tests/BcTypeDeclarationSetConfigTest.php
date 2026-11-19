@@ -55,4 +55,29 @@ final class BcTypeDeclarationSetConfigTest extends TestCase
             'Expected the set config to register at least one guarded rule'
         );
     }
+
+    /**
+     * The set skips the originals it wraps. Rector reports a skipped rule that is
+     * never registered and `validate-config` exits non-zero then (#10).
+     */
+    public function testEverySkippedOriginalRuleIsRegistered(): void
+    {
+        $callable = require Set::BC_TYPE_DECLARATION;
+
+        self::assertIsCallable($callable);
+
+        /** @var callable(RectorConfig): void $callable */
+        $rectorConfig = new RectorConfig();
+        $callable($rectorConfig);
+
+        $registered = $rectorConfig->getMainRectorClasses();
+        $skipped = array_filter(
+            array_keys(Set::getRuleGuardMap()),
+            static fn(string $rule): bool => class_exists($rule)
+                && ! is_a($rule, \Rector\Configuration\Deprecation\Contract\DeprecatedInterface::class, true)
+        );
+
+        self::assertNotEmpty($skipped);
+        self::assertSame([], array_values(array_diff($skipped, $registered)));
+    }
 }
