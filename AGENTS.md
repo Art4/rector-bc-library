@@ -58,7 +58,7 @@ The config in `config/set/bc-type-declaration.php` iterates `Set::getRuleGuardMa
 
 At runtime, `BackwardCompatibleRector::refactor()` iterates all configured rules, delegates matching nodes to the correct guard strategy, and returns the first non-null result.
 
-`config/set/bc-type-declaration.php` also calls `$rectorConfig->skip()` with every original class from `Set::getRuleGuardMap()` (filtered by `class_exists()`). The wrapper runs the originals itself, bypassing the rule registry, so this only stops other sets (e.g. `withPhpSets(php81: true)` registering `ReturnNeverTypeRector`) from running them unguarded. Test: `ReturnNeverTypeRectorWithPhpSet`.
+`config/set/bc-type-declaration.php` also calls `$rectorConfig->skip()` with every original class from `Set::getRuleGuardMap()` (filtered by `class_exists()`). The wrapper runs the originals itself, bypassing the rule registry, so this only stops other sets (e.g. `withPhpSets(php81: true)` registering `ReturnNeverTypeRector`) from running them unguarded. Test: `ReturnNeverTypeRectorWithPhpSet`. The set registers the same originals with `$rectorConfig->rules()` as well: Rector reports a skipped rule that is never registered and `rector validate-config` exits non-zero then (#10). The skip keeps the registered originals inert. Test: `BcTypeDeclarationSetConfigTest::testEverySkippedOriginalRuleIsRegistered`.
 
 ### Two Guard Strategies
 
@@ -314,7 +314,7 @@ Every `rector/rector` version that `composer.json` admits must have been tested 
 - **Widening the upper bound** to admit a new minor line: run the suite against every published patch of that line (manual `rector-version-audit` job, or locally via Docker) before merging. A green `rector-tests: [x.y.*]` job only proves the latest patch.
 - **Patches released into an already-admitted line** are covered by the constraint automatically, but untested. Before each release, test every patch published since the last full check.
 - Record which versions were tested (MR description or CHANGELOG), so the next check knows where to pick up.
-- **Consumer warnings:** run `rector process --dry-run` with a consumer config (`->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])`) against the lowest and the newest version. The only warning the set may cause is "skipped rules are never registered" (#10).
+- **Consumer warnings:** run `rector process --dry-run` with a consumer config (`->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])`) against the lowest and the newest version. The set must cause no warning, in particular not "skipped rules are never registered" (#10). `rector validate-config` exists since a later Rector release than 2.5.8; run it on the newest version and expect exit 0.
 
 ---
 

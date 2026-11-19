@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.2...main)
 
+### Fixed
+
+- Register the skipped original rules as well: Rector no longer reports them as "skipped rules are never registered" and `rector validate-config` no longer fails because of this set ([#10](https://gitlab.com/Art4/rector-bc-library/-/work_items/10)). The skip keeps the originals inert, the output of a run is unchanged
+
 ## [1.4.2 - 2026-11-08](https://gitlab.com/Art4/rector-bc-library/-/compare/1.4.1...1.4.2)
 
 ### Added
