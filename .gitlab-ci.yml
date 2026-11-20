@@ -21,6 +21,12 @@ variables:
       fi
     - apt-get update -qq -o Acquire::Check-Valid-Until=false
     - apt-get install -y --no-install-recommends git unzip ca-certificates
+    # PHPUnit needs mbstring. The php:8.6-cli image does not ship it (php:8.5-cli does).
+    - >
+      if ! php -m | grep -qi '^mbstring$'; then
+        apt-get install -y --no-install-recommends libonig-dev &&
+        docker-php-ext-install mbstring;
+      fi
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
     - php -r "unlink('composer-setup.php');"
@@ -62,7 +68,7 @@ phpunit-tests:
   <<: *default-php-job
   parallel:
     matrix:
-      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]
+      - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"]
         RECTOR_VERSION: [">=2.5.8, <2.9"]
   script:
     - mkdir -p build/test-reports
