@@ -4,12 +4,15 @@ Backward-compatible Rector rules for library maintainers.
 
 | Library Version | Rector 2.8 | Rector 2.7 | Rector 2.6 | Rector 2.5 |
 | --------------- | ---------- | ---------- | ---------- | ---------- |
-| 1.4             | ✅         | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1] |
+| 1.5             | ✅         | ✅         | ⚠️ ≥2.6.7 only[^2] | ❌ |
+| 1.4             | ✅         | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1][^2] |
 | 1.3             | ❌         | ✅         | ✅         | ⚠️ ≥2.5.8 only[^1] |
 | 1.2             | ❌         | ❌         | ✅         | ⚠️ ≥2.5.8 only[^1] |
 | 1.1             | ❌         | ❌         | ❌         | ⚠️ ≥2.5.8 only[^1] |
 
 [^1]: Rector 2.3.0–2.4.6 and 2.5.0–2.5.7 hit a bug in Rector's own parser bootstrap (`PHPStanContainerMemento` reflecting into a private property that no longer exists on `PHPStan\Parser\RichParser`), which crashes `rector process` outright — this is a Rector-internal bug, not something this library can guard against. Rector 2.3.3 happens to be an isolated exception that works despite sitting in the broken range, but it's too narrow and inconsistent (fails on some PHP versions with an unrelated error) to rely on. This corrects the previous table, which incorrectly listed 2.3 and 2.4 as supported.
+
+[^2]: Rector 2.5.8 to 2.6.6 declare no suitable PHPStan version constraint and fail on every file with `Call to undefined method PhpParser\Node\Expr\FuncCall::isPartialFunctionApplication()` as soon as the newest PHPStan (2.3.7 at the time of writing) is installed. They only run with PHPStan pinned to 2.3.4. Rector 2.6.7 and later work with the newest PHPStan.
 
 ## Installation
 

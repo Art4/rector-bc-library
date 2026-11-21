@@ -17,7 +17,9 @@ use PhpParser\Node\Stmt\Function_;
 use Rector\Config\RectorConfig;
 use Rector\Contract\Rector\RectorInterface;
 use Rector\Rector\AbstractRector;
+use Rector\ValueObject\PhpVersion;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
+use Rector\VersionBonding\PhpVersionedFilter;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 final class BackwardCompatibleRector extends AbstractRector implements MinPhpVersionInterface
@@ -31,6 +33,14 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
     private static array $ruleConfigs = [];
 
     private static ?RectorConfig $container = null;
+
+    /**
+     * Whether an original rule is active for the configured target PHP version,
+     * decided once per original class: the version is constant during a run.
+     *
+     * @var array<class-string, bool>
+     */
+    private $activeOriginals = [];
 
     /** @var BackwardCompatibleClassMethodReturnTypeOverrideGuard */
     private $classMethodReturnTypeOverrideGuard;
@@ -108,6 +118,10 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
                 continue;
             }
 
+            if (! $this->isOriginalActive($originalRector)) {
+                continue;
+            }
+
             if (! $this->nodeMatchesOriginalTypes($node, $originalRector)) {
                 continue;
             }
@@ -122,9 +136,43 @@ final class BackwardCompatibleRector extends AbstractRector implements MinPhpVer
         return null;
     }
 
+    /**
+     * The lowest minimum version of all wrapped rules. Rector would drop the
+     * whole wrapper for a lower target version; which original runs is decided
+     * by isOriginalActive().
+     */
     public function provideMinPhpVersion(): int
     {
-        return 70400;
+        return PhpVersion::PHP_70;
+    }
+
+    /**
+     * Rector only runs a rule whose minimum PHP version (MinPhpVersionInterface)
+     * fits the target version. The wrapper calls the original directly, so it has
+     * to apply the same filter itself, otherwise e.g. ReturnNeverTypeRector adds
+     * ": never" to a project that targets PHP 7.4.
+     */
+    public function isOriginalActive(RectorInterface $originalRector): bool
+    {
+        $class = \get_class($originalRector);
+
+        if (! isset($this->activeOriginals[$class])) {
+            $this->activeOriginals[$class] = $this->resolvePhpVersionedFilter()->filter([$originalRector]) !== [];
+        }
+
+        return $this->activeOriginals[$class];
+    }
+
+    private function resolvePhpVersionedFilter(): PhpVersionedFilter
+    {
+        if (self::$container === null) {
+            throw new \LogicException('The container must be set before the wrapper runs.');
+        }
+
+        /** @var PhpVersionedFilter $filter */
+        $filter = self::$container->make(PhpVersionedFilter::class);
+
+        return $filter;
     }
 
     /** @param class-string<RectorInterface> $class */

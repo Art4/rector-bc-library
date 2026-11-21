@@ -44,13 +44,13 @@ variables:
 # PHPStan job (static analysis)
 # Runs against the newest admitted Rector and the lowest supported one: a rule
 # referenced via ::class that the oldest Rector doesn't ship yet would only
-# show up there. Keep "2.5.8" in sync with composer.json's lower bound.
+# show up there. Keep "2.6.7" in sync with composer.json's lower bound.
 phpstan-tests:
   <<: *default-php-job
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0"]
-        RECTOR_VERSION: ["2.5.8", ">=2.5.8, <2.9"]
+        RECTOR_VERSION: ["2.6.7", ">=2.6.7, <2.9"]
   script:
     - vendor/bin/phpstan analyse --configuration=.phpstan.neon --memory-limit=512M
 
@@ -59,7 +59,7 @@ cs-check:
   <<: *default-php-job
   variables:
     PHP_VERSION: "8.3"
-    RECTOR_VERSION: ">=2.5.8, <2.9"
+    RECTOR_VERSION: ">=2.6.7, <2.9"
   script:
     - vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --dry-run
 
@@ -69,7 +69,7 @@ phpunit-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["7.4", "8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"]
-        RECTOR_VERSION: [">=2.5.8, <2.9"]
+        RECTOR_VERSION: [">=2.6.7, <2.9"]
   script:
     - mkdir -p build/test-reports
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always --log-junit build/test-reports/junit.xml
@@ -85,7 +85,7 @@ rector-tests:
   parallel:
     matrix:
       - PHP_VERSION: ["8.0"]
-        RECTOR_VERSION: ["2.5.*", "2.6.*", "2.7.*", "2.8.*", "dev-main"]
+        RECTOR_VERSION: ["2.6.*", "2.7.*", "2.8.*", "dev-main"]
   script:
     - vendor/bin/phpunit --configuration=./phpunit.xml.dist --colors=always
 
@@ -126,7 +126,7 @@ rector-version-audit:
     - when: manual
   variables:
     PHP_VERSION: "8.0"
-    RECTOR_VERSION: ">=2.5.8, <2.9" # satisfies composer.json for the initial install; overridden per-version below
+    RECTOR_VERSION: ">=2.6.7, <2.9" # satisfies composer.json for the initial install; overridden per-version below
     RECTOR_VERSION_PATTERN: '^2\.8\.'
   script:
     - |
@@ -155,7 +155,7 @@ phpunit-coverage:
   parallel:
     matrix:
       - PHP_VERSION: ["8.2"]
-        RECTOR_VERSION: [">=2.5.8, <2.9"]
+        RECTOR_VERSION: [">=2.6.7, <2.9"]
   script:
     # Try to install & enable Xdebug so PHPUnit can collect coverage. This is
     # best-effort (some runner images won't have build tools or pecl available),
