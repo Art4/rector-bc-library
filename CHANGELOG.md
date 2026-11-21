@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Run the PHPUnit suite on PHP 8.6 in CI. The `php:8.6-cli` image lacks the `mbstring` extension PHPUnit needs, so the job installs it
 
+### Changed
+
+- Limit supported Rector versions to `>=2.6.7, <2.9` (was `>=2.5.8, <2.9`): drops Rector 2.5 and 2.6.0–2.6.6. These releases fail on every processed file with `Call to undefined method FuncCall::isPartialFunctionApplication()` when the newest PHPStan is installed, because they do not require a PHPStan version that is compatible. They only run with PHPStan pinned to 2.3.4. The CI lower bound job now tests 2.6.7
+
 ### Fixed
 
 - Respect the minimum PHP version of the wrapped rules: the wrapper ran the original rules without Rector's version filter, so a project with a lower target PHP version got types that are invalid there, e.g. `: never` (PHP 8.1) with target 7.4 ([#13](https://gitlab.com/Art4/rector-bc-library/-/work_items/13)). The wrapper itself now reports `PHP_70` instead of `PHP_74` as its minimum version, so for target versions 7.0 to 7.3 the wrapped rules that are valid there run now

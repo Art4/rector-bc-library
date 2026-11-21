@@ -5,7 +5,7 @@
 **art4/rector-bc-library** — a PHP library that wraps 35 of Rector's type-declaration rules to make them backward-compatible safe for library maintainers. Instead of blindly adding/narrowing types, each wrapped rule consults a **Guard** that checks whether the change would break downstream consumers that extend or call the modified class. Another 42 type-declaration rules are reviewed as already BC-safe and pass through unwrapped (see `Set::getTypeDeclarationRules()`).
 
 - **PHP:** `^7.4 || ^8.0`
-- **Runtime dependency:** `rector/rector >=2.5.8, <2.9`
+- **Runtime dependency:** `rector/rector >=2.6.7, <2.9`
 - **Dev tools:** PHPUnit, PHPStan (level 10), PHP-CS-Fixer
 
 ---
@@ -298,12 +298,12 @@ vendor/bin/phpunit tests/Rector/BackwardCompatibleRectorParamType/AddParamTypeFr
 
 | Job                 | PHP Versions     | Rector Versions               | What it runs          |
 |---------------------|------------------|-------------------------------|-----------------------|
-| phpstan-tests       | 7.4, 8.0         | 2.5.8, >=2.5.8, <2.9          | PHPStan               |
-| cs-check            | 8.3              | >=2.5.8, <2.9                 | PHP-CS-Fixer (dry-run) |
-| phpunit-tests       | 7.4, 8.0–8.6     | >=2.5.8, <2.9                 | PHPUnit               |
-| rector-tests        | 8.0              | 2.5.*, 2.6.*, 2.7.*, 2.8.*, dev-main | PHPUnit (Rector compat) |
+| phpstan-tests       | 7.4, 8.0         | 2.6.7, >=2.6.7, <2.9          | PHPStan               |
+| cs-check            | 8.3              | >=2.6.7, <2.9                 | PHP-CS-Fixer (dry-run) |
+| phpunit-tests       | 7.4, 8.0–8.6     | >=2.6.7, <2.9                 | PHPUnit               |
+| rector-tests        | 8.0              | 2.6.*, 2.7.*, 2.8.*, dev-main | PHPUnit (Rector compat) |
 | rector-tests-legacy | 7.4, 8.0         | 2.3.*, 2.4.*, 2.5.0           | PHPUnit (Rector compat), `allow_failure: true` |
-| phpunit-coverage    | 8.2              | >=2.5.8, <2.9                 | PHPUnit + Xdebug      |
+| phpunit-coverage    | 8.2              | >=2.6.7, <2.9                 | PHPUnit + Xdebug      |
 
 `rector-tests-legacy` is expected to fail: Rector <=2.4's own test-harness reflection code (`PHPStanContainerMemento`) assumes a private `$container` property on `PHPStan\Parser\RichParser` that no longer exists in any currently-installable PHPStan release — a bug entirely inside `vendor/rector/rector`, fixed upstream in Rector 2.5. It's kept in the pipeline for visibility but non-blocking since it can't be fixed from this repo.
 
@@ -316,7 +316,7 @@ Every `rector/rector` version that `composer.json` admits must have been tested 
 - **Widening the upper bound** to admit a new minor line: run the suite against every published patch of that line (manual `rector-version-audit` job, or locally via Docker) before merging. A green `rector-tests: [x.y.*]` job only proves the latest patch.
 - **Patches released into an already-admitted line** are covered by the constraint automatically, but untested. Before each release, test every patch published since the last full check.
 - Record which versions were tested (MR description or CHANGELOG), so the next check knows where to pick up.
-- **Consumer warnings:** run `rector process --dry-run` with a consumer config (`->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])`) against the lowest and the newest version. The set must cause no warning, in particular not "skipped rules are never registered" (#10). `rector validate-config` exists since a later Rector release than 2.5.8; run it on the newest version and expect exit 0.
+- **Consumer warnings:** run `rector process --dry-run` with a consumer config (`->withSets([\Art4\RectorBcLibrary\Set::BC_TYPE_DECLARATION])`) against the lowest and the newest version. The set must cause no warning, in particular not "skipped rules are never registered" (#10). Also run `rector validate-config` on the newest version and expect exit 0.
 
 ---
 
